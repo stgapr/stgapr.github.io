@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#33363b">
+    <meta name="msapplication-TileColor" content="#33363b">
+    
+    
+    
+    
+    <meta name="keywords" content="Life, Tech, Galgame, Anime, Manga, Python, Harmonica, Novel">
+    
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+    
+    
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicons/android-chrome-192x192.png">
+    
+    
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+    
+    
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+    
+    
+    <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#33363b">
+    
+    
+    <link rel="manifest" href="/favicons/site.webmanifest">
+    
+    
+    <meta name="msapplication-config" content="/favicons/browserconfig.xml">
+    
+    
+    <link rel="alternate" href="/atom.xml" title="桃乱扔" type="application/atom+xml">
+    
+    
+    <link rel="shortcut icon" type="image/x-icon" href="/favicons/favicon.ico">
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+    
+    <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+    
+    
+<link rel="stylesheet" type="text/css" href="/css/page.css">
+<link rel="stylesheet" type="text/css" href="/css/post.css">
+
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/atom-one-dark.css">
+    <link rel="stylesheet" type="text/css" href="/css/lightgallery.min.css">
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script defer type="text/javascript" src="/js/util.js"></script>
+    <script defer type="text/javascript" src="/js/scrollspy.js"></script>
+    <script defer type="text/javascript" src="/js/fontawesome-all.min.js"></script>
+    <script defer type="text/javascript" src="/js/lightgallery.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-fullscreen.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-hash.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-pager.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-thumbnail.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-zoom.min.js"></script>
+    
+    <script defer src="/js/busuanzi.pure.mini.js"></script>
+    
+    
+    <script defer type="text/javascript" src="/js/search.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+      var searchPath = "search.xml";
+      if (searchPath.length === 0) {
+        searchPath = "search.xml";
+      }
+      var path = "/" + searchPath;
+      searchFunc(path, "search-input", "search-result");
+    });
+    </script>
+    
+    
+    <script defer type="text/javascript" src="/js/index.js"></script>
+    
+    <script defer type="text/javascript" src="/js/custom.js"></script>
+    <title>用Python批量生成信函 | 桃乱扔</title>
+  </head>
+  <body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN" data-spy="scroll" data-target=".list-group">
+    
+<header id="header" class="header" style="background: #33363b;">
+  <div class="container">
+    <div class="header-container">
+      <div class="header-title">
+        <h1 class="title"><a href="/">桃乱扔</a></h1>
+        <h2 class="subtitle"></h2>
+      </div>
+      
+    </div>
+    <nav id="nav" class="nav">
+      <a id="nav-toggle" class="nav-toggle" aria-hidden="true"><i class="fas fa-bars" aria-label="Toggle Navbar"></i></a>
+      <ul id="menu" role="menubar" aria-hidden="false">
+        
+        <li role="menuitem"><a href="/">Home</a></li>
+        
+        <li role="menuitem"><a href="/archives/">Archives</a></li>
+        
+        <li role="menuitem"><a href="/categories/">Categories</a></li>
+        
+        <li role="menuitem"><a href="/tags/">Tags</a></li>
+        
+        <li role="menuitem"><a href="/about/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <main id="main" class="main">
+      <div class="container">
+        <div class="main-container">
+          <div class="content">
+            
+<div id="post" class="page">
+  
+  <article class="article post card animate" itemscope="" itemtype="http://schema.org/Article">
+    <div class="post-block">
+      <link itemprop="mainEntityOfPage" href="https://lilis.coding.me/post/python-mailer/">
+      <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+       <meta itemprop="name" content="Prism">
+       <meta itemprop="description" content="">
+       <meta itemprop="image" content="/images/avatar.png">
+      </span>
+      <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+       <meta itemprop="name" content="桃乱扔">
+      </span>
+    </div>
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">用Python批量生成信函</h1>
+      <div class="post-meta">
+        
+        <span class="post-date">
+          <i class="far fa-calendar-plus"></i><span><time title="post-date" itemprop="dateCreated datePublished" datetime="2019-05-13T19:43:11+08:00">2019-05-13 19:43:11</time></span>
+        </span>
+        
+        
+        
+        <span class="post-meta-divider divider">|</span>
+        
+        <span class="post-categories">
+          
+          <i class="far fa-folder-open"></i><span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/随感/" itemprop="url" rel="index"><span itemprop="name">随感</span></a></span>
+        </span>
+        
+        
+        
+        
+      </div>
+    </header>
+    <main class="post-main" itemprop="articleBody">
+      <p>这篇博文里，我将介绍利用Python编程语言自动化一些繁琐机械的工作的一个实际例子。适合有一点编程基础的财务人员参考。</p>
+<a id="more"></a> 
+<p>最近工作上有一个需求：有一个业务上的Excel表格，里面有几千行人员数据，并且有所属企业等其他信息列。任务是给表格里每一个企业发送一封信，里面列出下属人员的相关信息并通知整改。</p>
+<p>首先我想到Word上有一个功能叫做”邮件“，里面可以做一个邮件模板，然后挖空一些地方（比如抬头、称呼、落款）。Word会根据你提供的数据源表格，自动地填充这些地方，批量生成大量信件。</p>
+<p>但是！这个功能很弱，没法合并同一个公司的员工信息。虽然也不是不能通过“域”语法实现，但感觉很麻烦，这种数据处理的事情还是搬出Python吧。</p>
+<p>任务可以拆分成三块：</p>
+<p>①读取Excel表格里的人员数据</p>
+<p>②把每一行人员数据追加到该公司的信函中</p>
+<p>③渲染信函，生成美观可读文件（用于电邮寄送，或者打印）。</p>
+<p>总体思路是：先读取excel文件，按格式要求做出markdown格式的信函，然后用pandoc转换成html。</p>
+<p>这里介绍一下pandoc，pandoc是一个在不同标记文档格式之间进行转换的命令行工具，支持html/pdf/docx/latex/markdown等。我们可以在Python中调用pandoc，来实现格式转换。</p>
+<p>直接上代码了，首先用xlrd库读取表格。</p>
+<p><code></code><br><figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xlrd</span><br><span class="line">excel =<span class="string">r'list.xlsx'</span> <span class="comment">#指定数据源文件</span></span><br><span class="line">output_path=os.path.join(sys.path[<span class="number">0</span>],<span class="string">"output"</span>)<span class="comment">#输出目录</span></span><br><span class="line">workbook = xlrd.open_workbook(excel)</span><br><span class="line">print(workbook.sheet_names())</span><br><span class="line">sheet1 = workbook.sheet_by_index(<span class="number">0</span>)</span><br></pre></td></tr></table></figure></p>
+<p><code></code></p>
+<p>然后抽取每一条数据，生成markdown格式的信函。</p>
+<p><code></code><br><figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">​<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,sheet1.nrows<span class="number">-1</span>):</span><br><span class="line">​    <span class="keyword">try</span>:</span><br><span class="line">​        md_company=sheet1.cell(i,<span class="number">2</span>).value.strip() </span><br><span class="line">​        md_file=<span class="string">'%s.md'</span>%(md_company)  </span><br><span class="line">​        md_fullfile=os.path.join(output_path,md_file) </span><br><span class="line">​        print(<span class="string">"准备写入文件："</span>,md_fullfile)</span><br><span class="line">​        <span class="keyword">if</span> os.path.exists(md_fullfile)==<span class="keyword">False</span>: <span class="comment">#不存在文件的话，创建并写入信函头和表头</span></span><br><span class="line">​            ...</span><br><span class="line">​    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">​        print(e)</span><br><span class="line">​        <span class="keyword">continue</span></span><br></pre></td></tr></table></figure></p>
+<p><code></code></p>
+<p>由于markdown支持html标签，我们可以逐行这样准备要写入markdown的数据。记得用换行符。</p>
+<p><code></code><br><figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">​contenthead=<span class="string">"&lt;br/&gt;&lt;br/&gt;&lt;center&gt;&lt;h2&gt;告知函&lt;/h2&gt;&lt;/center&gt;\n\n"</span></span><br><span class="line">​contenthead=contenthead+<span class="string">"尊敬的用户，……\n"</span></span><br><span class="line">​contenthead=contenthead+<span class="string">"\n\n姓名 | 个人账号 | 证件号 | 账户状态 | 错误原因\n"</span></span><br><span class="line">​contenthead=contenthead+<span class="string">":-: | :-: | :-: | :-: | :-:\n"</span></span><br></pre></td></tr></table></figure></p>
+<p><code></code></p>
+<p>然后写入文件。这里用到codecs来指定编码为utf8，避免转换期间的编码错误。</p>
+<p><code></code><br><figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> os.path.exists(md_fullfile)==<span class="keyword">False</span></span><br><span class="line">    ...</span><br><span class="line">    file = codecs.open(md_fullfile, <span class="string">'a'</span>,<span class="string">'utf-8'</span>)          </span><br><span class="line">    file.write(contenthead) <span class="comment">#先写头</span></span><br><span class="line">    writeline(sheet1,i,file)   </span><br><span class="line">    file.close()         </span><br><span class="line"><span class="keyword">else</span>:  <span class="comment">#存在文件的话，就接着追加人员数据</span></span><br><span class="line">    file=codecs.open(md_fullfile,<span class="string">'a'</span>,<span class="string">'utf-8'</span>)</span><br><span class="line">    writeline(sheet1,i,file)</span><br><span class="line">    file.close()</span><br></pre></td></tr></table></figure></p>
+<p><code></code></p>
+<p>这里的writeline()函数，就是逐行往信函markdown文件里写员工信息。记得数据要拼接成markdown可识别的表格行格式，用 dash符分隔，像这样。 </p>
+<p>（我一直觉得自己写代码一点都不objective，像写过程化语句）</p>
+<p><code></code><br><figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">writeline</span><span class="params">(sheet,i,file)</span></span></span><br><span class="line"><span class="function">    <span class="title">file</span>.<span class="title">write</span><span class="params">(sheet.cell<span class="params">(i, <span class="number">4</span>)</span>.value+<span class="string">" | "</span>)</span>#姓名<span class="title">E</span> 列</span></span><br><span class="line"><span class="function">    <span class="title">file</span>.<span class="title">write</span><span class="params">(sheet.cell<span class="params">(i, <span class="number">3</span>)</span>.value+<span class="string">" | "</span>)</span>#账号<span class="title">D</span> 列</span></span><br><span class="line"><span class="function">    <span class="title">file</span>.<span class="title">write</span><span class="params">(sheet.cell<span class="params">(i, <span class="number">5</span>)</span>.value+<span class="string">" | "</span>)</span>#证件号<span class="title">F</span> 列</span></span><br><span class="line"><span class="function">    <span class="title">file</span>.<span class="title">write</span><span class="params">(sheet.cell<span class="params">(i, <span class="number">9</span>)</span>.value+<span class="string">" | "</span>)</span>#账户状态<span class="title">J</span> 列</span></span><br><span class="line"><span class="function">    ...</span></span><br></pre></td></tr></table></figure></p>
+<p><code></code></p>
+<p>最后一步，就是在所有数据都追加完毕后，给所有的信函markdown文件追加落款，并顺便转换成html格式。这里用os.walk()来遍历。很简单，网上的代码段一大把。这里可以用div的style标记来做落款的右对齐，并且通过datetime模块取生成时间作为落款时间。</p>
+<p><code></code><br><figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">​<span class="function"><span class="keyword">def</span> <span class="title">write_prefix</span><span class="params">()</span>:</span></span><br><span class="line">​    <span class="keyword">for</span> root,dirs,files <span class="keyword">in</span> os.walk(output_path):</span><br><span class="line">​        <span class="keyword">for</span> fullfiles <span class="keyword">in</span> files:</span><br><span class="line">​            fullfile = os.path.join(root, fullfiles).lower()</span><br><span class="line">​            extension = os.path.splitext(fullfile)[<span class="number">1</span>][<span class="number">1</span>:]</span><br><span class="line">​            <span class="keyword">if</span>  extension <span class="keyword">in</span> [<span class="string">"md"</span>,<span class="string">"txt"</span>]:</span><br><span class="line">​                file=codecs.open(fullfile,<span class="string">'a'</span>,<span class="string">'utf-8'</span>)</span><br><span class="line">​                    file.write(<span class="string">"　　特此告知！\n\n\n"</span>) <span class="comment">#用全角空格控制缩进</span></span><br><span class="line">​                    file.write(<span class="string">"&lt;div style=\"text-align: right\"&gt;XX市XX主管部门 &lt;/div&gt;\n"</span>)</span><br><span class="line">​                        file.write(<span class="string">"&lt;div style=\"text-align: right\"&gt;%s年%s月%s日&lt;/div&gt;\n"</span> %\</span><br><span class="line">                        (datetime.datetime.now().year,datetime.datetime.now().month,datetime.datetime.now().day))</span><br><span class="line">​                        file.close()</span><br><span class="line">​                        run_pandoc(fullfile,fullfile.replace(<span class="string">".md"</span>,<span class="string">".html"</span>))</span><br></pre></td></tr></table></figure></p>
+<p><code></code></p>
+<p>上面代码段的最后一行调用了run_pandoc()，就是调用pandoc命令来转换markdown到html。为什么我不转换成docx？因为这玩意要依赖latex库，而且样式支持奇差。假如是用于打印或网络传输的信函，html足够了。</p>
+<p>pandoc可以在转换时附带一个css，让转换出来的信件样式更美观。css可以网上挑一个漂亮的。记得加上–self-contained函数，把css内联到html里。</p>
+<p><code></code><br><figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">​<span class="function"><span class="keyword">def</span> <span class="title">run_pandoc</span><span class="params">(source_file,object_file)</span>:</span> </span><br><span class="line">​    print(<span class="string">"正在渲染"</span>,object_file)</span><br><span class="line">​       <span class="keyword">if</span> <span class="string">".htm"</span> <span class="keyword">in</span> object_file:</span><br><span class="line">​           os.system(<span class="string">"pandoc --css style.css -s %s -o %s --self-contained --metadata pagetitle=\"　\""</span>%(source_file,object_file))</span><br></pre></td></tr></table></figure></p>
+<p><code></code></p>
+<p>这样就好了。大概十秒钟左右就能生成五百份信函。性能也说得过去，没必要上异步文件处理库（aiofile之类）。</p>
+<p>最后欢呼一下：科技解放生产力。</p>
+<p>对这方面知识感兴趣但对编程知之甚少的网友，可以参考一下这本书：<a href="https://book.douban.com/subject/26836700/" target="_blank" rel="noopener">《Python编程快速上手：让繁琐工作自动化》</a></p>
+
+    </main>
+    <footer class="post-footer">
+      
+      <div class="post-tags">
+        
+        <a class="post-tag button" href="/tags/生活/" rel="tag"><i class="fas fa-tags"></i>生活</a>
+        
+        <a class="post-tag button" href="/tags/网络/" rel="tag"><i class="fas fa-tags"></i>网络</a>
+        
+      </div>
+      
+    </footer>
+  </article>
+  
+  
+  <nav class="page-nav">
+    <div class="page-nav-next page-nav-item">
+      
+      <a href="/post/read-2019-4/" rel="next" title="2019年4月阅读书目"><i class="fas fa-angle-left"></i><span class="nav-title">2019年4月阅读书目</span></a>
+      
+    </div>
+    <div class="page-nav-prev page-nav-item">
+      
+      <a href="/post/ireader/" rel="prev" title="iReader Ocean阅读器测评"><span class="nav-title">iReader Ocean阅读器测评</span><i class="fas fa-angle-right"></i></a>
+      
+    </div>
+  </nav>
+  
+  
+  
+
+<div class="comments" id="comments">
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<div id="gitalk-container"></div>
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'fc5cc78006347ed7f2b8',
+        clientSecret: 'eb4cc326feb2418f9add0833f57adbe9e423fb43',
+        id: window.location.pathname,
+        repo: 'lilis',
+        owner: 'stgapr',
+        admin: 'stgapr'
+    })
+    gitalk.render('gitalk-container')
+</script>
+
+
+</div>
+
+
+
+  
+</div>
+
+          </div>
+          
+          
+          
+<aside class="sidebar" id="sidebar" style="background: url(/images/background.png);">
+  
+  <div class="search">
+    <div class="form-group">
+      <i class="fas fa-search"></i><input type="search" id="search-input" name="q" results="0" placeholder="Search" class="form-control">
+    </div>
+  </div>
+  <div class="search-result-box" id="search-result"></div>
+  
+  
+<div class="info sidebar-item" id="info">
+  
+  <img class="author-avatar" src="/images/avatar.png" alt="Prism">
+  
+  <h1 class="author-name">Prism</h1>
+  <h2 class="author-description"></h2>
+  <div class="site-count">
+    
+    <div class="archives-count">
+      <div class="site-count-title">Archives</div>
+      <div><a href="/archives/">76</a></div>
+    </div>
+    
+    
+    
+    <span class="site-count-divider divider">|</span>
+    
+    <div class="categories-count">
+      <div class="site-count-title">Categories</div>
+      <div><a href="/categories/">4</a></div>
+    </div>
+    
+    
+    
+    <span class="site-count-divider divider">|</span>
+    
+    <div class="tags-count">
+      <div class="site-count-title">Tags</div>
+      <div><a href="/tags/">84</a></div>
+    </div>
+    
+  </div>
+  
+  <div class="rss">
+    <a class="rss-link button sidebar-item" href="/atom.xml"><i class="fas fa-rss"></i>RSS</a>
+  </div>
+  
+</div>
+
+
+  <div class="sidebar-sticky">
+    
+    
+    
+    
+    
+    
+    
+    <hr>
+    <div class="social-link sidebar-item">
+      <div><i class="far fa-address-card"></i>Social Links<p></p></div>
+      <ul>
+        
+        <li><i class="fas fa-envelope"></i><a href="mailto:stgapr29@gmail.com" target="_blank">Email</a></li>
+        
+        <li><i class="fab fa-github"></i><a href="https://github.com/stgapr" target="_blank">Github</a></li>
+        
+      </ul>
+    </div>
+    
+    
+    <hr>
+    <div class="blogroll sidebar-item">
+      <div><i class="fas fa-link"></i>Blogroll</div>
+      <ul>
+        
+        <li><a href="https://yuukoamamiya.github.io/" target="_blank">雨宫优子</a></li>
+        
+        <li><a href="https://plumz.me/" target="_blank">plum</a></li>
+        
+        <li><a href="https://incises.github.io" target="_blank">Incises</a></li>
+        
+        <li><a href="https://sh.alynx.moe" target="_blank">喵's StackHarbor</a></li>
+        
+        <li><a href="https://pockies.github.io/" target="_blank">Pockies</a></li>
+        
+        <li><a href="http://noodlefighter.com/" target="_blank">虾包</a></li>
+        
+        <li><a href="https://www.natech.top/" target="_blank">无聊人士的低语</a></li>
+        
+        <li><a href="https://linhai1990.com/" target="_blank">四海为家的兔子</a></li>
+        
+        <li><a href="https://suzumiyashirone.github.io/" target="_blank">涼宮シロネ</a></li>
+        
+        <li><a href="https://www.gazyip.cn/" target="_blank">八个比特</a></li>
+        
+        <li><a href="https://luojia.me/" target="_blank">佳佳酱</a></li>
+        
+        <li><a href="https://lnet.me/" target="_blank">澜灯</a></li>
+        
+        <li><a href="https://touko.moe/" target="_blank">Touko</a></li>
+        
+        <li><a href="https://taoxinhao.cn/" target="_blank">陶新昊</a></li>
+        
+        <li><a href="https://www.wikimoe.com/" target="_blank">WIKIMOE</a></li>
+        
+        <li><a href="http://www.misakas.com/" target="_blank">misakas</a></li>
+        
+        <li><a href="https://blog.ixk.me/" target="_blank">ixk.me</a></li>
+        
+        <li><a href="http://blog.dangodango.cn/" target="_blank">团子的小小世界</a></li>
+        
+        <li><a href="http://blog.9bie.org:8081/" target="_blank">⑨bie</a></li>
+        
+        <li><a href="https://utsuho.cn/" target="_blank">喵の空</a></li>
+        
+        <li><a href="https://www.rabbittu.com/" target="_blank">某兔子の御用花园</a></li>
+        
+        <li><a href="http://pea3nut.info/" target="_blank">花生PeA</a></li>
+        
+        <li><a href="http://www.iinorii.com/blog/" target="_blank">いつの間に</a></li>
+        
+        <li><a href="https://www.senayuki.top/" target="_blank">纷飞的小屋</a></li>
+        
+        <li><a href="http://whitebox.im/" target="_blank">白色箱子</a></li>
+        
+        <li><a href="http://code5light.com/" target="_blank">多事之秋</a></li>
+        
+        <li><a href="https://diygod.me/friends/" target="_blank">DIYGOD</a></li>
+        
+        <li><a href="https://ephen.me/" target="_blank">Ephen</a></li>
+        
+        <li><a href="https://ikk.me/" target="_blank">ikk.me</a></li>
+        
+        <li><a href="https://ikmoe.com/" target="_blank">月宅酱</a></li>
+        
+        <li><a href="https://www.rexskz.info/" target="_blank">ReX/Zeng</a></li>
+        
+        <li><a href="https://2heng.xin/" target="_blank">さくら荘の白猫</a></li>
+        
+        <li><a href="https://www.fczbl.vip" target="_blank">犬's blog</a></li>
+        
+        <li><a href="https://aoaoao.me/" target="_blank">Aaron</a></li>
+        
+        <li><a href="https://blog.0xbbc.com/" target="_blank">3004</a></li>
+        
+        <li><a href="http://mouto.org/" target="_blank">卜卜口</a></li>
+        
+        <li><a href="https://wind.moe/links/" target="_blank">Windless</a></li>
+        
+        <li><a href="https://oao.moe/links/" target="_blank">oao</a></li>
+        
+        <li><a href="https://zankyo.cc/" target="_blank">青花鱼</a></li>
+        
+        <li><a href="https://blog.uuz.moe/" target="_blank">雨宮千夏の博麗神社</a></li>
+        
+        <li><a href="http://im.dimpurr.com/" target="_blank">钉子の次元</a></li>
+        
+        <li><a href="http://acgtyrant.com/" target="_blank">acgtyrant</a></li>
+        
+        <li><a href="https://asaba.sakuragawa.moe/" target="_blank">樱川浅羽</a></li>
+        
+        <li><a href="https://buta.moe/" target="_blank">Take Space</a></li>
+        
+        <li><a href="http://takumiyuki.hatenablog.com/" target="_blank">TakumiYuki</a></li>
+        
+        <li><a href="https://flandre-scarlet.moe/blog/" target="_blank">Re:memory</a></li>
+        
+      </ul>
+    </div>
+    
+  </div>
+</aside>
+
+
+          
+        </div>
+      </div>
+    </main>
+    
+<footer id="footer" class="footer" style="background: #33363b;">
+  <div class="container">
+    <div class="back-to-top">
+      <button id="back-to-top"><i class="fas fa-angle-double-up" aria-label="Back to Top"></i></button>
+    </div>
+    <div class="footer-container">
+      <div class="footer-left">
+        <div class="copyright">
+          <span class="author">Prism</span><span class="year"><i class="far fa-copyright"></i>1993 - 2019</span>
+        </div>
+        
+        <div class="busuanzi">
+          <span id="busuanzi_container_site_pv"><i class="fas fa-eye" aria-label="Site Visit Count" aria-hidden="false"></i><span id="busuanzi_value_site_pv"></span></span><span id="busuanzi_container_site_uv"><i class="fas fa-user" aria-label="Site User Count" aria-hidden="false"></i><span id="busuanzi_value_site_uv"></span></span><span id="busuanzi_container_page_pv"><i class="far fa-file-alt"></i><span id="busuanzi_value_page_pv" aria-label="Page Click Count" aria-hidden="false"></span></span>
+        </div>
+        
+      </div>
+      <div class="footer-right">
+        <div class="custom-info">
+          
+          底下啥都没有了~
+          
+        </div>
+        <div class="powered-by">
+          Proudly Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> | Theme is <a href="https://github.com/AlynxZhou/hexo-theme-aria/" target="_blank">ARIA</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  </body>
+</html>

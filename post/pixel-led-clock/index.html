@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#33363b">
+    <meta name="msapplication-TileColor" content="#33363b">
+    
+    
+    
+    
+    <meta name="keywords" content="Life, Tech, Galgame, Anime, Manga, Python, Harmonica, Novel">
+    
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+    
+    
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicons/android-chrome-192x192.png">
+    
+    
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+    
+    
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+    
+    
+    <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#33363b">
+    
+    
+    <link rel="manifest" href="/favicons/site.webmanifest">
+    
+    
+    <meta name="msapplication-config" content="/favicons/browserconfig.xml">
+    
+    
+    <link rel="alternate" href="/atom.xml" title="桃乱扔" type="application/atom+xml">
+    
+    
+    <link rel="shortcut icon" type="image/x-icon" href="/favicons/favicon.ico">
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+    
+    <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+    
+    
+<link rel="stylesheet" type="text/css" href="/css/page.css">
+<link rel="stylesheet" type="text/css" href="/css/post.css">
+
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/atom-one-dark.css">
+    <link rel="stylesheet" type="text/css" href="/css/lightgallery.min.css">
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script defer type="text/javascript" src="/js/util.js"></script>
+    <script defer type="text/javascript" src="/js/scrollspy.js"></script>
+    <script defer type="text/javascript" src="/js/fontawesome-all.min.js"></script>
+    <script defer type="text/javascript" src="/js/lightgallery.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-fullscreen.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-hash.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-pager.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-thumbnail.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-zoom.min.js"></script>
+    
+    <script defer src="/js/busuanzi.pure.mini.js"></script>
+    
+    
+    <script defer type="text/javascript" src="/js/search.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+      var searchPath = "search.xml";
+      if (searchPath.length === 0) {
+        searchPath = "search.xml";
+      }
+      var path = "/" + searchPath;
+      searchFunc(path, "search-input", "search-result");
+    });
+    </script>
+    
+    
+    <script defer type="text/javascript" src="/js/index.js"></script>
+    
+    <script defer type="text/javascript" src="/js/custom.js"></script>
+    <title>DIY像素LED时钟 | 桃乱扔</title>
+  </head>
+  <body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN" data-spy="scroll" data-target=".list-group">
+    
+<header id="header" class="header" style="background: #33363b;">
+  <div class="container">
+    <div class="header-container">
+      <div class="header-title">
+        <h1 class="title"><a href="/">桃乱扔</a></h1>
+        <h2 class="subtitle"></h2>
+      </div>
+      
+    </div>
+    <nav id="nav" class="nav">
+      <a id="nav-toggle" class="nav-toggle" aria-hidden="true"><i class="fas fa-bars" aria-label="Toggle Navbar"></i></a>
+      <ul id="menu" role="menubar" aria-hidden="false">
+        
+        <li role="menuitem"><a href="/">Home</a></li>
+        
+        <li role="menuitem"><a href="/archives/">Archives</a></li>
+        
+        <li role="menuitem"><a href="/categories/">Categories</a></li>
+        
+        <li role="menuitem"><a href="/tags/">Tags</a></li>
+        
+        <li role="menuitem"><a href="/about/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <main id="main" class="main">
+      <div class="container">
+        <div class="main-container">
+          <div class="content">
+            
+<div id="post" class="page">
+  
+  <article class="article post card animate" itemscope="" itemtype="http://schema.org/Article">
+    <div class="post-block">
+      <link itemprop="mainEntityOfPage" href="https://lilis.coding.me/post/pixel-led-clock/">
+      <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+       <meta itemprop="name" content="Prism">
+       <meta itemprop="description" content="">
+       <meta itemprop="image" content="/images/avatar.png">
+      </span>
+      <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+       <meta itemprop="name" content="桃乱扔">
+      </span>
+    </div>
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">DIY像素LED时钟</h1>
+      <div class="post-meta">
+        
+        <span class="post-date">
+          <i class="far fa-calendar-plus"></i><span><time title="post-date" itemprop="dateCreated datePublished" datetime="2019-02-13T18:21:30+08:00">2019-02-13 18:21:30</time></span>
+        </span>
+        
+        
+        
+        <span class="post-meta-divider divider">|</span>
+        
+        <span class="post-categories">
+          
+          <i class="far fa-folder-open"></i><span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/笔记/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a></span>
+        </span>
+        
+        
+        
+        
+      </div>
+    </header>
+    <main class="post-main" itemprop="articleBody">
+      <p>如何自己做一个像素风格的彩色时钟。</p>
+<a id="more"></a>
+<p>基本原理是通过ESP8266系芯片的SPI端口来控制彩色LED屏的像素点亮暗。而ESP8266本身又受到局域网内的服务端控制。服务端可以是任何能跑java的设备，比如rspi、笔记本、安卓手机。 控制端和服务端程序都已经有开源的实现，叫做Awtrix 2.0。现在就来动手做一下。</p>
+<p>以下教程有部分内容引用自<a href="https://sspai.com/post/54225" target="_blank" rel="noopener">少数派的文章</a>，部分引用自官方教程。</p>
+<h3 id="购买材料"><a href="#购买材料" class="headerlink" title="购买材料"></a>购买材料</h3><p>WS2812B 全彩 8*32 全彩可编程像素软屏（淘宝 115 元）<br>ESP8266 WIFI 模块 CP2102 ESP-12E （淘宝 27元） / 或者其他ESP8266系的芯片如NodeMCU V4 （淘宝25元）<br>杜邦线 公对母 （一定要公对母）<br>3D 打印光栅<br>半透明玻璃纸/A3纸等<br>micro usb 线<br>胶水、剪刀等工具</p>
+<p>3D光栅就是一个塑料方格子，用来把每个像素点的光隔离起来，这样成品才会有清晰颗粒状的显示效果，不会糊成一片。模型文件在那个德国人的网站上有下载（注意要打2个，互相拼接起来）<br>半透明玻璃纸/A3纸是罩在光栅上的，让光点更加柔和。 我觉得用汽车的半透明防爆膜，夜间显示效果更好。<br>当然也可以从节省成本的角度，进行其他改造，不一定要用官方提供的3D壳模型。毕竟在资源有限条件下做出做漂亮的东西也是DIY的乐趣之一。</p>
+<p>现在现来弄程序部分。</p>
+<h3 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h3><p>第一步下载服务端，服务端在blueforcer.de的服务器上。Awtrix 2.0的服务端是不开源的，而控制端固件开源。</p>
+<p><code>wget -N awtrix.jar https://blueforcer.de/downloads/awtrix.jar</code></p>
+<p>Linux下要确保时区正确</p>
+<p><code>sudo timedatectl set-timezone &#39;Asia/Shanghai&#39;</code></p>
+<p>自启动脚本和守护进程什么的就略过去了</p>
+<p><code>sudo nohup java -jar ./awtrix.jar</code></p>
+<p>Windows下则是：</p>
+<p><code>java -Duser.timezone=Asia/Shanghai -jar awtrix.jar</code></p>
+<p>因为这个服务端程序是德国人写的，我猜当时他编译的时候把程序地区选项也给指定了。假如在运行时不重新指定时区，会发现钟的时间慢八个小时（德国在东一区）</p>
+<p>官方文档还有安卓手机上安装服务端的教程，可以自行去看。安装好后浏览器打开这个服务端的 IP，然后端口默认都是 7000，就能看见管理后台了。（这时候提示控制端没有连接是正常的）<br>![管理后台]（<a href="https://cdn.sspai.com/20190430110836.png?imageView2/2/w/1120/q/90/interlace/1/ignore-error/1" target="_blank" rel="noopener">https://cdn.sspai.com/20190430110836.png?imageView2/2/w/1120/q/90/interlace/1/ignore-error/1</a>)</p>
+<h3 id="控制端固件刷入"><a href="#控制端固件刷入" class="headerlink" title="控制端固件刷入"></a>控制端固件刷入</h3><p>首先装个VS Code，然后从<a href="https://github.com/awtrix/AWTRIX2.0-Controller" target="_blank" rel="noopener">这里</a>下载控制端的工程文件。</p>
+<p>在VS Code里装Platform.IO插件。这是一个嵌入式设备的开发平台，支持很多种芯片。</p>
+<p>然后打开下载好的工程文件，根目录下 awtrix-conf.h 文件里要修改 Wi-Fi 和服务器设置。ssid 填写 Wi-Fi 名，password 填写 Wi-Fi 密码，awtrix_server 填写自己 awtrix 服务器的 IP（不需要填端口）。这样在控制端上电后，才能自动连上wifi，等候服务端指令。<br><img src="https://cdn.sspai.com/20190430111215.png?imageView2/2/w/1120/q/90/interlace/1/ignore-error/1" alt="弄好服务端设置"><br>USB 插上 ESP8266 后，点击Platform.IO里的箭头刷写固件即可。这个固件好像是基于ESP8266的arduino版。</p>
+<p>这里我踩了个坑，因为Platform.IO在编译固件时需要自动从国外网站下载一些工具链，但我家网络连国外网站时断时续的，屡屡导致编译失败。 网友这一步时要确保网络的质量，有条件的挂个梯子。我这里最后用了十几分钟编译好。</p>
+<p><img src="https://cdn.sspai.com/20190430111514.png?imageView2/2/w/1120/q/90/interlace/1/ignore-error/1" alt="编译好之后会自动刷入芯片中。"></p>
+<p>ESP8266 和像素屏幕用杜邦线连接（记住是接 DIN 的那三个）。像素屏上的 DIN 接 ESP8266 上的 D2 口，像素屏 GND 接 ESP8266 的 GND，像素屏 5V 接 ESP8266 的 3V3（或3V）</p>
+<p>这时候屏幕应该已经亮了。</p>
+<p>然后就可以把光栅粘贴好，扣到屏幕上，把准备好的玻璃纸贴上去（记得平整）。</p>
+<p>官方提供的开发平台是B4J，看了一下，似乎是一种类似Visual Basic的脚本语言（及同名IDE）。也提供了很多控制器API（都是在那个不开源的服务端里实现的）。喜欢折腾的同学可以自行开发更多app。这里直接从“Appstore”下载别人做好的app。比如“空气指数” “倒数” “太空中现在有几个人” “月相” “bilibili关注者实时统计” “黑客帝国字符雨” “生命游戏” “俄罗斯方块”等。</p>
+<p>实际上，这些app大多涉及网络访问API，所以要有服务端把数据抓好之后，根据设定好的规则转换成像素点的亮暗规则，发送到连着LED屏的控制器上。</p>
+<p><img src="https://cdn.sspai.com/20190430111850.png?imageView2/2/w/1120/q/90/interlace/1/ignore-error/1" alt="自定义功能还是比较丰富的"></p>
+<p>网友也贴了很多完成效果图。太酷了。我做的比较挫，就不贴了。</p>
+
+    </main>
+    <footer class="post-footer">
+      
+      <div class="post-tags">
+        
+        <a class="post-tag button" href="/tags/编程/" rel="tag"><i class="fas fa-tags"></i>编程</a>
+        
+        <a class="post-tag button" href="/tags/DIY/" rel="tag"><i class="fas fa-tags"></i>DIY</a>
+        
+        <a class="post-tag button" href="/tags/电子制作/" rel="tag"><i class="fas fa-tags"></i>电子制作</a>
+        
+      </div>
+      
+    </footer>
+  </article>
+  
+  
+  <nav class="page-nav">
+    <div class="page-nav-next page-nav-item">
+      
+      <a href="/post/templefair/" rel="next" title="初八庙会"><i class="fas fa-angle-left"></i><span class="nav-title">初八庙会</span></a>
+      
+    </div>
+    <div class="page-nav-prev page-nav-item">
+      
+      <a href="/post/BT/" rel="prev" title="如何形象地理解BT下载"><span class="nav-title">如何形象地理解BT下载</span><i class="fas fa-angle-right"></i></a>
+      
+    </div>
+  </nav>
+  
+  
+  
+
+<div class="comments" id="comments">
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<div id="gitalk-container"></div>
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'fc5cc78006347ed7f2b8',
+        clientSecret: 'eb4cc326feb2418f9add0833f57adbe9e423fb43',
+        id: window.location.pathname,
+        repo: 'lilis',
+        owner: 'stgapr',
+        admin: 'stgapr'
+    })
+    gitalk.render('gitalk-container')
+</script>
+
+
+</div>
+
+
+
+  
+</div>
+
+          </div>
+          
+          
+          
+<aside class="sidebar" id="sidebar" style="background: url(/images/background.png);">
+  
+  <div class="search">
+    <div class="form-group">
+      <i class="fas fa-search"></i><input type="search" id="search-input" name="q" results="0" placeholder="Search" class="form-control">
+    </div>
+  </div>
+  <div class="search-result-box" id="search-result"></div>
+  
+  
+<div class="info sidebar-item" id="info">
+  
+  <img class="author-avatar" src="/images/avatar.png" alt="Prism">
+  
+  <h1 class="author-name">Prism</h1>
+  <h2 class="author-description"></h2>
+  <div class="site-count">
+    
+    <div class="archives-count">
+      <div class="site-count-title">Archives</div>
+      <div><a href="/archives/">76</a></div>
+    </div>
+    
+    
+    
+    <span class="site-count-divider divider">|</span>
+    
+    <div class="categories-count">
+      <div class="site-count-title">Categories</div>
+      <div><a href="/categories/">4</a></div>
+    </div>
+    
+    
+    
+    <span class="site-count-divider divider">|</span>
+    
+    <div class="tags-count">
+      <div class="site-count-title">Tags</div>
+      <div><a href="/tags/">84</a></div>
+    </div>
+    
+  </div>
+  
+  <div class="rss">
+    <a class="rss-link button sidebar-item" href="/atom.xml"><i class="fas fa-rss"></i>RSS</a>
+  </div>
+  
+</div>
+
+
+  <div class="sidebar-sticky">
+    
+    
+    
+    
+    
+    <hr>
+    <div class="post-toc sidebar-item" id="toc-div">
+      <div><i class="fas fa-list-ol"></i>Table of Contents</div>
+      <div class="post-toc-content"><ol class="list-group toc"><li class="toc-item toc-level-3"><a class="list-group-item toc-link" href="#购买材料"><span class="toc-text">购买材料</span></a></li><li class="toc-item toc-level-3"><a class="list-group-item toc-link" href="#服务端"><span class="toc-text">服务端</span></a></li><li class="toc-item toc-level-3"><a class="list-group-item toc-link" href="#控制端固件刷入"><span class="toc-text">控制端固件刷入</span></a></li></ol></div>
+    </div>
+    
+    
+    
+    <hr>
+    <div class="social-link sidebar-item">
+      <div><i class="far fa-address-card"></i>Social Links<p></p></div>
+      <ul>
+        
+        <li><i class="fas fa-envelope"></i><a href="mailto:stgapr29@gmail.com" target="_blank">Email</a></li>
+        
+        <li><i class="fab fa-github"></i><a href="https://github.com/stgapr" target="_blank">Github</a></li>
+        
+      </ul>
+    </div>
+    
+    
+    <hr>
+    <div class="blogroll sidebar-item">
+      <div><i class="fas fa-link"></i>Blogroll</div>
+      <ul>
+        
+        <li><a href="https://yuukoamamiya.github.io/" target="_blank">雨宫优子</a></li>
+        
+        <li><a href="https://plumz.me/" target="_blank">plum</a></li>
+        
+        <li><a href="https://incises.github.io" target="_blank">Incises</a></li>
+        
+        <li><a href="https://sh.alynx.moe" target="_blank">喵's StackHarbor</a></li>
+        
+        <li><a href="https://pockies.github.io/" target="_blank">Pockies</a></li>
+        
+        <li><a href="http://noodlefighter.com/" target="_blank">虾包</a></li>
+        
+        <li><a href="https://www.natech.top/" target="_blank">无聊人士的低语</a></li>
+        
+        <li><a href="https://linhai1990.com/" target="_blank">四海为家的兔子</a></li>
+        
+        <li><a href="https://suzumiyashirone.github.io/" target="_blank">涼宮シロネ</a></li>
+        
+        <li><a href="https://www.gazyip.cn/" target="_blank">八个比特</a></li>
+        
+        <li><a href="https://luojia.me/" target="_blank">佳佳酱</a></li>
+        
+        <li><a href="https://lnet.me/" target="_blank">澜灯</a></li>
+        
+        <li><a href="https://touko.moe/" target="_blank">Touko</a></li>
+        
+        <li><a href="https://taoxinhao.cn/" target="_blank">陶新昊</a></li>
+        
+        <li><a href="https://www.wikimoe.com/" target="_blank">WIKIMOE</a></li>
+        
+        <li><a href="http://www.misakas.com/" target="_blank">misakas</a></li>
+        
+        <li><a href="https://blog.ixk.me/" target="_blank">ixk.me</a></li>
+        
+        <li><a href="http://blog.dangodango.cn/" target="_blank">团子的小小世界</a></li>
+        
+        <li><a href="http://blog.9bie.org:8081/" target="_blank">⑨bie</a></li>
+        
+        <li><a href="https://utsuho.cn/" target="_blank">喵の空</a></li>
+        
+        <li><a href="https://www.rabbittu.com/" target="_blank">某兔子の御用花园</a></li>
+        
+        <li><a href="http://pea3nut.info/" target="_blank">花生PeA</a></li>
+        
+        <li><a href="http://www.iinorii.com/blog/" target="_blank">いつの間に</a></li>
+        
+        <li><a href="https://www.senayuki.top/" target="_blank">纷飞的小屋</a></li>
+        
+        <li><a href="http://whitebox.im/" target="_blank">白色箱子</a></li>
+        
+        <li><a href="http://code5light.com/" target="_blank">多事之秋</a></li>
+        
+        <li><a href="https://diygod.me/friends/" target="_blank">DIYGOD</a></li>
+        
+        <li><a href="https://ephen.me/" target="_blank">Ephen</a></li>
+        
+        <li><a href="https://ikk.me/" target="_blank">ikk.me</a></li>
+        
+        <li><a href="https://ikmoe.com/" target="_blank">月宅酱</a></li>
+        
+        <li><a href="https://www.rexskz.info/" target="_blank">ReX/Zeng</a></li>
+        
+        <li><a href="https://2heng.xin/" target="_blank">さくら荘の白猫</a></li>
+        
+        <li><a href="https://www.fczbl.vip" target="_blank">犬's blog</a></li>
+        
+        <li><a href="https://aoaoao.me/" target="_blank">Aaron</a></li>
+        
+        <li><a href="https://blog.0xbbc.com/" target="_blank">3004</a></li>
+        
+        <li><a href="http://mouto.org/" target="_blank">卜卜口</a></li>
+        
+        <li><a href="https://wind.moe/links/" target="_blank">Windless</a></li>
+        
+        <li><a href="https://oao.moe/links/" target="_blank">oao</a></li>
+        
+        <li><a href="https://zankyo.cc/" target="_blank">青花鱼</a></li>
+        
+        <li><a href="https://blog.uuz.moe/" target="_blank">雨宮千夏の博麗神社</a></li>
+        
+        <li><a href="http://im.dimpurr.com/" target="_blank">钉子の次元</a></li>
+        
+        <li><a href="http://acgtyrant.com/" target="_blank">acgtyrant</a></li>
+        
+        <li><a href="https://asaba.sakuragawa.moe/" target="_blank">樱川浅羽</a></li>
+        
+        <li><a href="https://buta.moe/" target="_blank">Take Space</a></li>
+        
+        <li><a href="http://takumiyuki.hatenablog.com/" target="_blank">TakumiYuki</a></li>
+        
+        <li><a href="https://flandre-scarlet.moe/blog/" target="_blank">Re:memory</a></li>
+        
+      </ul>
+    </div>
+    
+  </div>
+</aside>
+
+
+          
+        </div>
+      </div>
+    </main>
+    
+<footer id="footer" class="footer" style="background: #33363b;">
+  <div class="container">
+    <div class="back-to-top">
+      <button id="back-to-top"><i class="fas fa-angle-double-up" aria-label="Back to Top"></i></button>
+    </div>
+    <div class="footer-container">
+      <div class="footer-left">
+        <div class="copyright">
+          <span class="author">Prism</span><span class="year"><i class="far fa-copyright"></i>1993 - 2019</span>
+        </div>
+        
+        <div class="busuanzi">
+          <span id="busuanzi_container_site_pv"><i class="fas fa-eye" aria-label="Site Visit Count" aria-hidden="false"></i><span id="busuanzi_value_site_pv"></span></span><span id="busuanzi_container_site_uv"><i class="fas fa-user" aria-label="Site User Count" aria-hidden="false"></i><span id="busuanzi_value_site_uv"></span></span><span id="busuanzi_container_page_pv"><i class="far fa-file-alt"></i><span id="busuanzi_value_page_pv" aria-label="Page Click Count" aria-hidden="false"></span></span>
+        </div>
+        
+      </div>
+      <div class="footer-right">
+        <div class="custom-info">
+          
+          底下啥都没有了~
+          
+        </div>
+        <div class="powered-by">
+          Proudly Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> | Theme is <a href="https://github.com/AlynxZhou/hexo-theme-aria/" target="_blank">ARIA</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  </body>
+</html>
