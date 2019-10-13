@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lilis.coding.me/"/>
-  <updated>2019-10-13T11:56:13.146Z</updated>
+  <updated>2019-10-13T13:09:06.176Z</updated>
   <id>https://lilis.coding.me/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>迎接26岁</title>
+    <link href="https://lilis.coding.me/post/birthday/"/>
+    <id>https://lilis.coding.me/post/birthday/</id>
+    <published>2019-10-13T14:59:17.000Z</published>
+    <updated>2019-10-13T13:09:06.176Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;转眼自己也26岁了。不知道按传统的什么虚岁的鬼算法，家人亲戚朋友眼里自己像是马上奔三一样，恨不得把我嫁出去（？）。&lt;/p&gt;
+&lt;p&gt; 说是转眼，站在人生的任何时点回顾过去，都会觉得不过一刹那吧？岁月就在为生活奔忙和懈怠松懈间缓慢而坚定地流逝了。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://lilis.coding.me/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="生活" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="生日" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%97%A5/"/>
+    
+  </entry>
   
   <entry>
     <title>ACG和简化的世界</title>
@@ -114,7 +137,7 @@
     <link href="https://lilis.coding.me/post/climbing-moutain/"/>
     <id>https://lilis.coding.me/post/climbing-moutain/</id>
     <published>2019-09-21T08:36:42.000Z</published>
-    <updated>2019-09-21T15:30:32.259Z</updated>
+    <updated>2019-10-13T12:17:54.587Z</updated>
     
     <summary type="html">
     
@@ -456,28 +479,6 @@
       <category term="人际" scheme="https://lilis.coding.me/tags/%E4%BA%BA%E9%99%85/"/>
     
       <category term="情感" scheme="https://lilis.coding.me/tags/%E6%83%85%E6%84%9F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>我来下厨房：咖喱饭</title>
-    <link href="https://lilis.coding.me/post/currie-rice/"/>
-    <id>https://lilis.coding.me/post/currie-rice/</id>
-    <published>2019-08-31T09:23:21.000Z</published>
-    <updated>2019-08-29T11:19:58.827Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;咖喱饭是最不容易搞砸的，动画里面集体活动要架锅做饭，准备的肯定是这玩意儿。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://lilis.coding.me/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="生活" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-      <category term="烹饪" scheme="https://lilis.coding.me/tags/%E7%83%B9%E9%A5%AA/"/>
     
   </entry>
   
