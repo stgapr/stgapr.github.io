@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lilis.coding.me/"/>
-  <updated>2019-10-20T08:50:17.725Z</updated>
+  <updated>2019-10-20T08:54:37.858Z</updated>
   <id>https://lilis.coding.me/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://lilis.coding.me/post/42nd-week-of-2019/"/>
     <id>https://lilis.coding.me/post/42nd-week-of-2019/</id>
     <published>2019-10-20T13:03:13.000Z</published>
-    <updated>2019-10-20T08:50:17.725Z</updated>
+    <updated>2019-10-20T08:54:37.858Z</updated>
     
     <summary type="html">
     
@@ -38,6 +38,28 @@
       <category term="网络" scheme="https://lilis.coding.me/tags/%E7%BD%91%E7%BB%9C/"/>
     
       <category term="阅读" scheme="https://lilis.coding.me/tags/%E9%98%85%E8%AF%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ACG和简化的世界</title>
+    <link href="https://lilis.coding.me/post/simplified-world/"/>
+    <id>https://lilis.coding.me/post/simplified-world/</id>
+    <published>2019-10-13T14:59:17.000Z</published>
+    <updated>2019-10-13T11:56:13.146Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;ACG作品写得最多的一个主题就是恋爱与成长。当然，谁不愿意吃糖呢？“没有人永远17岁，但永远有人17岁。”  &lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://lilis.coding.me/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="ACG" scheme="https://lilis.coding.me/tags/ACG/"/>
+    
+      <category term="童话" scheme="https://lilis.coding.me/tags/%E7%AB%A5%E8%AF%9D/"/>
     
   </entry>
   
@@ -61,28 +83,6 @@
       <category term="生活" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%B4%BB/"/>
     
       <category term="生日" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%97%A5/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ACG和简化的世界</title>
-    <link href="https://lilis.coding.me/post/simplified-world/"/>
-    <id>https://lilis.coding.me/post/simplified-world/</id>
-    <published>2019-10-13T14:59:17.000Z</published>
-    <updated>2019-10-13T11:56:13.146Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;ACG作品写得最多的一个主题就是恋爱与成长。当然，谁不愿意吃糖呢？“没有人永远17岁，但永远有人17岁。”  &lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随感" scheme="https://lilis.coding.me/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="ACG" scheme="https://lilis.coding.me/tags/ACG/"/>
-    
-      <category term="童话" scheme="https://lilis.coding.me/tags/%E7%AB%A5%E8%AF%9D/"/>
     
   </entry>
   
@@ -401,9 +401,9 @@
       <category term="笔记" scheme="https://lilis.coding.me/categories/%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="日语" scheme="https://lilis.coding.me/tags/%E6%97%A5%E8%AF%AD/"/>
-    
       <category term="阅读" scheme="https://lilis.coding.me/tags/%E9%98%85%E8%AF%BB/"/>
+    
+      <category term="日语" scheme="https://lilis.coding.me/tags/%E6%97%A5%E8%AF%AD/"/>
     
   </entry>
   
@@ -423,9 +423,9 @@
       <category term="笔记" scheme="https://lilis.coding.me/categories/%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="日语" scheme="https://lilis.coding.me/tags/%E6%97%A5%E8%AF%AD/"/>
-    
       <category term="阅读" scheme="https://lilis.coding.me/tags/%E9%98%85%E8%AF%BB/"/>
+    
+      <category term="日语" scheme="https://lilis.coding.me/tags/%E6%97%A5%E8%AF%AD/"/>
     
   </entry>
   
