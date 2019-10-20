@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lilis.coding.me/"/>
-  <updated>2019-10-13T13:14:33.616Z</updated>
+  <updated>2019-10-20T08:47:57.975Z</updated>
   <id>https://lilis.coding.me/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>超！琐碎生活记录</title>
+    <link href="https://lilis.coding.me/post/42nd-of-2019/"/>
+    <id>https://lilis.coding.me/post/42nd-of-2019/</id>
+    <published>2019-10-20T13:03:13.000Z</published>
+    <updated>2019-10-20T08:47:57.975Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;因为我妈老是想看我博客写了什么，所以临时关站了几天，不过反正也没什么不能看的。今天是2019年的第42周，2019年已经过去80%了，这个博客也自娱自乐地写了九个月了，我看页面底下统计数据：浏览人次四千多，浏览IP数一千五，文章阅读次一千多——但为什么几乎没有评论呢？是gitalk太难用了，还是现在的读者都很含蓄呢？&lt;/p&gt;
+&lt;p&gt;这是一篇非常琐碎的生活记录。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://lilis.coding.me/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="生活" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="网络" scheme="https://lilis.coding.me/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="阅读" scheme="https://lilis.coding.me/tags/%E9%98%85%E8%AF%BB/"/>
+    
+  </entry>
   
   <entry>
     <title>迎接26岁</title>
@@ -451,30 +476,6 @@
       <category term="生活" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%B4%BB/"/>
     
       <category term="家" scheme="https://lilis.coding.me/tags/%E5%AE%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>写在人类文化迈入20年的沉寂之际</title>
-    <link href="https://lilis.coding.me/post/aozorabunko/"/>
-    <id>https://lilis.coding.me/post/aozorabunko/</id>
-    <published>2019-08-31T14:33:49.000Z</published>
-    <updated>2019-09-01T00:44:11.271Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;最近对于喜欢读日文书的人来说有一个比较不好的消息，那就是未来20年，都没有新的日文公版书可看了。而且受影响的不止日文书籍。标题说是人类文化有点夸张，但某种意义上，就是一次沉重的打击。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://lilis.coding.me/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="生活" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-      <category term="阅读" scheme="https://lilis.coding.me/tags/%E9%98%85%E8%AF%BB/"/>
-    
-      <category term="版权法" scheme="https://lilis.coding.me/tags/%E7%89%88%E6%9D%83%E6%B3%95/"/>
     
   </entry>
   
