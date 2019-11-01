@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lilis.coding.me/"/>
-  <updated>2019-10-20T08:54:37.858Z</updated>
+  <updated>2019-11-01T10:50:37.940Z</updated>
   <id>https://lilis.coding.me/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2019年10月阅读书目</title>
+    <link href="https://lilis.coding.me/post/read-2019-10/"/>
+    <id>https://lilis.coding.me/post/read-2019-10/</id>
+    <published>2019-11-01T10:17:13.000Z</published>
+    <updated>2019-11-01T10:50:37.940Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这个月推荐的书目是《王尔德童话》。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="笔记" scheme="https://lilis.coding.me/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="生活" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="阅读" scheme="https://lilis.coding.me/tags/%E9%98%85%E8%AF%BB/"/>
+    
+  </entry>
   
   <entry>
     <title>超！琐碎生活记录</title>
@@ -452,30 +474,6 @@
       <category term="ACG" scheme="https://lilis.coding.me/tags/ACG/"/>
     
       <category term="维基" scheme="https://lilis.coding.me/tags/%E7%BB%B4%E5%9F%BA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>晒书日，及我的家</title>
-    <link href="https://lilis.coding.me/post/family-history/"/>
-    <id>https://lilis.coding.me/post/family-history/</id>
-    <published>2019-09-01T01:06:32.000Z</published>
-    <updated>2019-09-01T02:07:12.625Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;今天是晒书日。任何天气晴暖、又有人愿意提起那一堆旧笔记的日子，都可以是晒书日。&lt;/p&gt;
-&lt;p&gt;我蹲在阳台上，一边翻弄着那些三十年前的充满霉味儿的旧本子，一边向我爸提了个问题：&lt;/p&gt;
-&lt;p&gt;“你和我妈是怎么认识的？”&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随感" scheme="https://lilis.coding.me/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="生活" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-      <category term="家" scheme="https://lilis.coding.me/tags/%E5%AE%B6/"/>
     
   </entry>
   
