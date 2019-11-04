@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lilis.coding.me/"/>
-  <updated>2019-11-01T10:50:37.940Z</updated>
+  <updated>2019-11-04T15:28:41.423Z</updated>
   <id>https://lilis.coding.me/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>天气之子</title>
+    <link href="https://lilis.coding.me/post/tenkinoko/"/>
+    <id>https://lilis.coding.me/post/tenkinoko/</id>
+    <published>2019-11-04T14:27:02.000Z</published>
+    <updated>2019-11-04T15:28:41.423Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;上周六我也去看了《天气之子》。下面是不可避免地带有剧透的感想。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://lilis.coding.me/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="ACG" scheme="https://lilis.coding.me/tags/ACG/"/>
+    
+      <category term="电影" scheme="https://lilis.coding.me/tags/%E7%94%B5%E5%BD%B1/"/>
+    
+  </entry>
   
   <entry>
     <title>2019年10月阅读书目</title>
@@ -64,28 +86,6 @@
   </entry>
   
   <entry>
-    <title>ACG和简化的世界</title>
-    <link href="https://lilis.coding.me/post/simplified-world/"/>
-    <id>https://lilis.coding.me/post/simplified-world/</id>
-    <published>2019-10-13T14:59:17.000Z</published>
-    <updated>2019-10-13T11:56:13.146Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;ACG作品写得最多的一个主题就是恋爱与成长。当然，谁不愿意吃糖呢？“没有人永远17岁，但永远有人17岁。”  &lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随感" scheme="https://lilis.coding.me/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="ACG" scheme="https://lilis.coding.me/tags/ACG/"/>
-    
-      <category term="童话" scheme="https://lilis.coding.me/tags/%E7%AB%A5%E8%AF%9D/"/>
-    
-  </entry>
-  
-  <entry>
     <title>迎接26岁</title>
     <link href="https://lilis.coding.me/post/birthday/"/>
     <id>https://lilis.coding.me/post/birthday/</id>
@@ -105,6 +105,28 @@
       <category term="生活" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%B4%BB/"/>
     
       <category term="生日" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%97%A5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ACG和简化的世界</title>
+    <link href="https://lilis.coding.me/post/simplified-world/"/>
+    <id>https://lilis.coding.me/post/simplified-world/</id>
+    <published>2019-10-13T14:59:17.000Z</published>
+    <updated>2019-10-13T11:56:13.146Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;ACG作品写得最多的一个主题就是恋爱与成长。当然，谁不愿意吃糖呢？“没有人永远17岁，但永远有人17岁。”  &lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://lilis.coding.me/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="ACG" scheme="https://lilis.coding.me/tags/ACG/"/>
+    
+      <category term="童话" scheme="https://lilis.coding.me/tags/%E7%AB%A5%E8%AF%9D/"/>
     
   </entry>
   
@@ -448,32 +470,6 @@
       <category term="阅读" scheme="https://lilis.coding.me/tags/%E9%98%85%E8%AF%BB/"/>
     
       <category term="日语" scheme="https://lilis.coding.me/tags/%E6%97%A5%E8%AF%AD/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>电子小说相关工具</title>
-    <link href="https://lilis.coding.me/post/visual-novel-tools/"/>
-    <id>https://lilis.coding.me/post/visual-novel-tools/</id>
-    <published>2019-09-01T03:25:09.000Z</published>
-    <updated>2019-09-08T10:54:50.437Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;电子小说（ADV /  Visual Novel）领域的数据库、同好站点、开发引擎、相关转区、解包打包工具的列表。&lt;br&gt;注意，该列表并不完善，可能有错漏，仍在施工更新中。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://lilis.coding.me/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="电子小说" scheme="https://lilis.coding.me/tags/%E7%94%B5%E5%AD%90%E5%B0%8F%E8%AF%B4/"/>
-    
-      <category term="软件" scheme="https://lilis.coding.me/tags/%E8%BD%AF%E4%BB%B6/"/>
-    
-      <category term="ACG" scheme="https://lilis.coding.me/tags/ACG/"/>
-    
-      <category term="维基" scheme="https://lilis.coding.me/tags/%E7%BB%B4%E5%9F%BA/"/>
     
   </entry>
   
