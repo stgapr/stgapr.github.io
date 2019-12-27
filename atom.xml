@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lilis.coding.me/"/>
-  <updated>2019-12-07T11:47:21.617Z</updated>
+  <updated>2019-12-27T14:39:56.187Z</updated>
   <id>https://lilis.coding.me/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2019年12月生活报告</title>
+    <link href="https://lilis.coding.me/post/life-report/"/>
+    <id>https://lilis.coding.me/post/life-report/</id>
+    <published>2019-12-27T09:25:51.000Z</published>
+    <updated>2019-12-27T14:39:56.187Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;2020年快到了。最近的生活比较快节奏，这篇日志也写得比较乱。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://lilis.coding.me/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="音乐" scheme="https://lilis.coding.me/tags/%E9%9F%B3%E4%B9%90/"/>
+    
+      <category term="生活" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="杂谈" scheme="https://lilis.coding.me/tags/%E6%9D%82%E8%B0%88/"/>
+    
+  </entry>
   
   <entry>
     <title>所谓“nobless oblige”</title>
@@ -152,28 +176,6 @@
   </entry>
   
   <entry>
-    <title>ACG和简化的世界</title>
-    <link href="https://lilis.coding.me/post/simplified-world/"/>
-    <id>https://lilis.coding.me/post/simplified-world/</id>
-    <published>2019-10-13T14:59:17.000Z</published>
-    <updated>2019-10-13T11:56:13.146Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;ACG作品写得最多的一个主题就是恋爱与成长。当然，谁不愿意吃糖呢？“没有人永远17岁，但永远有人17岁。”  &lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随感" scheme="https://lilis.coding.me/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="ACG" scheme="https://lilis.coding.me/tags/ACG/"/>
-    
-      <category term="童话" scheme="https://lilis.coding.me/tags/%E7%AB%A5%E8%AF%9D/"/>
-    
-  </entry>
-  
-  <entry>
     <title>迎接26岁</title>
     <link href="https://lilis.coding.me/post/birthday/"/>
     <id>https://lilis.coding.me/post/birthday/</id>
@@ -193,6 +195,28 @@
       <category term="生活" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%B4%BB/"/>
     
       <category term="生日" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%97%A5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ACG和简化的世界</title>
+    <link href="https://lilis.coding.me/post/simplified-world/"/>
+    <id>https://lilis.coding.me/post/simplified-world/</id>
+    <published>2019-10-13T14:59:17.000Z</published>
+    <updated>2019-10-13T11:56:13.146Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;ACG作品写得最多的一个主题就是恋爱与成长。当然，谁不愿意吃糖呢？“没有人永远17岁，但永远有人17岁。”  &lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://lilis.coding.me/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="ACG" scheme="https://lilis.coding.me/tags/ACG/"/>
+    
+      <category term="童话" scheme="https://lilis.coding.me/tags/%E7%AB%A5%E8%AF%9D/"/>
     
   </entry>
   
@@ -446,30 +470,6 @@
       <category term="音乐" scheme="https://lilis.coding.me/tags/%E9%9F%B3%E4%B9%90/"/>
     
       <category term="剁手" scheme="https://lilis.coding.me/tags/%E5%89%81%E6%89%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>所谓缘分</title>
-    <link href="https://lilis.coding.me/post/about-love/"/>
-    <id>https://lilis.coding.me/post/about-love/</id>
-    <published>2019-09-08T15:11:01.000Z</published>
-    <updated>2019-09-08T12:22:40.918Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;开始写这篇日志的时候，我突然想起看过的日剧《半泽直树》，男主人公的父亲对他说的一句话，“不管做什么职业，千万不要变成一个工作机器，一定要在工作中和人好好交往。”&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随感" scheme="https://lilis.coding.me/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="生活" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-      <category term="人际" scheme="https://lilis.coding.me/tags/%E4%BA%BA%E9%99%85/"/>
-    
-      <category term="情感" scheme="https://lilis.coding.me/tags/%E6%83%85%E6%84%9F/"/>
     
   </entry>
   
