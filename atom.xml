@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lilis.coding.me/"/>
-  <updated>2019-12-27T14:39:56.187Z</updated>
+  <updated>2019-12-28T12:37:25.345Z</updated>
   <id>https://lilis.coding.me/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>OSU:Rhythm is just a click away!</title>
+    <link href="https://lilis.coding.me/post/osu/"/>
+    <id>https://lilis.coding.me/post/osu/</id>
+    <published>2019-12-28T12:51:01.000Z</published>
+    <updated>2019-12-28T12:37:25.345Z</updated>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;棒到不行的音乐游戏！节奏跃然纸上！立即下载。　——OSU! 官网&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;OSU!(&lt;del&gt;俄亥俄州立大学&lt;/del&gt;)，俗称粉饼、藕酥——是我很喜欢的音乐节奏游戏，大学时经常沉迷对着屏幕点圈圈，还买了块数位板当输入设备，算是我玩过的（一只手都数得过来的）联机游戏中的精品了。最近发现它的演进很快，不仅支持各种操作系统平台，还开源了。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="笔记" scheme="https://lilis.coding.me/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="游戏" scheme="https://lilis.coding.me/tags/%E6%B8%B8%E6%88%8F/"/>
+    
+      <category term="音乐" scheme="https://lilis.coding.me/tags/%E9%9F%B3%E4%B9%90/"/>
+    
+      <category term="编程" scheme="https://lilis.coding.me/tags/%E7%BC%96%E7%A8%8B/"/>
+    
+  </entry>
   
   <entry>
     <title>2019年12月生活报告</title>
@@ -448,28 +475,6 @@
       <category term="编程" scheme="https://lilis.coding.me/tags/%E7%BC%96%E7%A8%8B/"/>
     
       <category term="像素" scheme="https://lilis.coding.me/tags/%E5%83%8F%E7%B4%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>小米圈铁耳机Pro购入</title>
-    <link href="https://lilis.coding.me/post/mi-headphone-pro/"/>
-    <id>https://lilis.coding.me/post/mi-headphone-pro/</id>
-    <published>2019-09-13T12:05:08.000Z</published>
-    <updated>2019-09-18T15:19:10.140Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这两天我的小米剃须刀充电座坏了，于是再上网买了个，为了凑单，就买了个小米圈铁耳机Pro（好像有点本末倒置啊）&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随感" scheme="https://lilis.coding.me/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="音乐" scheme="https://lilis.coding.me/tags/%E9%9F%B3%E4%B9%90/"/>
-    
-      <category term="剁手" scheme="https://lilis.coding.me/tags/%E5%89%81%E6%89%8B/"/>
     
   </entry>
   
