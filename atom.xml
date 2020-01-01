@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lilis.coding.me/"/>
-  <updated>2019-12-28T12:37:25.345Z</updated>
+  <updated>2019-12-29T09:37:07.427Z</updated>
   <id>https://lilis.coding.me/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>核桃的2020新年贺词</title>
+    <link href="https://lilis.coding.me/post/greetings-of-2020-new-year/"/>
+    <id>https://lilis.coding.me/post/greetings-of-2020-new-year/</id>
+    <published>2019-12-31T15:59:59.000Z</published>
+    <updated>2019-12-29T09:37:07.427Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;此刻，地球的东八区~东十二区已经迈入2020年，这是二十一世纪的第三个十年的开始。中国传统农历新年还有大致一个月，虽然“年”只是人为划定的时间尺度，但借助着数字进位的仪式感，处于想象中的共同体的我们通过网络、天空和大地共享时光腾挪的喜悦。如同每个已经过去的新年一样。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://lilis.coding.me/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="生活" scheme="https://lilis.coding.me/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="新年" scheme="https://lilis.coding.me/tags/%E6%96%B0%E5%B9%B4/"/>
+    
+  </entry>
   
   <entry>
     <title>OSU:Rhythm is just a click away!</title>
@@ -451,30 +473,6 @@
       <category term="互联网" scheme="https://lilis.coding.me/tags/%E4%BA%92%E8%81%94%E7%BD%91/"/>
     
       <category term="访谈" scheme="https://lilis.coding.me/tags/%E8%AE%BF%E8%B0%88/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>虚拟的像素风游戏主机：PICO-8</title>
-    <link href="https://lilis.coding.me/post/pico8/"/>
-    <id>https://lilis.coding.me/post/pico8/</id>
-    <published>2019-09-14T11:05:08.000Z</published>
-    <updated>2019-09-18T15:15:50.478Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;a href=&quot;https://lexaloffle.com/pico-8.php&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;PICO-8&lt;/a&gt;是一个虚拟的游戏主机（fantasy console），所谓虚拟就是它并不是现实中摸得着的游戏机，而是运行在别的计算机平台上：on Windows/OS X/树莓派。它有128*128屏幕显示，四通道8-bit音乐，像素风，贼带感。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://lilis.coding.me/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="游戏" scheme="https://lilis.coding.me/tags/%E6%B8%B8%E6%88%8F/"/>
-    
-      <category term="编程" scheme="https://lilis.coding.me/tags/%E7%BC%96%E7%A8%8B/"/>
-    
-      <category term="像素" scheme="https://lilis.coding.me/tags/%E5%83%8F%E7%B4%A0/"/>
     
   </entry>
   
