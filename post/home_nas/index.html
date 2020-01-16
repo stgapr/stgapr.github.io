@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#33363b">
+    <meta name="msapplication-TileColor" content="#33363b">
+    
+    
+    
+    
+    <meta name="keywords" content="Life, Tech, Galgame, Anime, Manga, Python, Harmonica, Novel">
+    
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+    
+    
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicons/android-chrome-192x192.png">
+    
+    
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+    
+    
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+    
+    
+    <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#33363b">
+    
+    
+    <link rel="manifest" href="/favicons/site.webmanifest">
+    
+    
+    <meta name="msapplication-config" content="/favicons/browserconfig.xml">
+    
+    
+    <link rel="alternate" href="/atom.xml" title="桃乱扔" type="application/atom+xml">
+    
+    
+    <link rel="shortcut icon" type="image/x-icon" href="/favicons/favicon.ico">
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+    
+    <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+    
+    
+<link rel="stylesheet" type="text/css" href="/css/page.css">
+<link rel="stylesheet" type="text/css" href="/css/post.css">
+
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/atom-one-dark.css">
+    <link rel="stylesheet" type="text/css" href="/css/lightgallery.min.css">
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script defer type="text/javascript" src="/js/util.js"></script>
+    <script defer type="text/javascript" src="/js/scrollspy.js"></script>
+    <script defer type="text/javascript" src="/js/fontawesome-all.min.js"></script>
+    <script defer type="text/javascript" src="/js/lightgallery.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-fullscreen.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-hash.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-pager.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-thumbnail.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-zoom.min.js"></script>
+    
+    <script defer src="/js/busuanzi.pure.mini.js"></script>
+    
+    
+    <script defer type="text/javascript" src="/js/search.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+      var searchPath = "search.xml";
+      if (searchPath.length === 0) {
+        searchPath = "search.xml";
+      }
+      var path = "/" + searchPath;
+      searchFunc(path, "search-input", "search-result");
+    });
+    </script>
+    
+    
+    <script defer type="text/javascript" src="/js/index.js"></script>
+    
+    <script defer type="text/javascript" src="/js/custom.js"></script>
+    <title>斐讯N1、路由器上的aria2和kodi：两百元的家庭NAS | 桃乱扔</title>
+  </head>
+  <body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN" data-spy="scroll" data-target=".list-group">
+    
+<header id="header" class="header" style="background: #33363b;">
+  <div class="container">
+    <div class="header-container">
+      <div class="header-title">
+        <h1 class="title"><a href="/">桃乱扔</a></h1>
+        <h2 class="subtitle"></h2>
+      </div>
+      
+    </div>
+    <nav id="nav" class="nav">
+      <a id="nav-toggle" class="nav-toggle" aria-hidden="true"><i class="fas fa-bars" aria-label="Toggle Navbar"></i></a>
+      <ul id="menu" role="menubar" aria-hidden="false">
+        
+        <li role="menuitem"><a href="/">Home</a></li>
+        
+        <li role="menuitem"><a href="/archives/">Archives</a></li>
+        
+        <li role="menuitem"><a href="/categories/">Categories</a></li>
+        
+        <li role="menuitem"><a href="/tags/">Tags</a></li>
+        
+        <li role="menuitem"><a href="/about/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <main id="main" class="main">
+      <div class="container">
+        <div class="main-container">
+          <div class="content">
+            
+<div id="post" class="page">
+  
+  <article class="article post card animate" itemscope="" itemtype="http://schema.org/Article">
+    <div class="post-block">
+      <link itemprop="mainEntityOfPage" href="https://stgapr.github.io/post/home_nas/">
+      <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+       <meta itemprop="name" content="Prism">
+       <meta itemprop="description" content="">
+       <meta itemprop="image" content="/images/avatar.png">
+      </span>
+      <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+       <meta itemprop="name" content="桃乱扔">
+      </span>
+    </div>
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">斐讯N1、路由器上的aria2和kodi：两百元的家庭NAS</h1>
+      <div class="post-meta">
+        
+        <span class="post-date">
+          <i class="far fa-calendar-plus"></i><span><time title="post-date" itemprop="dateCreated datePublished" datetime="2020-01-16T20:05:08+08:00">2020-01-16 20:05:08</time></span>
+        </span>
+        
+        
+        
+        <span class="post-meta-divider divider">|</span>
+        
+        <span class="post-categories">
+          
+          <i class="far fa-folder-open"></i><span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/笔记/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a></span>
+        </span>
+        
+        
+        
+        
+      </div>
+    </header>
+    <main class="post-main" itemprop="articleBody">
+      <p>前一阵子看到Pockies大佬在折腾家庭影音NAS方案，就心里痒痒，打算利用手头有限的设备也整出一个穷人级的NAS方案。超低功耗，超低成本。最后虽然是弄成功了我真是闲得蛋疼……</p>
+<a id="more"></a>
+<p>其实NAS方案也有很多，除了HTPC小主机，群晖这种正统，就是我这种路由器插盘的邪道。最近还有在RK3355上跑buildroot，装NVMe SSD的“随身网盘”。倒也不是经济限制，主要是出于折腾乐趣和叛逆心理。因为我很讨厌广告满天飞、受限制无法运行第三方应用的电视盒子内置安卓系统。</p>
+<p>所需设备：Phicomm N1 （90元）、newifi mini （128元）、Sandisk 旧U盘 32GB（价值忽略不计）。</p>
+<p>思路是在Phicomm N1路由器上跑aria2服务，通过手机管理种子、下载内容，然后通过路由器的DLNA或者SMB服务，让Phicomm N1（当电视盒子用）上的Kodi客户端读取并播放。很简单。</p>
+<p>路由器作为全天候开机的低功率电器，拿来做下载机是极好的。Phicomm N1是斐讯搞P2P搞到翻车的库存尾货，图形性能劲爆，之前文章里吹过了，但是现在放家里天天吃饭时候拿来看低清CCTV晚间新闻，感觉性能压榨得不尽兴。这些性价比硬件爱好者比谁都精，我跟着学买的。</p>
+<h4 id="关于aria2"><a href="#关于aria2" class="headerlink" title="关于aria2"></a>关于aria2</h4><p>路由器的Padavan固件本来内置了一个transmission，早期还有远程迅雷、快鸟什么的，但商业软件很容易失去支持，这些服务都用不了了。我刷的Padavan固件有带aria2（没有的话也可以通过optware或者entware来装。optware和entware按我粗浅理解是嵌入式硬件上的一个软件包管理器。）aria2我之前没碰过，只知道它是一个开源的、能跑在各种平台上的下载程序，默认没有命令行界面对新手极不友好。它有很多第三方封装版本，能跑的操作系统和硬件平台五花八门。<br>首先把U盘格式化成FAT32，NTFS或ext3/4都行，按要求新建“aria”文件夹，插入路由器屁股里，在Padavan的管理界面中启用aria2，并且修改aria2.conf文件，主要是配置这几个地方：</p>
+<blockquote>
+<p>enable-rpc=true #启用RPC连接<br>rpc-listen-all=true #允许非外部访问。这个根据自己的安全需要设置。<br>rpc-secret=xxxxx  #RPC授权令牌</p>
+</blockquote>
+<p>其他设置，比如断点续传，缓存大小，是否允许覆盖，超时时间，线程数，速度限制，监听设置，分享率之类的按自己要求设定。甚至可以配SSL证书来开启https，网络上的教程很多，就不展开讲了。<br>对了，还有一个地方，就是要把bt-tracker加上。运转良好的灯塔可以明显提高aria2干活的速度。现在tracker服务器也有udp协议和websocket协议的，我不是很懂其中的区别，反正从网络上抄一份列表下来：</p>
+<blockquote>
+<p>bt-tracker=http://…….,http://….,udp://……,ws://……</p>
+</blockquote>
+<p>然后还有一个坑是文件预分配方式，有falloc,trunc,prealloc几种，似乎和aria2运行的操作系统支持程度有关。我发现falloc好像不支持NTFS的U盘，最后还是用prealloc。</p>
+<p>没问题之后，就可以在Padavan固件自带的aria2 WebUI里看到运行情况了；在没有装客户端工具时，这个界面也能拿来管理下载。但只是堪堪可用，有一些别的更好的下载软件工具。</p>
+<h4 id="远程下载管理工具"><a href="#远程下载管理工具" class="headerlink" title="远程下载管理工具"></a>远程下载管理工具</h4><p>为了在其他设备上管理路由器的下载，得使用远程管理工具。我试了几种，最后感觉transdroid/transdrone，以及aria2app比较好用。<br>transdroid/transdrond主要优点是它支持的协议贼多：bitcomet，bittorrent，deluge，Ktorrent，rTorrent，Transmission，μtorrent，Vuze，Synology（群晖）……等。</p>
+<p>aria2app也是开源软件（Google Play上有，或者Github 拖下来自己编译），不仅内置一个aria2服务器，还提供了aria2客户端功能，完美的前后端分离哲学。这些软件的使用方式都大同小异，把路由器IP填进去，aria2端口一般是6800，rpc地址就形如这样：</p>
+<blockquote>
+<p><a href="http://192.168.1.1:6800/jsonrpc" target="_blank" rel="noopener">http://192.168.1.1:6800/jsonrpc</a></p>
+</blockquote>
+<p>新版本的aria2使用rpc secret token鉴权，旧版本的好像是用username和password。采用哪种身份认证机制，可以在aria2.conf里自己设置。</p>
+<p>aria2app这个软件，我本来是利用它的下载服务器功能，把它装在安卓电视盒子里的；但安卓这玩意儿杀进程，你不能保证在看电视的时候后台的下载应用不会闷不做声地被做掉。不然的话别的下载工具的安卓版如Flud，Transmission，μtorrent也行——假如你的Android设备（例如旧手机）不干其他的事情，大可以熄屏长期挂前台跑下载。<br>顺便一提，Padavan有一个国内爱好者自己开发的管理app叫做“啪嗒路由器”，里面也有远程下载管理功能。</p>
+<h3 id="电视盒子的配置"><a href="#电视盒子的配置" class="headerlink" title="电视盒子的配置"></a>电视盒子的配置</h3><p>电视盒子——也就是这台Phicomm N1，我刷了机之后装上Kodi。Kodi通过SMB，DLNA等协议连接路由器上挂载的U盘，并载入可播放的文件列表。用遥控器就可以放了。这里就不废话配置过程了，只要路由器上的流媒体/文件服务有开成功，九成连得上。<br>Kodi就是以前的XBMC。需要注意的是，Kodi有好多种版本，要注意自己的图形芯片和操作系统，选择下载。</p>
+<p>其实，Phicomm N1也有时间没地方花的开源家居设备爱好者折腾出来的纯下载机固件，但可惜了那颗能硬解4K的图形芯片，我就没刷哪个固件。愿意折腾的话也可以刷armbian，也就是arm版的Debian。Debian is a perfect linux distribution for lesbian （喂</p>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>路由器的USB 接口是2.0的，实测传输速度最多5MB/s，但这够用了。需要注意的是它的USB口供电很弱，不建议插没有独立供电模块的移动硬盘。<br>其他可以折腾的地方还很多，比如用frp、ngrok等做内网穿透，通过订阅来自动添加种子，使用Kodi插件来整理、排序、分类片库（对于有囤积症的人来说）。 但我觉得你越想把它搞得便捷，花在折腾上的时间就越多，反而是把自己弄得筋疲力尽。 那就到此为止吧。</p>
+<p>成果：给老妈下载了高清修复版的苏联电影《莫斯科不相信眼泪》，并且成功播放。</p>
+
+    </main>
+    <footer class="post-footer">
+      
+      <div class="post-tags">
+        
+        <a class="post-tag button" href="/tags/硬件/" rel="tag"><i class="fas fa-tags"></i>硬件</a>
+        
+        <a class="post-tag button" href="/tags/路由器/" rel="tag"><i class="fas fa-tags"></i>路由器</a>
+        
+        <a class="post-tag button" href="/tags/电子/" rel="tag"><i class="fas fa-tags"></i>电子</a>
+        
+        <a class="post-tag button" href="/tags/下载/" rel="tag"><i class="fas fa-tags"></i>下载</a>
+        
+      </div>
+      
+    </footer>
+  </article>
+  
+  
+  <nav class="page-nav">
+    <div class="page-nav-next page-nav-item">
+      
+      <a href="/post/greetings-of-2020-new-year/" rel="next" title="核桃的2020新年贺词"><i class="fas fa-angle-left"></i><span class="nav-title">核桃的2020新年贺词</span></a>
+      
+    </div>
+    <div class="page-nav-prev page-nav-item">
+      
+    </div>
+  </nav>
+  
+  
+  
+
+<div class="comments" id="comments">
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<div id="gitalk-container"></div>
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'fc5cc78006347ed7f2b8',
+        clientSecret: 'eb4cc326feb2418f9add0833f57adbe9e423fb43',
+        id: window.location.pathname,
+        repo: 'lilis',
+        owner: 'stgapr',
+        admin: 'stgapr'
+    })
+    gitalk.render('gitalk-container')
+</script>
+
+
+</div>
+
+
+
+  
+</div>
+
+          </div>
+          
+          
+          
+<aside class="sidebar" id="sidebar" style="background: url(/images/background.png);">
+  
+  <div class="search">
+    <div class="form-group">
+      <i class="fas fa-search"></i><input type="search" id="search-input" name="q" results="0" placeholder="Search" class="form-control">
+    </div>
+  </div>
+  <div class="search-result-box" id="search-result"></div>
+  
+  
+<div class="info sidebar-item" id="info">
+  
+  <img class="author-avatar" src="/images/avatar.png" alt="Prism">
+  
+  <h1 class="author-name">Prism</h1>
+  <h2 class="author-description"></h2>
+  <div class="site-count">
+    
+    <div class="archives-count">
+      <div class="site-count-title">Archives</div>
+      <div><a href="/archives/">90</a></div>
+    </div>
+    
+    
+    
+    <span class="site-count-divider divider">|</span>
+    
+    <div class="categories-count">
+      <div class="site-count-title">Categories</div>
+      <div><a href="/categories/">4</a></div>
+    </div>
+    
+    
+    
+    <span class="site-count-divider divider">|</span>
+    
+    <div class="tags-count">
+      <div class="site-count-title">Tags</div>
+      <div><a href="/tags/">90</a></div>
+    </div>
+    
+  </div>
+  
+  <div class="rss">
+    <a class="rss-link button sidebar-item" href="/atom.xml"><i class="fas fa-rss"></i>RSS</a>
+  </div>
+  
+</div>
+
+
+  <div class="sidebar-sticky">
+    
+    
+    
+    
+    
+    <hr>
+    <div class="post-toc sidebar-item" id="toc-div">
+      <div><i class="fas fa-list-ol"></i>Table of Contents</div>
+      <div class="post-toc-content"><ol class="list-group toc"><li class="toc-item toc-level-4"><a class="list-group-item toc-link" href="#关于aria2"><span class="toc-text">关于aria2</span></a></li><li class="toc-item toc-level-4"><a class="list-group-item toc-link" href="#远程下载管理工具"><span class="toc-text">远程下载管理工具</span></a></li></ol><li class="toc-item toc-level-3"><a class="list-group-item toc-link" href="#电视盒子的配置"><span class="toc-text">电视盒子的配置</span></a><ol class="list-group toc-child"><li class="toc-item toc-level-4"><a class="list-group-item toc-link" href="#其他"><span class="toc-text">其他</span></a></li></ol></li></div>
+    </div>
+    
+    
+    
+    <hr>
+    <div class="social-link sidebar-item">
+      <div><i class="far fa-address-card"></i>Social Links<p></p></div>
+      <ul>
+        
+        <li><i class="fas fa-envelope"></i><a href="mailto:stgapr29@gmail.com" target="_blank">Email</a></li>
+        
+        <li><i class="fab fa-github"></i><a href="https://github.com/stgapr" target="_blank">Github</a></li>
+        
+      </ul>
+    </div>
+    
+    
+    <hr>
+    <div class="blogroll sidebar-item">
+      <div><i class="fas fa-link"></i>Blogroll</div>
+      <ul>
+        
+        <li><a href="https://yuukoamamiya.github.io/" target="_blank">雨宫优子</a></li>
+        
+        <li><a href="https://plumz.me/" target="_blank">plum</a></li>
+        
+        <li><a href="https://incises.github.io" target="_blank">Incises</a></li>
+        
+        <li><a href="https://sh.alynx.moe" target="_blank">喵's StackHarbor</a></li>
+        
+        <li><a href="https://pockies.github.io/" target="_blank">Pockies</a></li>
+        
+        <li><a href="http://noodlefighter.com/" target="_blank">虾包</a></li>
+        
+        <li><a href="https://www.natech.top/" target="_blank">无聊人士的低语</a></li>
+        
+        <li><a href="https://linhai1990.com/" target="_blank">四海为家的兔子</a></li>
+        
+        <li><a href="https://suzumiyashirone.github.io/" target="_blank">涼宮シロネ</a></li>
+        
+        <li><a href="https://www.gazyip.cn/" target="_blank">八个比特</a></li>
+        
+        <li><a href="https://luojia.me/" target="_blank">佳佳酱</a></li>
+        
+        <li><a href="https://lnet.me/" target="_blank">澜灯</a></li>
+        
+        <li><a href="https://touko.moe/" target="_blank">Touko</a></li>
+        
+        <li><a href="https://taoxinhao.cn/" target="_blank">陶新昊</a></li>
+        
+        <li><a href="https://www.wikimoe.com/" target="_blank">WIKIMOE</a></li>
+        
+        <li><a href="http://www.misakas.com/" target="_blank">misakas</a></li>
+        
+        <li><a href="https://blog.ixk.me/" target="_blank">ixk.me</a></li>
+        
+        <li><a href="http://blog.dangodango.cn/" target="_blank">团子的小小世界</a></li>
+        
+        <li><a href="http://blog.9bie.org:8081/" target="_blank">⑨bie</a></li>
+        
+        <li><a href="https://utsuho.cn/" target="_blank">喵の空</a></li>
+        
+        <li><a href="https://www.rabbittu.com/" target="_blank">某兔子の御用花园</a></li>
+        
+        <li><a href="http://pea3nut.info/" target="_blank">花生PeA</a></li>
+        
+        <li><a href="http://www.iinorii.com/blog/" target="_blank">いつの間に</a></li>
+        
+        <li><a href="https://www.senayuki.top/" target="_blank">纷飞的小屋</a></li>
+        
+        <li><a href="http://whitebox.im/" target="_blank">白色箱子</a></li>
+        
+        <li><a href="http://code5light.com/" target="_blank">多事之秋</a></li>
+        
+        <li><a href="https://diygod.me/friends/" target="_blank">DIYGOD</a></li>
+        
+        <li><a href="https://ephen.me/" target="_blank">Ephen</a></li>
+        
+        <li><a href="https://ikk.me/" target="_blank">ikk.me</a></li>
+        
+        <li><a href="https://ikmoe.com/" target="_blank">月宅酱</a></li>
+        
+        <li><a href="https://www.rexskz.info/" target="_blank">ReX/Zeng</a></li>
+        
+        <li><a href="https://2heng.xin/" target="_blank">さくら荘の白猫</a></li>
+        
+        <li><a href="https://www.fczbl.vip" target="_blank">犬's blog</a></li>
+        
+        <li><a href="https://aoaoao.me/" target="_blank">Aaron</a></li>
+        
+        <li><a href="https://blog.0xbbc.com/" target="_blank">3004</a></li>
+        
+        <li><a href="http://mouto.org/" target="_blank">卜卜口</a></li>
+        
+        <li><a href="https://wind.moe/links/" target="_blank">Windless</a></li>
+        
+        <li><a href="https://oao.moe/links/" target="_blank">oao</a></li>
+        
+        <li><a href="https://zankyo.cc/" target="_blank">青花鱼</a></li>
+        
+        <li><a href="https://blog.uuz.moe/" target="_blank">雨宮千夏の博麗神社</a></li>
+        
+        <li><a href="http://im.dimpurr.com/" target="_blank">钉子の次元</a></li>
+        
+        <li><a href="http://acgtyrant.com/" target="_blank">acgtyrant</a></li>
+        
+        <li><a href="https://asaba.sakuragawa.moe/" target="_blank">樱川浅羽</a></li>
+        
+        <li><a href="https://buta.moe/" target="_blank">Take Space</a></li>
+        
+        <li><a href="http://takumiyuki.hatenablog.com/" target="_blank">TakumiYuki</a></li>
+        
+        <li><a href="https://flandre-scarlet.moe/blog/" target="_blank">Re:memory</a></li>
+        
+      </ul>
+    </div>
+    
+  </div>
+</aside>
+
+
+          
+        </div>
+      </div>
+    </main>
+    
+<footer id="footer" class="footer" style="background: #33363b;">
+  <div class="container">
+    <div class="back-to-top">
+      <button id="back-to-top"><i class="fas fa-angle-double-up" aria-label="Back to Top"></i></button>
+    </div>
+    <div class="footer-container">
+      <div class="footer-left">
+        <div class="copyright">
+          <span class="author">Prism</span><span class="year"><i class="far fa-copyright"></i>1993 - 2020</span>
+        </div>
+        
+        <div class="busuanzi">
+          <span id="busuanzi_container_site_pv"><i class="fas fa-eye" aria-label="Site Visit Count" aria-hidden="false"></i><span id="busuanzi_value_site_pv"></span></span><span id="busuanzi_container_site_uv"><i class="fas fa-user" aria-label="Site User Count" aria-hidden="false"></i><span id="busuanzi_value_site_uv"></span></span><span id="busuanzi_container_page_pv"><i class="far fa-file-alt"></i><span id="busuanzi_value_page_pv" aria-label="Page Click Count" aria-hidden="false"></span></span>
+        </div>
+        
+      </div>
+      <div class="footer-right">
+        <div class="custom-info">
+          
+          底下啥都没有了~
+          
+        </div>
+        <div class="powered-by">
+          Proudly Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> | Theme is <a href="https://github.com/AlynxZhou/hexo-theme-aria/" target="_blank">ARIA</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  </body>
+</html>

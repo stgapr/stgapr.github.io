@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2019-12-29T09:37:07.427Z</updated>
+  <updated>2020-01-16T12:17:48.092Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>斐讯N1、路由器上的aria2和kodi：两百元的家庭NAS</title>
+    <link href="https://stgapr.github.io/post/home_nas/"/>
+    <id>https://stgapr.github.io/post/home_nas/</id>
+    <published>2020-01-16T12:05:08.000Z</published>
+    <updated>2020-01-16T12:17:48.092Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前一阵子看到Pockies大佬在折腾家庭影音NAS方案，就心里痒痒，打算利用手头有限的设备也整出一个穷人级的NAS方案。超低功耗，超低成本。最后虽然是弄成功了我真是闲得蛋疼……&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="硬件" scheme="https://stgapr.github.io/tags/%E7%A1%AC%E4%BB%B6/"/>
+    
+      <category term="路由器" scheme="https://stgapr.github.io/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/"/>
+    
+      <category term="电子" scheme="https://stgapr.github.io/tags/%E7%94%B5%E5%AD%90/"/>
+    
+      <category term="下载" scheme="https://stgapr.github.io/tags/%E4%B8%8B%E8%BD%BD/"/>
+    
+  </entry>
   
   <entry>
     <title>核桃的2020新年贺词</title>
@@ -449,30 +475,6 @@
       <category term="游戏" scheme="https://stgapr.github.io/tags/%E6%B8%B8%E6%88%8F/"/>
     
       <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>文字访谈：电子游戏中的情感体验</title>
-    <link href="https://stgapr.github.io/post/emotion-in-game/"/>
-    <id>https://stgapr.github.io/post/emotion-in-game/</id>
-    <published>2019-09-17T14:19:47.000Z</published>
-    <updated>2019-09-18T15:03:40.825Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这是一期访谈形式的特约专栏，主题是“电子游戏中的情感体验”。访谈对象是电教——我的高中同学，他是一个近身格斗游戏玩家。不过他实在太懒了，拖了两个星期，在下了“不交稿就变成狗”的毒誓之后终于完成了这期文字访谈。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="专栏" scheme="https://stgapr.github.io/categories/%E4%B8%93%E6%A0%8F/"/>
-    
-    
-      <category term="游戏" scheme="https://stgapr.github.io/tags/%E6%B8%B8%E6%88%8F/"/>
-    
-      <category term="互联网" scheme="https://stgapr.github.io/tags/%E4%BA%92%E8%81%94%E7%BD%91/"/>
-    
-      <category term="访谈" scheme="https://stgapr.github.io/tags/%E8%AE%BF%E8%B0%88/"/>
     
   </entry>
   
