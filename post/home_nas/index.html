@@ -172,8 +172,12 @@
 <blockquote>
 <p>bt-tracker=http://…….,http://….,udp://……,ws://……</p>
 </blockquote>
-<p>然后还有一个坑是文件预分配方式，有falloc,trunc,prealloc几种，似乎和aria2运行的操作系统支持程度有关。我发现falloc好像不支持NTFS的U盘，最后还是用prealloc。</p>
+<p>然后还有一个坑是文件预分配方式，有falloc,trunc,prealloc几种，似乎和aria2运行的操作系统支持有关。当然你可以选择none，但这样会增加磁盘碎片，让文件分散。我发现falloc好像不支持NTFS的U盘，会报错 I/O error。可以改用prealloc（速度较慢，但兼容性高）。官方说明如下：</p>
+<blockquote>
+<p> ‘none’ doesn’t pre-allocate file space. ‘prealloc’ pre-allocates file space before download begins. This may take some time depending on the size of the file. If you are using newer file systems such as ext4 (with extents support), btrfs, xfs or NTFS (MinGW build only), ‘falloc’ is your best choice. It allocates large(few GiB) files almost instantly. Don’t use ‘falloc’ with legacy file systems such as ext3 and FAT32 because it takes almost same time as ‘prealloc’ and it blocks aria2 entirely until allocation finishes. ‘falloc’ may not be available if your system doesn’t have posix_fallocate() function. ‘trunc’ uses ftruncate() system call or platform-specific counterpart to truncate a file to a specified length.</p>
+</blockquote>
 <p>没问题之后，就可以在Padavan固件自带的aria2 WebUI里看到运行情况了；在没有装客户端工具时，这个界面也能拿来管理下载。但只是堪堪可用，有一些别的更好的下载软件工具。</p>
+<p>修改好配置后保存，路由器会重新启动aria2以应用更改。</p>
 <h4 id="远程下载管理工具"><a href="#远程下载管理工具" class="headerlink" title="远程下载管理工具"></a>远程下载管理工具</h4><p>为了在其他设备上管理路由器的下载，得使用远程管理工具。我试了几种，最后感觉transdroid/transdrone，以及aria2app比较好用。<br>transdroid/transdrond主要优点是它支持的协议贼多：bitcomet，bittorrent，deluge，Ktorrent，rTorrent，Transmission，μtorrent，Vuze，Synology（群晖）……等。</p>
 <p>aria2app也是开源软件（Google Play上有，或者Github 拖下来自己编译），不仅内置一个aria2服务器，还提供了aria2客户端功能，完美的前后端分离哲学。这些软件的使用方式都大同小异，把路由器IP填进去，aria2端口一般是6800，rpc地址就形如这样：</p>
 <blockquote>
@@ -183,7 +187,10 @@
 <p>aria2app这个软件，我本来是利用它的下载服务器功能，把它装在安卓电视盒子里的；但安卓这玩意儿杀进程，你不能保证在看电视的时候后台的下载应用不会闷不做声地被做掉。不然的话别的下载工具的安卓版如Flud，Transmission，μtorrent也行——假如你的Android设备（例如旧手机）不干其他的事情，大可以熄屏长期挂前台跑下载。<br>顺便一提，Padavan有一个国内爱好者自己开发的管理app叫做“啪嗒路由器”，里面也有远程下载管理功能。</p>
 <h3 id="电视盒子的配置"><a href="#电视盒子的配置" class="headerlink" title="电视盒子的配置"></a>电视盒子的配置</h3><p>电视盒子——也就是这台Phicomm N1，我刷了机之后装上Kodi。Kodi通过SMB，DLNA等协议连接路由器上挂载的U盘，并载入可播放的文件列表。用遥控器就可以放了。这里就不废话配置过程了，只要路由器上的流媒体/文件服务有开成功，九成连得上。<br>Kodi就是以前的XBMC。需要注意的是，Kodi有好多种版本，要注意自己的图形芯片和操作系统，选择下载。</p>
 <p>其实，Phicomm N1也有时间没地方花的开源家居设备爱好者折腾出来的纯下载机固件，但可惜了那颗能硬解4K的图形芯片，我就没刷哪个固件。愿意折腾的话也可以刷armbian，也就是arm版的Debian。Debian is a perfect linux distribution for lesbian （喂</p>
-<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>路由器的USB 接口是2.0的，实测传输速度最多5MB/s，但这够用了。需要注意的是它的USB口供电很弱，不建议插没有独立供电模块的移动硬盘。<br>其他可以折腾的地方还很多，比如用frp、ngrok等做内网穿透，通过订阅来自动添加种子，使用Kodi插件来整理、排序、分类片库（对于有囤积症的人来说）。 但我觉得你越想把它搞得便捷，花在折腾上的时间就越多，反而是把自己弄得筋疲力尽。 那就到此为止吧。</p>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>路由器的USB 接口是2.0的，实测传输速度最多5MB/s，但这够用了。需要注意的是它的USB口供电很弱，不建议插没有独立供电模块的移动硬盘。</p>
+<p>另外，aria2的磁盘缓存不能设置太高，否则会把。根据经验，128MB RAM的路由器，其系统本身会占用约5~70MB空间，建议设置20MB以下。否则会把内存吃光。</p>
+<p>在测试tracker的时候，我发现家里没有一个tracker连得上。这个可能得靠人品，或者把DHT网络之类开起来……</p>
+<p>其他可以折腾的地方还很多，比如用frp、ngrok等做内网穿透，通过订阅来自动添加种子，使用Kodi插件来整理、排序、分类片库（对于有囤积症的人来说）。 但我觉得你越想把它搞得便捷，花在折腾上的时间就越多，反而是把自己弄得筋疲力尽。 那就到此为止吧。</p>
 <p>成果：给老妈下载了高清修复版的苏联电影《莫斯科不相信眼泪》，并且成功播放。</p>
 
     </main>
