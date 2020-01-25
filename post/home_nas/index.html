@@ -178,20 +178,21 @@
 </blockquote>
 <p>没问题之后，就可以在Padavan固件自带的aria2 WebUI里看到运行情况了；在没有装客户端工具时，这个界面也能拿来管理下载。但只是堪堪可用，有一些别的更好的下载软件工具。</p>
 <p>修改好配置后保存，路由器会重新启动aria2以应用更改。</p>
-<h4 id="远程下载管理工具"><a href="#远程下载管理工具" class="headerlink" title="远程下载管理工具"></a>远程下载管理工具</h4><p>为了在其他设备上管理路由器的下载，得使用远程管理工具。我试了几种，最后感觉transdroid/transdrone，以及aria2app比较好用。<br>transdroid/transdrond主要优点是它支持的协议贼多：bitcomet，bittorrent，deluge，Ktorrent，rTorrent，Transmission，μtorrent，Vuze，Synology（群晖）……等。</p>
-<p>aria2app也是开源软件（Google Play上有，或者Github 拖下来自己编译），不仅内置一个aria2服务器，还提供了aria2客户端功能，完美的前后端分离哲学。这些软件的使用方式都大同小异，把路由器IP填进去，aria2端口一般是6800，rpc地址就形如这样：</p>
+<h4 id="远程下载管理工具"><a href="#远程下载管理工具" class="headerlink" title="远程下载管理工具"></a>远程下载管理工具</h4><p>为了在其他设备上管理路由器的下载，得使用远程管理工具。我试了几种，最后感觉transdroid/transdrone，aria2app还有aria-ng比较好用。<br>transdroid/transdrond主要优点是它支持的协议贼多：bitcomet，bittorrent，deluge，Ktorrent，rTorrent，Transmission，μtorrent，Vuze，Synology（群晖）……等。</p>
+<p>aria2app也是开源软件（Google Play上有，或者Github 拖下来自己编译），不仅内置一个aria2服务器，还提供了aria2客户端功能，完美的前后端分离哲学。还有ariaandroid也差不多。这些软件的使用方式都大同小异；把路由器IP填进去，aria2端口一般是6800，RPC地址就形如这样：</p>
 <blockquote>
 <p><a href="http://192.168.1.1:6800/jsonrpc" target="_blank" rel="noopener">http://192.168.1.1:6800/jsonrpc</a></p>
 </blockquote>
 <p>新版本的aria2使用rpc secret token鉴权，旧版本的好像是用username和password。采用哪种身份认证机制，可以在aria2.conf里自己设置。</p>
-<p>aria2app这个软件，我本来是利用它的下载服务器功能，把它装在安卓电视盒子里的；但安卓这玩意儿杀进程，你不能保证在看电视的时候后台的下载应用不会闷不做声地被做掉。不然的话别的下载工具的安卓版如Flud，Transmission，μtorrent也行——假如你的Android设备（例如旧手机）不干其他的事情，大可以熄屏长期挂前台跑下载。<br>顺便一提，Padavan有一个国内爱好者自己开发的管理app叫做“啪嗒路由器”，里面也有远程下载管理功能。</p>
+<p>aria2app这个软件，我本来是利用它的下载服务器功能，把它装在安卓电视盒子里的；但安卓这玩意儿杀进程，你不能保证在看电视的时候后台的下载应用不会闷不做声地被做掉。不然的话别的下载工具的安卓版如Flud，Transmission，μtorrent也行——假如你的Android设备（例如旧手机）不干其他的事情，大可以熄屏长期挂前台跑下载。</p>
+<p>此外，还有一个开源项目aria-ng（或者其分支aria-ng-gui），把客户端功能编译成一个html文件，所以也算是一个彻底的跨平台客户端。这些客户端基本都支持对aria2服务器的配置更改。</p>
+<p>顺便一提，Padavan有一个国内爱好者自己开发的管理app叫做“啪嗒路由器”，里面也有远程下载管理功能。</p>
 <h3 id="电视盒子的配置"><a href="#电视盒子的配置" class="headerlink" title="电视盒子的配置"></a>电视盒子的配置</h3><p>电视盒子——也就是这台Phicomm N1，我刷了机之后装上Kodi。Kodi通过SMB，DLNA等协议连接路由器上挂载的U盘，并载入可播放的文件列表。用遥控器就可以放了。这里就不废话配置过程了，只要路由器上的流媒体/文件服务有开成功，九成连得上。<br>Kodi就是以前的XBMC。需要注意的是，Kodi有好多种版本，要注意自己的图形芯片和操作系统，选择下载。</p>
 <p>其实，Phicomm N1也有时间没地方花的开源家居设备爱好者折腾出来的纯下载机固件，但可惜了那颗能硬解4K的图形芯片，我就没刷哪个固件。愿意折腾的话也可以刷armbian，也就是arm版的Debian。Debian is a perfect linux distribution for lesbian （喂</p>
 <h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>路由器的USB 接口是2.0的，实测传输速度最多5MB/s，但这够用了。需要注意的是它的USB口供电很弱，不建议插没有独立供电模块的移动硬盘。</p>
-<p>另外，aria2的磁盘缓存不能设置太高，否则会把。根据经验，128MB RAM的路由器，其系统本身会占用约5~70MB空间，建议设置20MB以下。否则会把内存吃光。</p>
-<p>在测试tracker的时候，我发现家里没有一个tracker连得上。这个可能得靠人品，或者把DHT网络之类开起来……</p>
-<p>其他可以折腾的地方还很多，比如用frp、ngrok等做内网穿透，通过订阅来自动添加种子，使用Kodi插件来整理、排序、分类片库（对于有囤积症的人来说）。 但我觉得你越想把它搞得便捷，花在折腾上的时间就越多，反而是把自己弄得筋疲力尽。 那就到此为止吧。</p>
-<p>成果：给老妈下载了高清修复版的苏联电影《莫斯科不相信眼泪》，并且成功播放。</p>
+<p>另外，路由器IO缓存不能设置太高，否则内存占用率会飙升。根据经验，128MB RAM的路由器，其系统本身会占约50~70MB的RAM，IO缓存建议设置20MB以下。否则会把RAM吃光。另外不建议同时进行太多任务，毕竟路由器的IO吞吐量有限。我测试的时候经常遇到connection无响应的问题（但后台实际上在下载）</p>
+<p>在测试tracker的时候，我发现家里没有一个tracker连得上。这个可能得靠人品，或者把DHT网络之类开起来。可以参考网络上的一些随时更新的tracker列表，但具体连通性看各人网络情况，tracker 服务器应该也是版权商重点打击对象。</p>
+<p>其他可以折腾的地方还很多，比如用frp、ngrok等做内网穿透，通过订阅来自动添加种子，使用Kodi插件来整理、排序、分类片库（对于有囤积症的人）。 但我觉得越想把它搞得便捷，花在折腾上的时间就越多，反而是把自己弄得筋疲力尽。 那就到此为止吧。</p>
 
     </main>
     <footer class="post-footer">
@@ -219,6 +220,8 @@
       
     </div>
     <div class="page-nav-prev page-nav-item">
+      
+      <a href="/post/violet_evergarden_garden/" rel="prev" title="紫罗兰永恒花园外传 小感想"><span class="nav-title">紫罗兰永恒花园外传 小感想</span><i class="fas fa-angle-right"></i></a>
       
     </div>
   </nav>
@@ -276,7 +279,7 @@
     
     <div class="archives-count">
       <div class="site-count-title">Archives</div>
-      <div><a href="/archives/">90</a></div>
+      <div><a href="/archives/">91</a></div>
     </div>
     
     
@@ -294,7 +297,7 @@
     
     <div class="tags-count">
       <div class="site-count-title">Tags</div>
-      <div><a href="/tags/">90</a></div>
+      <div><a href="/tags/">93</a></div>
     </div>
     
   </div>

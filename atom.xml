@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2020-01-16T14:14:15.603Z</updated>
+  <updated>2020-01-25T10:29:58.117Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -17,11 +17,35 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>紫罗兰永恒花园外传 小感想</title>
+    <link href="https://stgapr.github.io/post/violet_evergarden_garden/"/>
+    <id>https://stgapr.github.io/post/violet_evergarden_garden/</id>
+    <published>2020-01-18T07:07:08.000Z</published>
+    <updated>2020-01-25T10:29:58.117Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;思いを、どうか、届くように。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="电影" scheme="https://stgapr.github.io/tags/%E7%94%B5%E5%BD%B1/"/>
+    
+      <category term="动画" scheme="https://stgapr.github.io/tags/%E5%8A%A8%E7%94%BB/"/>
+    
+      <category term="京都动画" scheme="https://stgapr.github.io/tags/%E4%BA%AC%E9%83%BD%E5%8A%A8%E7%94%BB/"/>
+    
+  </entry>
+  
+  <entry>
     <title>斐讯N1、路由器上的aria2和kodi：两百元的家庭NAS</title>
     <link href="https://stgapr.github.io/post/home_nas/"/>
     <id>https://stgapr.github.io/post/home_nas/</id>
     <published>2020-01-16T12:05:08.000Z</published>
-    <updated>2020-01-16T14:14:15.603Z</updated>
+    <updated>2020-01-18T07:16:02.363Z</updated>
     
     <summary type="html">
     
@@ -453,28 +477,6 @@
       <category term="技术" scheme="https://stgapr.github.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
       <category term="论语" scheme="https://stgapr.github.io/tags/%E8%AE%BA%E8%AF%AD/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>生活和游戏</title>
-    <link href="https://stgapr.github.io/post/game-theory-for-life/"/>
-    <id>https://stgapr.github.io/post/game-theory-for-life/</id>
-    <published>2019-09-19T06:22:01.000Z</published>
-    <updated>2019-09-20T23:59:54.399Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;本文提出了一种游戏人生的可行性方案（大概）&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="游戏" scheme="https://stgapr.github.io/tags/%E6%B8%B8%E6%88%8F/"/>
-    
-      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
     
   </entry>
   
