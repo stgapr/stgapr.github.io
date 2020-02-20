@@ -162,17 +162,17 @@
 <p>update：太惨了，minori在2019年2月28日真的宣布倒闭了。<del>我不该乌鸦嘴</del></p>
 <a id="more"></a>
 <p>基本思路是用Python爬取著名的互联网网页存档项目Archive.org的<a href="https://web.archive.org" target="_blank" rel="noopener">Wayback Machine</a>过去收集的游戏开发商minori在mangagamer上披露的SPPL2众筹金额数据。</p>
-<p><img src="//lilis.coding.me/post/SPPL2/waybackmachine.jpg" alt="WaybackMachine上的快照"><br>看了一下wayback machine抓的网页快照还挺多的，大概能一个月更新一次。每一个圆点代表有抓取快照记录的一天。鼠标移上去就能显示出存档的超链接，那就可以用Python把这些超链接抓袭来。顺便一提这种js动态生成的div一般来说得用上Selenium等重量级浏览器模拟工具，好在这次也就2014-2018五年，我就用鼠标手工点击了，然后按F12打开开发者工具把页面当前结构源码存下来就行。接着用Python正则出存档页的地址。关键代码如下。</p>
+<p><img src="//stgapr.github.io/post/SPPL2/waybackmachine.jpg" alt="WaybackMachine上的快照"><br>看了一下wayback machine抓的网页快照还挺多的，大概能一个月更新一次。每一个圆点代表有抓取快照记录的一天。鼠标移上去就能显示出存档的超链接，那就可以用Python把这些超链接抓袭来。顺便一提这种js动态生成的div一般来说得用上Selenium等重量级浏览器模拟工具，好在这次也就2014-2018五年，我就用鼠标手工点击了，然后按F12打开开发者工具把页面当前结构源码存下来就行。接着用Python正则出存档页的地址。关键代码如下。</p>
 <figure class="hljs highlight python"><figcaption><span>[]</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rawfile= open(input_file_name,encoding=<span class="string">'utf8'</span>)</span><br><span class="line">sep = <span class="string">'\n'</span></span><br><span class="line">archivedate_list=[]</span><br><span class="line"><span class="keyword">for</span> each <span class="keyword">in</span> rawfile:</span><br><span class="line">​    archivedate=re.findall(<span class="string">r'/web/201*mangagamer.org/minori/'</span>,str(each))</span><br><span class="line">​    <span class="keyword">if</span> archivedate!=[]:</span><br><span class="line">​        print(archivedate)</span><br><span class="line">​        archivedate_list.append(archivedate[<span class="number">0</span>])</span><br><span class="line">​          archivedates = list(set(archivedate_list))</span><br></pre></td></tr></table></figure>
 <figure class="hljs highlight python"><figcaption><span>[]</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> each <span class="keyword">in</span> rawfile:</span><br><span class="line">​    dollar,date=[],[]</span><br><span class="line">​    dollar=re.findall(<span class="string">'\$(.*)&lt;'</span>,str(each))</span><br><span class="line">​    date=re.findall(<span class="string">'Last updated: (.*)&lt;br&gt;'</span>,str(each))</span><br><span class="line">​    <span class="keyword">if</span> dollar!=[] <span class="keyword">and</span> dollar!=[<span class="string">''</span>]:</span><br><span class="line">​        print(dollar)</span><br><span class="line">​    <span class="keyword">if</span> date!=[] <span class="keyword">and</span> date !=[<span class="string">''</span>]:</span><br><span class="line">​        print(date)</span><br></pre></td></tr></table></figure>       
 <p>稍微整理一下，就得到了大约116个快照点的链接。这样就可以用request库把每一次快照的html弄下来了。在下一步处理之前可以先拿去格式化一下源码，免得由于\r\n之类的换行回车符干扰正则识别。</p>
 <p>其实不用正则的话也试一下beautifulsoup库。这个库还是很好用的，就是在解析器的选择上有些坑。LXML比较快，但有的写得不规范的html用LXML会解析失败，你就需要用默认的Python自带的html.parser，再不行的话就得上html5lib，据说html5lib是模拟浏览器的解析方式。故而兼容性上html5lib&gt;html.parser&gt;lxml，而执行速度上反之。</p>
 <figure class="hljs highlight python"><figcaption><span>[]</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> parent, dirnames, filenames <span class="keyword">in</span> os.walk(work_dir,  followlinks=<span class="keyword">True</span>):</span><br><span class="line">​    <span class="keyword">for</span> filename <span class="keyword">in</span> filenames:</span><br><span class="line">​        file_path = os.path.join(parent, filename)</span><br><span class="line">​        soup = BeautifulSoup(open(file_path,<span class="string">'r'</span>,encoding=<span class="string">'utf8'</span>),<span class="string">'lxml'</span>) </span><br><span class="line">​        d=str(soup.select(<span class="string">'span.funded'</span>)[<span class="number">0</span>])</span><br><span class="line">​        i=d.find(<span class="string">"Last updated"</span>)</span><br><span class="line">​        print(<span class="string">"日期"</span>,d[i+<span class="number">13</span>:i+<span class="number">25</span>].replace(<span class="string">'\n'</span>,<span class="string">''</span>),<span class="string">"金额"</span>,soup.select(<span class="string">'span.current'</span>)[<span class="number">0</span>].get_text())</span><br></pre></td></tr></table></figure>  
 <p>然后日期和众筹金额列就生成出来了，粘贴到Excel里面去（懒得用Eviews或者SPSS之类工具，数据点也就百来个，也没什么年度波动规律）<br>画了个折线图，然后把minori最近几年发售的游戏标上去，大概是这样：</p>
-<p><img src="//lilis.coding.me/post/SPPL2/dataimage.png" alt="历史曲线"></p>
+<p><img src="//stgapr.github.io/post/SPPL2/dataimage.png" alt="历史曲线"></p>
 <p>那么SPPL2什么时候发售呢？看着走势不大妙啊，感觉30万美元都要等2020年了吧。我们可以从中等态势和悲观态势连个徒手拟合一下。</p>
-<p><img src="//lilis.coding.me/post/SPPL2/middle.jpg" alt="中等心态估测大概2023年"></p>
-<p><img src="//lilis.coding.me/post/SPPL2/negative.jpg" alt="悲观心态估计，永远无法到达30万美元"></p>
+<p><img src="//stgapr.github.io/post/SPPL2/middle.jpg" alt="中等心态估测大概2023年"></p>
+<p><img src="//stgapr.github.io/post/SPPL2/negative.jpg" alt="悲观心态估计，永远无法到达30万美元"></p>
 <p>将上作TRINOLINE GENESIS的发售带来的资金额的异常升高（图里2018年年初的陡坡）作为忠实粉丝推动销量的异常因素而在拟合时排除掉，从而按照大多数月份的平稳走势估计的话会是图上这样子。</p>
 <p>其实凭心而论比较大的可能性让SPPL2启动制作计划的35万美元目标应该要2023年，只要不出一些大茬子，因为电子小说业界总体是在衰退的。</p>
 
@@ -181,9 +181,9 @@
       
       <div class="post-tags">
         
-        <a class="post-tag button" href="/tags/游戏/" rel="tag"><i class="fas fa-tags"></i>游戏</a>
-        
         <a class="post-tag button" href="/tags/电子小说/" rel="tag"><i class="fas fa-tags"></i>电子小说</a>
+        
+        <a class="post-tag button" href="/tags/游戏/" rel="tag"><i class="fas fa-tags"></i>游戏</a>
         
         <a class="post-tag button" href="/tags/Python/" rel="tag"><i class="fas fa-tags"></i>Python</a>
         
