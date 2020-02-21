@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2020-01-25T10:29:58.117Z</updated>
+  <updated>2020-02-21T11:34:37.719Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2020年1-2月阅读书目</title>
+    <link href="https://stgapr.github.io/post/read-2020-1and2/"/>
+    <id>https://stgapr.github.io/post/read-2020-1and2/</id>
+    <published>2020-02-21T11:03:42.000Z</published>
+    <updated>2020-02-21T11:34:37.719Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本月推荐书目是扎米亚京的《我们》。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="阅读" scheme="https://stgapr.github.io/tags/%E9%98%85%E8%AF%BB/"/>
+    
+  </entry>
   
   <entry>
     <title>紫罗兰永恒花园外传 小感想</title>
@@ -186,7 +208,7 @@
     <link href="https://stgapr.github.io/post/tiannong-copybook/"/>
     <id>https://stgapr.github.io/post/tiannong-copybook/</id>
     <published>2019-11-09T12:51:01.000Z</published>
-    <updated>2019-12-07T11:48:24.844Z</updated>
+    <updated>2020-02-21T11:36:00.687Z</updated>
     
     <summary type="html">
     
@@ -453,30 +475,6 @@
       <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
     
       <category term="气味" scheme="https://stgapr.github.io/tags/%E6%B0%94%E5%91%B3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>电子护照与“从心所欲不逾矩”</title>
-    <link href="https://stgapr.github.io/post/sty/"/>
-    <id>https://stgapr.github.io/post/sty/</id>
-    <published>2019-09-20T16:09:21.000Z</published>
-    <updated>2019-09-20T22:29:06.414Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;最近大家都懂的，我也不例外——我的私人飞机场全部停工了。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="网络" scheme="https://stgapr.github.io/tags/%E7%BD%91%E7%BB%9C/"/>
-    
-      <category term="技术" scheme="https://stgapr.github.io/tags/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="论语" scheme="https://stgapr.github.io/tags/%E8%AE%BA%E8%AF%AD/"/>
     
   </entry>
   
