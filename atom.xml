@@ -109,9 +109,9 @@
     
       <category term="游戏" scheme="https://stgapr.github.io/tags/%E6%B8%B8%E6%88%8F/"/>
     
-      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
-    
       <category term="编程" scheme="https://stgapr.github.io/tags/%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
     
   </entry>
   
@@ -275,28 +275,6 @@
   </entry>
   
   <entry>
-    <title>ACG和简化的世界</title>
-    <link href="https://stgapr.github.io/post/simplified-world/"/>
-    <id>https://stgapr.github.io/post/simplified-world/</id>
-    <published>2019-10-13T14:59:17.000Z</published>
-    <updated>2019-10-13T11:56:13.146Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;ACG作品写得最多的一个主题就是恋爱与成长。当然，谁不愿意吃糖呢？“没有人永远17岁，但永远有人17岁。”  &lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="ACG" scheme="https://stgapr.github.io/tags/ACG/"/>
-    
-      <category term="童话" scheme="https://stgapr.github.io/tags/%E7%AB%A5%E8%AF%9D/"/>
-    
-  </entry>
-  
-  <entry>
     <title>迎接26岁</title>
     <link href="https://stgapr.github.io/post/birthday/"/>
     <id>https://stgapr.github.io/post/birthday/</id>
@@ -316,6 +294,28 @@
       <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
     
       <category term="生日" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%97%A5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ACG和简化的世界</title>
+    <link href="https://stgapr.github.io/post/simplified-world/"/>
+    <id>https://stgapr.github.io/post/simplified-world/</id>
+    <published>2019-10-13T14:59:17.000Z</published>
+    <updated>2019-10-13T11:56:13.146Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;ACG作品写得最多的一个主题就是恋爱与成长。当然，谁不愿意吃糖呢？“没有人永远17岁，但永远有人17岁。”  &lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="ACG" scheme="https://stgapr.github.io/tags/ACG/"/>
+    
+      <category term="童话" scheme="https://stgapr.github.io/tags/%E7%AB%A5%E8%AF%9D/"/>
     
   </entry>
   
