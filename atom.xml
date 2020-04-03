@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2020-02-21T11:34:37.719Z</updated>
+  <updated>2020-04-03T11:51:43.892Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -15,6 +15,60 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2020年3月阅读书目</title>
+    <link href="https://stgapr.github.io/post/read-2020-3/"/>
+    <id>https://stgapr.github.io/post/read-2020-3/</id>
+    <published>2020-04-03T11:35:42.000Z</published>
+    <updated>2020-04-03T11:51:43.892Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这个月推荐的作品是《满愿》&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="阅读" scheme="https://stgapr.github.io/tags/%E9%98%85%E8%AF%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>学吉他</title>
+    <link href="https://stgapr.github.io/post/guitar/"/>
+    <id>https://stgapr.github.io/post/guitar/</id>
+    <published>2020-03-22T00:03:58.000Z</published>
+    <updated>2020-04-03T11:04:08.940Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="ACG" scheme="https://stgapr.github.io/tags/ACG/"/>
+    
+      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
+    
+      <category term="乐器" scheme="https://stgapr.github.io/tags/%E4%B9%90%E5%99%A8/"/>
+    
+      <category term="吉他" scheme="https://stgapr.github.io/tags/%E5%90%89%E4%BB%96/"/>
+    
+  </entry>
   
   <entry>
     <title>2020年1-2月阅读书目</title>
@@ -431,50 +485,6 @@
       <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
     
       <category term="歌词" scheme="https://stgapr.github.io/tags/%E6%AD%8C%E8%AF%8D/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>周末登山记</title>
-    <link href="https://stgapr.github.io/post/climbing-moutain/"/>
-    <id>https://stgapr.github.io/post/climbing-moutain/</id>
-    <published>2019-09-21T08:36:42.000Z</published>
-    <updated>2019-10-13T12:17:54.587Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;有一阵子没进行大型运动了（骑车通勤不算的话），于是今天和和家人爬一次山，收获了不少有趣的见闻。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-      <category term="登山" scheme="https://stgapr.github.io/tags/%E7%99%BB%E5%B1%B1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>气味的记忆</title>
-    <link href="https://stgapr.github.io/post/smell-memory/"/>
-    <id>https://stgapr.github.io/post/smell-memory/</id>
-    <published>2019-09-20T22:30:47.000Z</published>
-    <updated>2019-09-20T23:24:31.520Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;我一直认为气味承载了人很大一部分记忆。据说人有四百万个嗅觉细胞。小时候我很喜欢闻隔壁家用菜籽油炒菜的气味。那是一种伴着日暮在黄昏的老居民楼间幽幽流动着的，家的感觉。这也成为我的鼻子对那一片街区的总体印象。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-      <category term="气味" scheme="https://stgapr.github.io/tags/%E6%B0%94%E5%91%B3/"/>
     
   </entry>
   
