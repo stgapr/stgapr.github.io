@@ -160,7 +160,7 @@
     <main class="post-main" itemprop="articleBody">
       <p>有一个PDF重排的工具叫做k2pdfopt，这个可能经常自己处理PDF电子书的人有听说过。</p>
 <a id="more"></a>
-<p><img src="https://wx3.sinaimg.cn/large/006MSSdPly1ghcsko5i26j30tt0olaef.jpg" alt=""></p>
+<p><img src="//stgapr.github.io/post/k2pdfopt/k2pdfopt.jpg" alt=""></p>
 <p>虽然这个软件 界面很丑，而且<a href="www.willus.com/k2pdfopt/">官网</a>也很丑，就像是九十年代徒手写HTML的个人静态博客一样，但其实它是目前最实用的PDF重排版工具（衍生版本除外）。<br>它牛逼在哪里呢？文字回流（re-flow text）<br>也就是用OpenCV之类的图像处理库去识别PDF文档中每一个词的边缘，然后把这些词剪下来，重新粘贴。这样就能在在不进行OCR的前提下实现完全的版面重调。<br>比如说把版面很大的学术文章弄成Kindle也能看得清楚的版式……</p>
 <p>但是k2pdfopt里面一些复杂的可指定参数。网络上的中文教程语焉不详，都是互相抄的。我要说的主要是-ws这个重要参数。</p>
 <p>k2pdfopt的-ws解释是“smart line breaks”，但其实这个选项一点都不smart。这个参数是用来控制比这个值要大的空白意味着一行结束的导致的词后空白，而比这个值要小的，只能算是词和词之间的间隔。那么这意味着什么？<br>假如-ws参数设置太大，k2pdfopt会把几乎所有的空白都当成词和词之间的间隔。这样会让重排后的页面的词和词之间充满多余的空格（假如没有预先切边的话，一个页面中是会有很多“行首行尾”空白的）。<br>假如-ws参数设置太小，又会让k2pdfopt把一点点词间的空白都过度处理成换行。这样的结果就是没几个词就换行一下，非常难看。</p>
