@@ -3,6 +3,62 @@
   
     
     <entry>
+      <title>在机顶盒上打黄油（上）</title>
+      <link href="/post/gal-on-settopbox-1/"/>
+      <url>/post/gal-on-settopbox-1/</url>
+      
+        <content type="html"><![CDATA[<p>在这篇硬核文章中，我将介绍如何在ARM芯片的廉价机顶盒上运行X86平台的galgame。不是远程桌面，也不是kirikiroid，货真价实童叟无欺。但是有点hardcore。所以分成上下篇写。</p><p>首先感谢@虾包 的技术支持。</p><a id="more"></a><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有时候我们实在蛋疼，找不到替代品，非得在Linux或者OS X上跑传统的Windows<del>游戏</del>生产力软件。想到的方案，除了用QEMU、bochs等虚拟机，就是Wine（或者crossover之类衍生版），特定种类游戏的话可能有人做其他平台的引擎移植（像ons、pymo、kikiroid）。</p><p>Wine的原理是把Windows API用POSIX 实现了一遍，然后让（兼容POSIX标准的）宿主系统去执行。虽然Wine也最近除了X86版本的release，也提供了ARM版本的，连Android的ARM或X86架构的 release都有。但是——ARM release的只能跑ARM的程序，X86 release的只能跑X86的程序。毕竟CPU架构如天堑。</p><p>不过最近微博上看到M$核心程序员兼女装大佬Tlaster买了台特别昂贵的笔记本Surface Pro X，跑传说中的Windows on ARM系统。她晒了一张图：</p><p><img src="//stgapr.github.io/post/gal-on-settopbox-1/tsukiyori_SQ1.PNG" alt="在ARM架构的SQ1芯片上跑X86程序"></p><p>这就有点牛逼了。因为这款笔记本跑的是高通定制的ARM架构的SQ1处理器。而黄油厂商我还没听说过技术先进到提供ARM platform  target的Galgame。也就是说这个版本的Windows 在二进制层面实现了一个X86到ARM的指令转换。不需要X86 EXE作任何修改、远非几年前的Windows RT能做得到的。</p><h2 id="可行性和方案"><a href="#可行性和方案" class="headerlink" title="可行性和方案"></a>可行性和方案</h2><p>于是我就想做类似的事情。首先去查了<a href="https://docs.microsoft.com/en-us/windows/arm/" target="_blank" rel="noopener">Windows Documentation</a>SDN上查了一下原理。发现类似64位windows兼容32位windows程序的途径——用<a href="https://docs.microsoft.com/en-us/windows/win32/winprog64/running-32-bit-applications" target="_blank" rel="noopener">WoW64层</a>，并且缓存这些已翻译的代码块，以减少指令翻译的开销，并在代码再次运行时进行优化。<br>所以Windows10 on ARM的windows目录里面，加上原本的X86_64和X86_32兼容设施——至少有三套system文件夹，啊不，实际上是四套：</p><p><strong>System32</strong>: ARM 64 位系统文件</p><p><strong>SyCHPE32</strong>： CHPE DLL，供 x86 程序调用，内部是 ARM 机器码（使得核心系统库不需要进行二进制翻译，减少性能损失)</p><p><strong>SysARM32</strong>: ARM 32 位系统文件</p><p><strong>SysWOW64</strong>: x86 32 位系统文件</p><p>其中给ARM处理器做X86指令的二进制翻译的关键DLL是<a href="https://docs.microsoft.com/en-us/windows/win32/winprog64/wow64-implementation-details" target="_blank" rel="noopener">xtajit.dll</a>。并且官方说这个函数巨复杂巨长，毕竟两种架构的CPU指令集完全不一样。根据爱好者测试，X86程序在ARM处理器上的翻译执行效率大概能达到原生的60%左右。WineHQ社区估计一时半会儿也没有精力重复造轮子，一是净室原则，二是Intel反复敲打版权风险。还好发现github上也有几个实验性项目。</p><p>如<a href="https://wiki.winehq.org/Emulation" target="_blank" rel="noopener">WineHQ的这篇wiki</a>所说，想实现ARM平台跑X86程序（先不说操作系统），大概有三种曲线救国的途径：</p><ul><li><p>处理器模拟。也就是异构模拟。最省事，也最慢。也就是用QEMU、virtualbox之类的虚拟机软件模拟整个X86 CPU，上面再装一个X86的操作系统。Bluestack、Windroy等都是一个原理。</p></li><li><p>用户模式模拟。也就是用QEMU user space emulator之类的用户态X86仿真程序，在syscall级别跳出。效率稍微好一点。有的人可能玩过一些基于chroot或者proot——在安卓手机上跑Linux的<a href="https://github.com/meefik/linuxdeploy" target="_blank" rel="noopener">deploylinux</a>和Anlinux。优点是可以利用宿主的Linux内核，不需要再整一套镜像（因此，假如要跑windows exe，还需要配合X86版本的wine）。代表项目<a href="https://github.com/ptitSeb/box86" target="_blank" rel="noopener">box86</a></p></li><li><p>在操作系统API层面的仿真。和用户模式模拟类似，但更快一点。代表项目如<a href="https://github.com/AndreRH/hangover" target="_blank" rel="noopener">hangover</a>（宿醉。这名字起的……）</p><p>有人可能会提起ExGear，但是：</p></li></ul><blockquote><p>A solution that I explored already in the past was ExaGear, which allowed running of x86 applications on ARM by emulating the CPU instructions, but not the entire PC.</p><p>Well ExaGear, although quite good, had one very big flaw: it was running everything in the i386 (x86) environment, which also is the case for the GPU drivers, which limited the the software only for use with applications that did not require 3D acceleration. Basically, any game that used “modern” graphics did not work, since it required OpenGL, which our ODROIDs lack the necessary drivers for and especially not for i386.</p></blockquote><p>于是工具落在了hangover和box86两者之间。</p><h3 id="hangover-和box86"><a href="#hangover-和box86" class="headerlink" title="hangover 和box86"></a>hangover 和box86</h3><p>hangover有一个缺点，它要靠QEMU做X86到ARM指令的转换，而且加入要用Wine也必须是64位的。hangover的开发方向主要是在64位平台（AArch64，X86_64）上跑64位程序，只是顺便兼容32位。它的Android分支也停止开发很久了。</p><p>而box86专心兼容X86_32（<strong>它不支持64位用户程序</strong>），用的X86 emulator是<a href="https://github.com/wfeldt/libx86emu" target="_blank" rel="noopener">libx86emu</a>的修改版。并且据官方readme文档所言，“box86 uses the native versions of some “system” libraries, like libc, libm, SDL, and OpenGL, it’s easy to integrate and use, and performance can be surprisingly high in some cases.”  </p><blockquote><p>应用程序所需的许多库都从ARM板重定向到了库，比如说Box86可以从ARM主机系统使用SDL2，而不是使用i386的SDL2。这也包括GPU驱动程序。如果应用程序需要运行OpenGL，它将不再要求i386 OpenGL驱动程序，而是ARM OpenGL驱动程序。还有许多其他库，例如SDL，OpenAL，X11等，也可以从本机ARM环境中使用，而不是使用i386中的所有库。这也意味着与需要完整i386环境的ExaGear相比，i386中需要的库要少得多。</p></blockquote><p>这个思路就很像微软的CHPE。</p><p>box86好像相当成熟，甚至已经有人基于该项目做了一个retro gaming向的<a href="https://twisteros.com/" target="_blank" rel="noopener">树莓派系统Twister OS（原名Raspbian X）</a>。</p><p>那我就选择box86来折腾了。顺便一提，目标平台可以是ARM HF（AArch64）也可以是32位的ARM。家里没有别的可折腾的ARM设备，可以考虑机顶盒或者Android手机了。也可以拿最好拿闲置的树莓派之类硬件。稍微有点千来块预算的，可以买一台<a href="https://plumz.me/archives/9636/" target="_blank" rel="noopener">ARM芯片的廉价笔记本Pinebook</a>。</p><h2 id="构建box86"><a href="#构建box86" class="headerlink" title="构建box86"></a>构建box86</h2><h3 id="编译前准备"><a href="#编译前准备" class="headerlink" title="编译前准备"></a>编译前准备</h3><blockquote><p>You <em>NEED</em> a 32-bit subsystem to run and build box86. box86 is useless on 64-bit only systems. Also, you <em>NEED</em> a 32-bit toolchain to build box86. A toolchain that only support 64-bit will not compile box86, and you’ll get errors (typically on aarch64, you get “-marm” not recognized).</p></blockquote><p>意思很明白：因为box86的原理是直接把X86_32代码转译到主机系统平台。要在（例如）ARM64平台上运行box86，需要为32位ARM构建box86，并且还需要具有32位库的chroot。重复一遍，<strong>box86不包含任何32位到64位的转换。</strong>当然我们在X86机器上交叉编译（比如编译到32位的ARM时）时，要提供一个32位的工具链。我们可以用Linaro。</p><p>先<a href="http://releases.linaro.org/components/toolchain/binaries/" target="_blank" rel="noopener">去linaro网站</a>或者<a href="https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain" target="_blank" rel="noopener">ARM官网</a>或者<a href="https://mirrors.tuna.tsinghua.edu.cn/armbian-releases/_toolchains/" target="_blank" rel="noopener">清华镜像源</a>下载交叉编译工具链。记得选择带有x86_64_arm(v8l)-linux-gnueabihf字样的。<a href="https://www.cnblogs.com/lixuejian/p/12848728.html" target="_blank" rel="noopener">复习下交叉编译器的命名规则</a>，为了可以在ARMV8、ARM64等同时兼容64位和32位的CPU的32位模式上运行，我们必须保证目标程序集是32位的，让CPU向下兼容。</p><p>注意工具链里的armv8l指的armv8标准的32位模式。而64位模式的工具链的关键字是Aarch64。另外官网指出宿主架构必须是32位小端序（little endian），在这里也就是armel（armle，arm eabi little-endian），不能是armeb。（不过工具链里面一般都是litle endian，除非特意标出是armeb。）</p><p>soft floating point还是hard floating point（Armhf）的话，最好选HF。</p><blockquote><p>用softfp模式，会存在不必要的浮点到整数、整数到浮点的转换。而使用hard模式，在每次浮点相关函数调用时，平均能节省20个CPU周期。对ARM这样每个周期都很重要的体系结构来说，这样的提升无疑是巨大的。对一些严重依赖于浮点运算的程序，更是可以达到300%的性能提升。</p></blockquote><p>我下载的包名是gcc-linaro-7.5.0-2019.12-x86_64_armv8l-linux-gnueabihf.tar.xz。</p><p>解压。</p><figure class="hljs highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">xz</span> <span class="selector-tag">-d</span> <span class="selector-tag">gcc-linaro-7</span><span class="selector-class">.5</span><span class="selector-class">.0-2019</span><span class="selector-class">.12-x86_64_armv8l-linux-gnueabihf</span><span class="selector-class">.tar</span><span class="selector-class">.xz</span></span><br></pre></td></tr></table></figure><p>安装到喜欢的目录。</p><figure class="hljs highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -<span class="selector-tag">p</span> /usr/local/toochain</span><br><span class="line">sudo tar -xvf gcc-linaro-<span class="number">7.5</span>.<span class="number">0</span>-<span class="number">2019.12</span>-x86_64_armv8l-linux-gnueabihf<span class="selector-class">.tar</span> -C /usr/local/toolchain</span><br></pre></td></tr></table></figure><p>添加环境变量并刷新环境。</p><figure class="hljs highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PATH=<span class="variable">$PATH</span><span class="symbol">:/usr/local/toolchain/gcc-linaro-</span><span class="number">7.5</span>.<span class="number">0</span>-<span class="number">2019.12</span>-x86_64_armv8l-linux-gnueabihf/bin</span><br><span class="line">source ~<span class="regexp">/.bashrc</span></span><br></pre></td></tr></table></figure><p>验证下是否能识别到编译器。</p><figure class="hljs highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">armv8l-linux-gnueabihf-gcc -v</span><br></pre></td></tr></table></figure><h3 id="编译box86"><a href="#编译box86" class="headerlink" title="编译box86"></a>编译box86</h3><p>先把代码拉下来。<br><figure class="hljs highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">clone</span> <span class="title">https</span>://github.com/ptitSeb/box86.git</span><br></pre></td></tr></table></figure></p><p>cmake。<br><figure class="hljs highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd box86; mkdir build; cd build; </span><br><span class="line">cmake <span class="built_in">..</span> <span class="attribute">-DARM_DYNAREC</span>=ON \</span><br><span class="line"><span class="attribute">-DCMAKE_BUILD_TYPE</span>=RelWithDebInfo \</span><br><span class="line"><span class="attribute">-DCMAKE_SYSTEM_PROCESSOR</span>=arm \</span><br><span class="line"><span class="attribute">-DCMAKE_C_COMPILER</span>=armv8l-linux-gnueabihf-gcc;</span><br></pre></td></tr></table></figure></p><p>注意-DCMAKE_C_COMPILER，交叉编译的时候不指定的话会出现平台参数错误。</p><p>这里面有一个dynarec选项。JIT / Dynarec / Hotspot之类的技术会把转换过的指令段缓存起来，有助于提高程序载入速度。这也是在CMakeLists.txt里面实现控制逻辑的。</p><blockquote><p>The Dynarec is only avaiable on ARM Cpu. Notes also that VFPv3 and NEON are required for the Dynarec. Activate it by using <code>-DARM_DYNAREC=1</code>. Also, be sure to use <code>-marm</code> in compilation flags (because many compileur use Thumb as default, and the dynarec will not work in this mode).</p></blockquote><p>box64特有的其他编译选项见<a href="https://github.com/ptitSeb/box86/blob/master/COMPILE.md" target="_blank" rel="noopener">COMPILE.md</a>。</p><p>此外也可以手动指定编译参数。假如你的目标设备没有在CMakeLists.txt里面add_definitions、 set(CMAKE_ASM_FLAGS=…)的话。自己的目标平台相关参数可以去网络上找。也可以参考 -gcc –target-help。</p><figure class="hljs highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">CFLAGS</span>=<span class="string">"-march=armv8-a -mtune=cortex-a53"</span></span><br></pre></td></tr></table></figure><p>然后正式执行编译和链接。（后面的ARCH 、CROSS_COMPILE选项可以不要。假如makefile有好好地生成）</p><figure class="hljs highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make -j8 <span class="attribute">ARCH</span>=arm <span class="attribute">CROSS_COMPILE</span>=armv8l-linux-gnueabihf-</span><br></pre></td></tr></table></figure><h3 id="（可选）编译GL4ES"><a href="#（可选）编译GL4ES" class="headerlink" title="（可选）编译GL4ES"></a>（可选）编译GL4ES</h3><p>不少Windows程序用的是DirectX，Wine也自己用OpenGL实现了一遍DirectX API。但假如你用的是嵌入式设备，就是那些只支持OpenGLES的，就麻烦了。好在<a href="https://github.com/ptitSeb/gl4es" target="_blank" rel="noopener">GL4ES</a>提供了GLES硬件的OpenGL接口功能，只是GL4ES目前在Wine上面工作得不是很好。聊胜于无吧。</p><p>（待续）</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> X86 </tag>
+            
+            <tag> ARM </tag>
+            
+            <tag> 程序仿真 </tag>
+            
+            <tag> 技术 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>AnthemScore</title>
+      <link href="/post/Anthemscore-linux/"/>
+      <url>/post/Anthemscore-linux/</url>
+      
+        <content type="html"><![CDATA[<p>AnthemScore是一款利用卷积神经网络进行乐谱转写（music transcription）的实验性软件。这篇文章我将介绍<del>如何在Linux上从挤牛奶、养鸡开始做蛋糕</del> 如何使用这款工具。</p><p>首先看一个AnthemScore辅助打谱的曲子。</p><a id="more"></a><p><img src="//stgapr.github.io/post/Anthemscore-linux/Reside-1.png" alt="很明显我是天门厨师"></p><p>蛮干净的对不。不过这是我后期稍微修整过的，Anthemscore经常会把鼓等频率分布很长的声音胡乱识别成一大串A4以下的低音，或者把高次泛音列也误认为基音（尤其是八度的倍音），此外还有时值过短的问题，所以生成的谱其实是非常丑的，还需要弄到MuseScore3里面运用你的乐理知识修一下。不过AnthemScore在配器不太复杂、尤其是弦发声乐器（吉他、钢琴、小提琴）音符频率干净的曲子上面，识别效果很出色，调性和节拍也基本没有出错过。</p><p>对music transcription方面领域的技术感兴趣、或者对AnthemScore的原理感兴趣的可以看<a href="https://www.lunaverus.com/cnn" target="_blank" rel="noopener">作者的这篇原理科普</a>，作者能把图像识别领域的卷积神经网络用在音乐频谱图上非常利害。（类似的研究方向是“鸡尾酒会谈话”问题，也就是如何分辨两个同时讲话的人的讲话内容。有时候感觉人耳真是神奇，明明那么轻松可以分辨出来的不同音色，让计算机来区分却难如登天者。）</p><p>最近在热情地投身Ubuntu，那我就尽量把工作和兴趣用的软件都带到Linux下面吧。</p><p>AnthemScore这个软件，其实我建议在Windows底下用。因为有<a href="https://www.lunaverus.com/download" target="_blank" rel="noopener">显卡CUDA加速的Windows编译版本</a>（虽然也就是处理花上两分钟和二三十秒钟的差别，快不了多少）。再不行也有OS X 安装包。原因是Linux版比较烦的地方是自己装Qt依赖。因为Qt虽然是开源的，但最近变成商业软件，我没有研究它的license，似乎是不准随便打包分发。</p><p>首先去<a href="https://www.lunaverus.com/" target="_blank" rel="noopener">开发者Lunaverus的网站</a>下载安装包。Linux x64 installer或zip都行。网速不快的话，建议还是（离线的）zip包。</p><p>然后解压出来，放到随便什么目录下面，就称为\<anthemscore install="" dir\="">吧。</anthemscore></p><p>现在装Qt。AnthemScore指定需要装的是Qt 5.12.5版。去<a href="https://www.qt.io/download-qt-installer" target="_blank" rel="noopener">Qt官网</a>下载Qt的通用online installer。执行它</p><figure class="hljs highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x ./qt-unified-linux-x64<span class="number">-3.2</span><span class="number">.3</span>-online.run</span><br><span class="line">./qt-unified-linux-x64<span class="number">-3.2</span><span class="number">.3</span>-online.run</span><br></pre></td></tr></table></figure><p>这个安装程序有内置代理设置，就不需要额外指定proxy-chains了。</p><p>然后……我发现装个Qt居然还要注册用户，checking license，然后从远程软件源下载Qt工具包的元信息。搞得和Unity3D一样麻烦。而且虽然参照Anthemscore的README.md文件，，只需要安装”Desktop gcc 64-bit” 和 “Qt WebEngine”。那些Developer Tool一律不选。但特么安装的时候还是会把Qt Examples和Qt Creator都强制装上。我只是想用Qt运行库，并不想自行开发啊喂！</p><p>更严重的是，虽然挂了魔法工具，但联网下载组件的速度实在太慢了。你能想象以70KB/s的速度下载上G的文件吗？</p><p>所以我把安装程序关了。可是我不知道怎么通过apt-get下载（草），只好去<a href="https://mirrors.tuna.tsinghua.edu.cn/qt/" target="_blank" rel="noopener">清华大学软件镜像源的Qt仓库</a>找离线安装包。（btw，中科大、北理工、CNNIC也有Qt 镜像）。</p><p>镜像仓库里面可以看到，Qt现在有好几个维护版本，community_releases（社区编译版，已经被商业化接管，2017年之后就不再发放新版本了）、development_releases（开发版，类似nightly build）、linguist_releases（多语言版）、minisro（小发行版，似乎是用于Android开发）以及official_releases（官方正式版）……其实哪个都没差吧，而且每个版本的OS X、Windows、Linux的离线安装包都有。</p><p>我们选择Anthemscore指定的5.12.5版本的离线包。<strong>5.12</strong>.x的都可以。只要小版本号不变，API就没差别。</p><p>然后照样执行安装。</p><figure class="hljs highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x ./qt-opensource-linux-x64<span class="number">-5.12</span><span class="number">.5</span>.run</span><br><span class="line">./qt-opensource-linux-x64<span class="number">-5.12</span><span class="number">.5</span>.run</span><br></pre></td></tr></table></figure><p>这就很快了，十几秒钟就好了。</p><p>btw，仓库里还有Qt Creator（IDE）和Qt Design Studio（UI可视化设计然后生成界面描述代码QML用的），还有PyQt。说起来我之前还用PyQt5/PyQt4写过工作上的小程序。当时另一个binding实现是PySide。不知道现在兼容得怎么样了。</p><p>记得只需要装”Desktop gcc 64-bit” 和 “Qt WebEngine”。我有点奇怪一个成品软件要gcc编译器干什么，把tensorflow编译到本机CPU上？（还真的有可能）不过既然说了就装吧。</p><p>不管你是怎么装完的Qt，安装完毕后需要把Qt的库给软链接到Anthemscore的目录里面。</p><figure class="hljs highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>  &lt;AnthemScore install <span class="built_in">dir</span>&gt;</span><br><span class="line">ln -s &lt;qt install <span class="built_in">dir</span>&gt;/<span class="number">5</span>.<span class="number">12</span>.<span class="number">5</span>/gcc_64 ./link_to_qt</span><br></pre></td></tr></table></figure><p>运行一下license工具看能不能启动。</p><figure class="hljs highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x .<span class="regexp">/AS_resources/</span>license_utility</span><br><span class="line">.<span class="regexp">/AS_resources/</span>license_utility</span><br></pre></td></tr></table></figure><p>正常的话，应该能看到如下输出：</p><blockquote><p>License utility version = 8<br>Testing…<br>Tests Passed.</p></blockquote><p>假如不幸不成功，提示以下信息的话：</p><blockquote><p>Root permissions needed. This binary should be owned by root with the setuid bit set. If it is, run ‘mount’ with no arguments to verify that the partition containing this binary was not mounted with ‘nosuid’.</p></blockquote><p>官方提供了一个修复脚本和排查方案，和用户权限有关，照着做就行了。</p><figure class="hljs highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="string">./linux_set_root_permissions.sh</span></span><br></pre></td></tr></table></figure><figure class="hljs highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ls</span> -la <span class="string">./AS_resources/license_utility</span></span><br></pre></td></tr></table></figure><p>这时候应该能看到这样的权限状态:</p><blockquote><p> -rw<strong>s</strong>rwxr-x 1 <strong>root</strong>  \&lt;username> ……</p></blockquote><p>然后再运行</p><figure class="hljs highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount <span class="string">| grep nosuid</span></span><br></pre></td></tr></table></figure><p>看一下程序所在的分区，它不应被挂载为’nosuid’标志。（SUID机制好像类似于Windows里面的文件的读写执行权限用户组，我也不是很懂。）</p><p>然后就可以运行了。用法和Windows下面一样。</p><figure class="hljs highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x <span class="string">./AnthemScore</span></span><br><span class="line"><span class="string">./AnthemScore</span></span><br></pre></td></tr></table></figure><p>第一次启动有点慢，大概要二十秒，可能是和服务器通信申请 trial license。默认语言是Deutsch。我草，满屏幕德文。好在可以在Datei——Sprache菜单里面可以切换成简体中文（机器翻译）。欧洲音乐圣地爱好者自己看着办选择Deutsch、Francias、Italiano。</p><p>我试了一下《星天宫の庭で》。自己电脑是小米笔记本Pro16存顶配版（2017年年底买的）CPU是i7-8550U，处理时长大概要120秒，峰值时大概会吃掉6GB内存。大部分时间花在Finding notes步骤。</p><p>有一个需要说明的微调选项是音符敏感度，太右边了会把一些没用的泛音列和杂音当成基音音符，太左边了又会遗漏音符。一般默认在中间就行。我不是很喜欢那个简陋的spectrum 音符调整界面。直接导出MusicXML格式后，换别的打谱软件调整就行。</p><p>其他设置可以参考<a href="https://www.lunaverus.com/documentation" target="_blank" rel="noopener">官方教程</a></p><p><img src="//stgapr.github.io/post/Anthemscore-linux/seitengu.png" alt=""></p><p>注意，第一次运行的时候需要联网获取license。试用期三十天。激活的时候也需要联网。授权机制也是利用机器码的唯一性，稍微用硬件指纹信息修改的工具就能绕过。discord的相关爱好者频道也有流传crack了，但有能力和需求还是<a href="https://www.lunaverus.com/purchase" target="_blank" rel="noopener">支持正版</a>吧。</p><p>其实还是用Windows版比较好，虽然把Qt一堆dll都放进目录里了，也就200MB多一点，你不需要装别的东西。Qt能跨平台这一点是挺好的。虽然运行库有点重。但现在的软件动辄大几十M，专业程序几百M也很正常。不是特殊的工业设备成本剪裁要求的话，那一点容量也给得起。</p><p>Linux这种吃个蛋糕还要从给牛挤奶、养鸡生蛋开始的DIY哲学，麻烦不麻烦啊。</p><p>顺便一说，Anthemscore并不能拆分不同乐器的声音，或者消除人声。想做这件事的话，有另一个非常出色的工具<a href="https://github.com/deezer/spleeter" target="_blank" rel="noopener">Spleeter</a>，是用tensorflow训练的CNN，人声去除效果非常好（但因为原曲一般最后都会走混响效果器的缘故，会有一点点卡拉OK包间的那种回声感）。我经常拿<a href="https://github.com/boy1dr/SpleeterGui" target="_blank" rel="noopener">Spleeter的GUI版本</a>制作黄油歌曲的instrument版。国内前不久还出现过换皮+闭源+收费的在线服务版本。</p><p>Nicechord曾经<a href="https://www.youtube.com/watch?v=OTG_oj_uVKg" target="_blank" rel="noopener">做了一期关于人声消除原理软件的科普</a>。他在里面说截止他做节目的那个时间点（2018年3月），市面上并没有所谓真正能透彻消除人声的工具。</p><blockquote><p>想要把人声从一张专辑中拿掉，就有点像你想要把牛奶从拿铁（牛奶混合咖啡）里拿掉一样。以现在的技术而言是办不到的……</p></blockquote><p>但他同时也预言了机器学习技术的前景。时代变得太快，<a href="https://www.youtube.com/watch?v=Zp8Q3wJKKhA" target="_blank" rel="noopener">2018年10月的节目中他就介绍了机器学习去人声的类似软件RX7。</a></p><p>只是这样的软件会让很多人失业吧，因为听说日本的卡拉OK的伴奏版大多居然不是找音乐厂商拿的无人声母带，而是雇佣听谱职人（耳コピー職人）把歌曲的每个轨道的每个音符听辨出来，从头还原歌曲工程的，一首歌要花费两天时间，太特么工匠精神了。</p><p><img src="//stgapr.github.io/post/Anthemscore-linux/mimicopy.jpg" alt=""></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 音乐 </tag>
+            
+            <tag> 打谱 </tag>
+            
+            <tag> 神经网络 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>Ubuntu 20.04：不折腾</title>
       <link href="/post/ubuntu2004/"/>
       <url>/post/ubuntu2004/</url>
@@ -44,9 +100,9 @@
       
         <tags>
             
-            <tag> 音乐 </tag>
-            
             <tag> ACG </tag>
+            
+            <tag> 音乐 </tag>
             
             <tag> 乐器 </tag>
             
@@ -109,29 +165,6 @@
     </entry>
     
     <entry>
-      <title>生活报告</title>
-      <link href="/post/recent-seikatsu/"/>
-      <url>/post/recent-seikatsu/</url>
-      
-        <content type="html"><![CDATA[<p>很久没写日志，怕要被友链除名了。稍微记录一下生活状况。</p><p>可能是自我意识过剩，总是会思考在面对“网线另一端的不特定读者”时，要用什么口气写下文字。最近翻阅以前（高中时代）的日记时，也觉得很是幼稚，偶尔还有偏激的地方。但这毕竟是成长的一环节。</p><p>沿海小城此刻已经进入了台风季节，每天呼呼作响地刮风。榴莲上市了又下架了，菠萝也差不多下市了，但卖西瓜的敞篷小货车仍然能每天下工回来都能看到。因为疫情期还没过，街面广播天天在放国家安全法，还有举报偷渡回国人员什么的，耳朵都快起茧了。这种灰尘扑面又有点闷湿的天气，就有点九十年代的感觉。</p><p>最近家里装了纱窗，但一不小心没有在傍晚天暗前关窗的话，还是会被乘虚而入的蚊子叮个半死。还是得偶尔配合用电热蚊香液。</p><a id="more"></a><p><img src="//stgapr.github.io/post/recent-seikatsu/blahaj.jpg" alt="周末晒太阳的宜家鲨鲨"></p><p>我发现自己身上同时会有拖延症和超前症，正如大学舍友Ace所言，“考试前一周就特别想打游戏，但游戏也打不安心。”  我想，可能是工作/学习/考试本身是个没什么满足感的事情，于是就想用别的什么可以带来短时愉悦反馈的娱乐来逃避，或者干脆尽快把它做掉，免得心里挂碍。</p><p>拖延症和超前症本身问题不大，是人在心理上故意挑战效率极限。熬夜的原因可能也类似（试图在深夜中报复性地补偿回自己白天被占据的时间，虽然是个恶循环）。但工作本身只是养家糊口的手段，我比较崇奉尽可能快（但是比较保证质量）地干完一件事。或者你在无趣的事情中找一些乐趣也是可以的。但，沉迷于智能设备的垃圾信息流是万万不行的。那些只是浮光掠影，是不断撩动的欲望和满足后无聊的转轮。</p><p>不行的话就打日兔拳，或者百田一本。日兔拳是一种心情愉悦的表情组合（虽然我也不知道它是什么意思），大概是自我激励？ 百田一本就是“假如我在限定的时间里不做完某件事，我就去买一张最讨厌的艺人的专辑”。</p><p>最近在工作之余稍微把荔园在线(szuonline.cn)镜像下来了。荔园在线是一个深圳大学的论坛的个人备份站，同时还有国内其他高校的一部分帖子存档（原站大多已经无法访问）。我觉得这些是了解2000年-2008年左右校园生活、社会风貌和其他方面考古的重要史料。虽然不是特别全。我觉得应该有一部分人意识到它的重要性了。 顺便一提，镜像工具用的是teleport Ultra，爬的速率很慢，大概只有几十KB每秒，总共数十万文件都是靠挂在后台细水长流慢慢down下来。</p><p>这座小城市的生活节奏和十年前、二十年前没什么变化，虽然新城区越来越大，甚至已经在侵蚀城乡结合部，甚至原来的农村。 以后城市和城市会不会蔓延且相接呢？就算如此，人和人的距离仍然还是那么远。比如，我完全不知道海峡对面的网友的生活形态，他们在读什么书，听什么音乐，看什么新闻，在虚拟和现实世界的认知与这边有多少不同 。说起来这座城市还有一个偏僻的岛屿现在是中华民国的实际管辖区域。 上大学时经常去环岛南路看”一国两制统一中国“，天气好的时候能透过浮动的海面雾气看到对面的岛屿”三民主义统一中国“的牌子。这里和那里，就如同隔海互相喊话（并且偶尔射击炮弹）一样，互相固执地主张。</p><p>除了地域、风俗和语言的隔阂外，阶层、亚文化圈也逐渐地把人分成了一个个互相陌生的群体。</p><p>最近在PS4上试玩了D.C.4。马戏团这个万年冷饭系列我只打过D.C.Ⅱ，并且对其命名复杂的FD和外传游戏望而生畏。不过这次我从老硬盘里找出了杂贺匡写的D.C.和D.C.Ⅱ小说，津津有味地回味了一番。D.C.4好像和前作的人物没什么关系——除了体验版最后出现的芳乃樱。俗话说“流水的初音岛，铁打的芳乃樱”（还有一个万年基友杉並）。虽然这一作仍然发生在樱花永远盛开的岛屿……角色配置几乎也一模一样，但这次不在初音岛上了，新的岛名（以及学校名）汉字又写作香香见，不得不说很土（干嘛不写作“鏡”？）。</p><p>Da Capo，还有Dal Segno大家都知道是音乐里的演奏记号。每次里面剧情推进到确立恋爱关系后，樱花树都会凋谢这个意象很好：魔法结束了，必须有一些该面对的现实了——然后是新的开始。结虽然里面的恋爱桥段现在看起来没什么新意，但能给人一种……世纪初的淳朴感。D.C.4体验版搞的那些哭泣的梦境，破碎的镜面之类的暗示，丝毫不慌。</p><p>D.C.系列主作的几首OP都很好。这里推荐一张用上世纪的计算机音源复刻这个系列主题曲的专辑《<a href="https://music.163.com/#/album?id=2627980" target="_blank" rel="noopener">D.C.S.F -COMPUTER WORLD-</a>》。没想到用音色有限的硬音源也能改编得这么动听。</p><p><img src="https://p1.music.126.net/glw639PVbJpb-vnaETrkXw==/5638295627313680.jpg" alt=""></p><p>自己生得比较晚，没有遇上百花齐放的个人计算机早期时代。现在国内也有Retro Game，Retro Computer，以及复古音源的热潮。</p><p>趁着大降价，买了一台23.8寸的小米显示器1A（工作制表和PS4两用）。其实考虑过1400元左右的型号，但感觉那点参数提升也没什么用。本着穷人节俭用钱的原则这个就好了。这个显示器还可以看双页漫画嘛！打谱的时候也看得很清楚！可以同时看有四十列的Excel表格！——使劲给自己暗示其实用性后，我终于买下了它。</p><p>说起来，虽然自己听的曲子基本都是gal OST，但一首曲子适不适合改编成吉他是很容易。首先和弦不能太复杂，节奏型要稳定，音域太广的话就得考虑移调，调整指法谱也是很费劲的。HyperCaffinated上次说“你这分解和弦的琶音看起来一股钢琴味” 。</p><p>最近在读的书……一是Aniruddh D. Patel 的《音乐，语言和脑》。只是稍微对这个交叉领域感兴趣。（原版《<a href="https://book.douban.com/subject/2843084/" target="_blank" rel="noopener">Music, Language, and the Brain</a>》大概要五六十刀，中文版定价只要49人民币。赞美社会主义出版物定价——可惜当当没货！）网络上有无插图的文字版，将就着看。</p><p>另外读了小林泰三的《看海的人》（中篇合集），以及《醉步男》。相当硬核的科幻。还有《青春之歌》，啊没错就是杨沫的那部革命小说。只是在几个特定日子才会被缅怀的理想时代的遗痕。</p><p>我记得高中时候我经常翘了体育课跑去图书馆看书，图书馆里面有很多八九十年代的藏书，不少定价才几分几毛钱。九十年代的书籍给我的印象不怎么好，有很多官场小说，社会纪实，情爱小说，凶杀暴力恐怖故事，封面设计还非常土，不知道学校怎么选书的。</p><p>对了，还重读了太宰治的《女生徒》，很细腻微妙的心理变化。说起太宰，我记得把青梅拉黑有一段时间了，因为她买了本精装版的《人间失格》放在桌头，等了三周还没看完（不过我对太宰的性情并没有什么意见。虽然那本书都快烂大街，是谁都会说一句“生而为人我很抱歉”）。我只是想着等她读完，然后大概试探一下文学力。结果发现她完全不懂人类细腻的情感（以及相关文艺作品），整天就看些漫威，美国队长之类的好莱坞爽片。总的来说就是没心没肺。我不知道这几年她怎么过来的，只是有点遗憾。但毕竟每个人都有自己的活法，道不同那就拉倒呗。</p><p>人生大部分时候是平凡无奇的，并不可能时刻刺激颠簸。大部分人应该也只是普通地过完一生（并且不因时代的动荡而命运坎坷就算是很幸运了）。活了这么久，对世界并不围绕你转也该有点认识了。</p><p>说起来高中毕业也快十年了，我完全不知道同龄人现在在哪里，过着怎样的生活（已经xx自由，或者是变成“后浪”？）说起来，毕业的时候我们对未来只是从旁人的只言片语中拼凑起的粗糙蓝图，相信“只要努力就能……“。 现在虽然不很懂，但比较老油条地知道了大家的起跑线并不总是同一条，以及终点也不只一个。 我还在纠结（明年）有聚会的话我去不去参加呢？我应该不会去，这样就能把他们的印象留在十八岁。……也有一部分担忧自己”混得不如别人“的自卑在里面。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 笔记 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 生活 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
       <title>《未来夏娃》和安卓恋人</title>
       <link href="/post/l-eve-future/"/>
       <url>/post/l-eve-future/</url>
@@ -155,6 +188,29 @@
             <tag> 科幻 </tag>
             
             <tag> 恋爱 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>生活报告</title>
+      <link href="/post/recent-seikatsu/"/>
+      <url>/post/recent-seikatsu/</url>
+      
+        <content type="html"><![CDATA[<p>很久没写日志，怕要被友链除名了。稍微记录一下生活状况。</p><p>可能是自我意识过剩，总是会思考在面对“网线另一端的不特定读者”时，要用什么口气写下文字。最近翻阅以前（高中时代）的日记时，也觉得很是幼稚，偶尔还有偏激的地方。但这毕竟是成长的一环节。</p><p>沿海小城此刻已经进入了台风季节，每天呼呼作响地刮风。榴莲上市了又下架了，菠萝也差不多下市了，但卖西瓜的敞篷小货车仍然能每天下工回来都能看到。因为疫情期还没过，街面广播天天在放国家安全法，还有举报偷渡回国人员什么的，耳朵都快起茧了。这种灰尘扑面又有点闷湿的天气，就有点九十年代的感觉。</p><p>最近家里装了纱窗，但一不小心没有在傍晚天暗前关窗的话，还是会被乘虚而入的蚊子叮个半死。还是得偶尔配合用电热蚊香液。</p><a id="more"></a><p><img src="//stgapr.github.io/post/recent-seikatsu/blahaj.jpg" alt="周末晒太阳的宜家鲨鲨"></p><p>我发现自己身上同时会有拖延症和超前症，正如大学舍友Ace所言，“考试前一周就特别想打游戏，但游戏也打不安心。”  我想，可能是工作/学习/考试本身是个没什么满足感的事情，于是就想用别的什么可以带来短时愉悦反馈的娱乐来逃避，或者干脆尽快把它做掉，免得心里挂碍。</p><p>拖延症和超前症本身问题不大，是人在心理上故意挑战效率极限。熬夜的原因可能也类似（试图在深夜中报复性地补偿回自己白天被占据的时间，虽然是个恶循环）。但工作本身只是养家糊口的手段，我比较崇奉尽可能快（但是比较保证质量）地干完一件事。或者你在无趣的事情中找一些乐趣也是可以的。但，沉迷于智能设备的垃圾信息流是万万不行的。那些只是浮光掠影，是不断撩动的欲望和满足后无聊的转轮。</p><p>不行的话就打日兔拳，或者百田一本。日兔拳是一种心情愉悦的表情组合（虽然我也不知道它是什么意思），大概是自我激励？ 百田一本就是“假如我在限定的时间里不做完某件事，我就去买一张最讨厌的艺人的专辑”。</p><p>最近在工作之余稍微把荔园在线(szuonline.cn)镜像下来了。荔园在线是一个深圳大学的论坛的个人备份站，同时还有国内其他高校的一部分帖子存档（原站大多已经无法访问）。我觉得这些是了解2000年-2008年左右校园生活、社会风貌和其他方面考古的重要史料。虽然不是特别全。我觉得应该有一部分人意识到它的重要性了。 顺便一提，镜像工具用的是teleport Ultra，爬的速率很慢，大概只有几十KB每秒，总共数十万文件都是靠挂在后台细水长流慢慢down下来。</p><p>这座小城市的生活节奏和十年前、二十年前没什么变化，虽然新城区越来越大，甚至已经在侵蚀城乡结合部，甚至原来的农村。 以后城市和城市会不会蔓延且相接呢？就算如此，人和人的距离仍然还是那么远。比如，我完全不知道海峡对面的网友的生活形态，他们在读什么书，听什么音乐，看什么新闻，在虚拟和现实世界的认知与这边有多少不同 。说起来这座城市还有一个偏僻的岛屿现在是中华民国的实际管辖区域。 上大学时经常去环岛南路看”一国两制统一中国“，天气好的时候能透过浮动的海面雾气看到对面的岛屿”三民主义统一中国“的牌子。这里和那里，就如同隔海互相喊话（并且偶尔射击炮弹）一样，互相固执地主张。</p><p>除了地域、风俗和语言的隔阂外，阶层、亚文化圈也逐渐地把人分成了一个个互相陌生的群体。</p><p>最近在PS4上试玩了D.C.4。马戏团这个万年冷饭系列我只打过D.C.Ⅱ，并且对其命名复杂的FD和外传游戏望而生畏。不过这次我从老硬盘里找出了杂贺匡写的D.C.和D.C.Ⅱ小说，津津有味地回味了一番。D.C.4好像和前作的人物没什么关系——除了体验版最后出现的芳乃樱。俗话说“流水的初音岛，铁打的芳乃樱”（还有一个万年基友杉並）。虽然这一作仍然发生在樱花永远盛开的岛屿……角色配置几乎也一模一样，但这次不在初音岛上了，新的岛名（以及学校名）汉字又写作香香见，不得不说很土（干嘛不写作“鏡”？）。</p><p>Da Capo，还有Dal Segno大家都知道是音乐里的演奏记号。每次里面剧情推进到确立恋爱关系后，樱花树都会凋谢这个意象很好：魔法结束了，必须有一些该面对的现实了——然后是新的开始。结虽然里面的恋爱桥段现在看起来没什么新意，但能给人一种……世纪初的淳朴感。D.C.4体验版搞的那些哭泣的梦境，破碎的镜面之类的暗示，丝毫不慌。</p><p>D.C.系列主作的几首OP都很好。这里推荐一张用上世纪的计算机音源复刻这个系列主题曲的专辑《<a href="https://music.163.com/#/album?id=2627980" target="_blank" rel="noopener">D.C.S.F -COMPUTER WORLD-</a>》。没想到用音色有限的硬音源也能改编得这么动听。</p><p><img src="https://p1.music.126.net/glw639PVbJpb-vnaETrkXw==/5638295627313680.jpg" alt=""></p><p>自己生得比较晚，没有遇上百花齐放的个人计算机早期时代。现在国内也有Retro Game，Retro Computer，以及复古音源的热潮。</p><p>趁着大降价，买了一台23.8寸的小米显示器1A（工作制表和PS4两用）。其实考虑过1400元左右的型号，但感觉那点参数提升也没什么用。本着穷人节俭用钱的原则这个就好了。这个显示器还可以看双页漫画嘛！打谱的时候也看得很清楚！可以同时看有四十列的Excel表格！——使劲给自己暗示其实用性后，我终于买下了它。</p><p>说起来，虽然自己听的曲子基本都是gal OST，但一首曲子适不适合改编成吉他是很容易。首先和弦不能太复杂，节奏型要稳定，音域太广的话就得考虑移调，调整指法谱也是很费劲的。HyperCaffinated上次说“你这分解和弦的琶音看起来一股钢琴味” 。</p><p>最近在读的书……一是Aniruddh D. Patel 的《音乐，语言和脑》。只是稍微对这个交叉领域感兴趣。（原版《<a href="https://book.douban.com/subject/2843084/" target="_blank" rel="noopener">Music, Language, and the Brain</a>》大概要五六十刀，中文版定价只要49人民币。赞美社会主义出版物定价——可惜当当没货！）网络上有无插图的文字版，将就着看。</p><p>另外读了小林泰三的《看海的人》（中篇合集），以及《醉步男》。相当硬核的科幻。还有《青春之歌》，啊没错就是杨沫的那部革命小说。只是在几个特定日子才会被缅怀的理想时代的遗痕。</p><p>我记得高中时候我经常翘了体育课跑去图书馆看书，图书馆里面有很多八九十年代的藏书，不少定价才几分几毛钱。九十年代的书籍给我的印象不怎么好，有很多官场小说，社会纪实，情爱小说，凶杀暴力恐怖故事，封面设计还非常土，不知道学校怎么选书的。</p><p>对了，还重读了太宰治的《女生徒》，很细腻微妙的心理变化。说起太宰，我记得把青梅拉黑有一段时间了，因为她买了本精装版的《人间失格》放在桌头，等了三周还没看完（不过我对太宰的性情并没有什么意见。虽然那本书都快烂大街，是谁都会说一句“生而为人我很抱歉”）。我只是想着等她读完，然后大概试探一下文学力。结果发现她完全不懂人类细腻的情感（以及相关文艺作品），整天就看些漫威，美国队长之类的好莱坞爽片。总的来说就是没心没肺。我不知道这几年她怎么过来的，只是有点遗憾。但毕竟每个人都有自己的活法，道不同那就拉倒呗。</p><p>人生大部分时候是平凡无奇的，并不可能时刻刺激颠簸。大部分人应该也只是普通地过完一生（并且不因时代的动荡而命运坎坷就算是很幸运了）。活了这么久，对世界并不围绕你转也该有点认识了。</p><p>说起来高中毕业也快十年了，我完全不知道同龄人现在在哪里，过着怎样的生活（已经xx自由，或者是变成“后浪”？）说起来，毕业的时候我们对未来只是从旁人的只言片语中拼凑起的粗糙蓝图，相信“只要努力就能……“。 现在虽然不很懂，但比较老油条地知道了大家的起跑线并不总是同一条，以及终点也不只一个。 我还在纠结（明年）有聚会的话我去不去参加呢？我应该不会去，这样就能把他们的印象留在十八岁。……也有一部分担忧自己”混得不如别人“的自卑在里面。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 生活 </tag>
             
         </tags>
       
@@ -202,9 +258,9 @@
       
         <tags>
             
-            <tag> 音乐 </tag>
-            
             <tag> ACG </tag>
+            
+            <tag> 音乐 </tag>
             
             <tag> 乐器 </tag>
             
@@ -339,9 +395,9 @@
             
             <tag> 游戏 </tag>
             
-            <tag> 音乐 </tag>
-            
             <tag> 编程 </tag>
+            
+            <tag> 音乐 </tag>
             
         </tags>
       
@@ -427,7 +483,7 @@
       <link href="/post/tiannong-copybook/"/>
       <url>/post/tiannong-copybook/</url>
       
-        <content type="html"><![CDATA[<p>有一天我那个喜欢书法的大舅问我说，怎样在电脑上把印刷体弄成颜体？仔细询问目的后得知他想要一款能在平板电脑上用的能自定义字体、内容并生成字帖的软件。我闲得蛋疼，就自嗨写了一个《田农汉帖》<br><a id="more"></a><br>在线使用 <a href="http://tiannong.gitee.io/hantie/" target="_blank" rel="noopener">田农汉帖</a><br>源代码： <a href="https://gitee.com/tiannong/hantie" target="_blank" rel="noopener">gitee:tiannong/hantie</a></p><p>首先声明我真的不懂编程，甚至不会写javascript，对设计模式、开发之类更是一窍不通，只会复制粘贴，所以下面的内容没什么太大价值。总的来说只有一句话要说，就是软件开发不仅是技术活，也是个艺术活。</p><p>那我就啰嗦地讲下这个应用方方面面的摸索开发过程。</p><h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><h3 id="确定需求"><a href="#确定需求" class="headerlink" title="确定需求"></a>确定需求</h3><p>首先从确定需求开始。很简单，就是整一个能生成字帖的工具。大概是田字格那种字帖，上面写一些诗词之类。反正至少得自定义内容。自定义字体。</p><h3 id="同类应用对比"><a href="#同类应用对比" class="headerlink" title="同类应用对比"></a>同类应用对比</h3><p>然后就想上网看下现成的在线字帖工具是怎样的。哎呀，中文互联网真是乱七八糟，还要微信登录，广告满天飘。于是赶紧去App Store看了一眼，其实上架的字帖app不算少，功能也很完善，能想到的内购内容人家也都想到了。有的甚至还支持临摹。那我做的这玩意儿有什么用，不是重复造轮子吗？</p><h3 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h3><p>考虑到我写的这一坨代码的第一名用户他有一个平板电脑（不清楚具体型号），也不方便问是什么操作系统，并且 我不打算为不同操作系统单独写app，何况万一以后还会在PC上用这个软件，所以还是偷懒用HTML5。HTML5有一个好特性就是canvas。</p><p>编程目标是小、简洁美观、轻量化，确保在512MB内存的古董机子上也能跑， 所以找来找去用了MDUI——一个Material Design风格的超轻量级响应式高性能前端界面库。这玩意组件全面，不依赖第三方库<del>而且编码门槛低</del>。</p><p>俗话说天下代码一大抄（并不），接着去Github上找了一圈，有一个很简陋的字帖生成器原型，很好，就是在canvas上渲染的。单HTML文件，代码量不到两百行，最后效果居然还不错。就拿这个改了。</p><h3 id="界面设计和交互逻辑"><a href="#界面设计和交互逻辑" class="headerlink" title="界面设计和交互逻辑"></a>界面设计和交互逻辑</h3><p>既然用了Material Design的前端库，那照着Ehviewer抄吧。反正都长差不多。MDUI的组件真的很丰富，就是徒眼看元素缩进有点晕。<br>第一版的设计是，左边一个抽屉。分成“设置”、“生成字帖”两个按钮。在设置界面调整各种参数，录入文字，然后在”生成字帖“观看效果。但这样的交互其实很麻烦：为什么还要再点回去才能看到最终的字帖生成效果？（还要忍受抽屉的伸缩动画）为什么不能实时地修改？<br>所以后面改了一版，弄了个Tab，第一个Tab是各种排版微调设置，第二个Tab就是效果预览。虽然做不到实时预览效果，但好歹只要点一下就能看到最终效果。这样抽屉就空下来了，那就放一个“关于”吧，写一些作者信息，开源组件许可证，捐助链接之类的。</p><p>对了，因为没有后端，也就没有渲染模板引擎来处理路径，总不可能a href吧？况且也没有后端程序来在页面间传递参数。我们尽量在一个html文件里面用js来引值传值，设置style。所以抽屉标签页的切换就是通过以下代码完成的：</p><p><code></code></p><p>function show_home() {<br>​    var home_content = document.getElementById(“home_content”)<br>​    var about_content = document.getElementById(“about_content”)<br>​    about_content.style.display = “none”;<br>​    home_content.style.display = “block”;<br>}</p><p><code></code></p><p>The hack works。不优雅但是有效够用。</p><h3 id="Less-is-more"><a href="#Less-is-more" class="headerlink" title="Less is more"></a>Less is more</h3><p>一开始不能设计太多功能——比如分享到朋友圈——这些玩意儿要额外引入和native API交互的东西。但目前最应该做的是完成20%的核心需求，循序渐进地把最重要的部分写完，再去考虑剩下的扩展功能。</p><p>前期应该做的事情：</p><ul><li>熟悉前端框架的组件用法</li><li>弄清楚canvas的渲染流程</li><li>一点点增添功能，比如格子样式，字号，字体更换</li></ul><p>前期阶段不应该做的事情：</p><ul><li>忙着添加各种自定义纸张质感而忽略了主要功能的开发</li><li>着手对其他CJK语言的支持</li><li>整些没用的功能例如用户登录、分享到朋友圈/微信/微博 </li><li>太早写开发文档自嗨</li></ul><p>这些功能要么会引入累赘的模块让代码复杂性成倍上升，要么会引发著作权/法律问题，或者让自己挖太大的坑而失去填坑的热情。</p><h3 id="canvas的那些坑"><a href="#canvas的那些坑" class="headerlink" title="canvas的那些坑"></a>canvas的那些坑</h3><p>上面说过了核心代码就是往canvas上渲染东西。就是循环读取每一个汉字，然后计算坐标，画很多canvas来绘制底格和汉字（确保缩放时不会错位）<br>至于字体，可以通过如下方法指定给canvas：<br><code></code><br>@font-face {<br>  font-family: “myFont”;<br>  src: url(“./custom.ttf”);<br>}</p><p>const cvs = document.querySelector(‘canvas’)<br>const ctx = cvs.getContext(‘2d’)<br>context.font = ‘30px myFont’<br>ctx.fillText(‘测试文本’, 50, 50)<br><code></code><br>每次修改排版设置后，通过按钮的onclick事件call函数来销毁掉所有canvas（注意是直接销毁上次绘制字帖时动态生成的element，不是仅仅擦除画布），再重新开始绘制。简单粗暴。</p><p>其实自己本来也想做临摹功能，估计就是接收屏幕触摸事件，在canvas绘制轨迹；搞不好还能做成软笔效果（就像华为手机上的手写输入法的那种笔锋），不过心想这不是给自己挖坑吗，我还得写一大套起落笔算法。虽然之前参与过的画板项目myPaint有现成的软笔笔锋算法。但多一事不如少一事……</p><p>还有一个坑是在绘制纸张纹理时，发现怎么死活都画不到canvas上。后来把代码改成这样，等image load结束后再绘制就正常了：</p><p><code>ground_texture.onload = function() {const pattern = ctx.createPattern(ground_texture, &quot;repeat&quot;);ctx.fillStyle = pattern;}</code><br>类似地，字体加载也有这个问题，见下。</p><h3 id="字体加载和缓存"><a href="#字体加载和缓存" class="headerlink" title="字体加载和缓存"></a>字体加载和缓存</h3><p>大部分浏览器，字体是懒加载的，在@font-face中声明了字体并不意味着下载此字体，只有在使用了这个字体，浏览器才会下载。</p><p>对于DOM+CSS来说没有问题，因为页面可以先显示默认的字体，当自定义字体加载完成后，页面自动呈现新字体。但是对canvas来说就不行了，因为在绘制的时候自定义字体还未加载完，那么绘制到画布会使用的默认字体，等自定义字体加载完，画布是不会自动更换像素的。</p><p>网络上找了一下有一个类似异步的document.fonts.ready写法，然后发现可以用<a href="https://developer.mozilla.org/en-US/docs/Web/API/FontFace/FontFace" target="_blank" rel="noopener">FontFace</a>，等加载完毕后再回调canvas绘制。</p><p><code>const myFont = new FontFace(&#39;myFont&#39;, &#39;url(./custom.ttf)&#39;)myFont.load().then(font =&gt; { document.fonts.add(font)}).then(() =&gt; {....})</code></p><p>这些接口在不同浏览器引擎支持程度不一样，最差的当然是IE，当Safari也好不到哪里去。Edge也不咋样。不过Android 的Webview倒是对这个特性支持不错。<br>在等待的时间里还可以通过显示剩余时间不可预测的进度条（就像Windows设置界面里的用户登录迟缓进度条一样）让使用者对字体资源的加载情形有个数。<br>之后浏览器应该会形成font cache，无需重复加载了。但我试了一下发现有时候过太久还是要重新加载，国内这网络环境少说也得十秒钟，体验不大好（就算有progress bar）。</p><h3 id="字体的版权和繁简问题"><a href="#字体的版权和繁简问题" class="headerlink" title="字体的版权和繁简问题"></a>字体的版权和繁简问题</h3><p>由于大部分字体是需要授权的商业字体，稍有不慎容易引发律师函。所以在字体的选择上，应该找那些对个人/家庭使用免费授权的，或者是开源字体（注意 开源≠随便用≠免费）。<br>字体使用上的规矩还很复杂，比如说把微软雅黑打印出来给人看合不合法呢？拿来做企业的宣传广告合不合法呢？预载到打印机上合不合法呢？私下拷贝、流通合不合法呢？草，我为什么要研究这个。根据微软的<a href="https://docs.microsoft.com/zh-cn/typography/fonts/font-faq" target="_blank" rel="noopener">《字体限制常见问答》</a>和苹果的<a href="https://images.apple.com/legal/sla/docs/macOS1013.pdf" target="_blank" rel="noopener">《macOS许可协议》</a>来看，情况还很多，还涉及字体作为“软件”和“美术作品” 的不同定义的问题，需要自行反复理解。</p><p>网络上找到一段解释：</p><blockquote><p>由于许可证主要禁止将字体「嵌入」到当前系统以外的网页或软件中，只需要弄清楚「嵌入」的概念即可。也就是说如果你使用了某种字体的文件在传输时，使得对方无论是否安装了该字体都能显示出相同的效果，那么说明你「嵌入」了这一字体。因此，在网页设计中通过样式表（CSS）的 font-family 字段指定特定字体并不构成「嵌入」，因为这只是告知客户端尝试调用其本机安装的该字体来渲染页面；如果用户没有安装任何指定的字体，则只会显示出浏览器和/或操作系统规定的某种回退（fallback）字体。类似地，在 app 中指定系统内建的某个字体、由操作系统在运行时从系统资源库中调用，也不构成「嵌入」。相反，如果你将字体文件拷贝到自己的网页服务器上或 app 的资源文件中，然后在代码中直接调用这些字体文件本身，哪怕是原封不动地用着系统内建的字体，也是违反协议的。</p></blockquote><p>谁能想到，浓眉大眼的微软雅黑居然也不能乱用……总之一句话，考虑到潜在风险，最好不要用操作系统自带字体。</p><p>好在有很多别的选择。目前向个人用户免费开放字体（有条件）的有方正字库、汉仪字体、新蒂字体、文悦。里面印刷体手写体都有。记得阅读许可协议，确定自己的行为没有违反字体授权。不然对方法务部门可不是闹着玩的。<br>最后选定的是这几款：</p><ul><li>方正柳公权楷书</li><li>方正字迹-书体坊勤礼碑颜体-简</li><li>汉仪新蒂文徵明体</li><li>汉仪程行简</li><li>汉仪颜楷W</li></ul><p>众所周知Google Fonts被墙了很久，国外其他服务在中国大陆也很不稳定。方正、汉仪的云字库还要注册，太麻烦了。一个原则就是：要在断网的时候也能用。</p><h3 id="其他小细节和质感提升"><a href="#其他小细节和质感提升" class="headerlink" title="其他小细节和质感提升"></a>其他小细节和质感提升</h3><p>首先是配色。MDUI自带了一套主题配色方案，考虑了强调色、对比度。基本不用人操心，只需要用mdui-theme-开头的一系列类就完事了。主题配色的那一段html我直接从MDUI官网抄过来的。默认界面可以古朴端庄一些，考虑到这是一个字帖App，可以用浅灰-鹅黄，宫红-墨黑这种，深灰不可以看起来不吉利。反正明度一定要低，不能有太廉价的塑料味儿。至于字帖的字体颜色和田字格配色就别用默认的工业配色盘了，可以从“中国传统色”里面选。</p><p>另外界面字体可以换方正标雅宋：严肃中带着端庄，简洁不失秀丽，一看就有国学味儿——不认识方正标雅宋的请自行打开学〇强国App观摩一下。 宋刻本字体配Google的Material Design有一种中西结合、跨越千年的木刻纹路和冰冷屏幕碰撞的奇妙质感。</p><p>另外快捷方式图标可以用GIMP或者Inkscape绘制一下——美工工具链当然也得用开源的。注意icon的字体的版权。放进HTML的head里。这样添加到桌面/主屏幕 就有漂亮的图标了。（咕咕咕中）</p><p><code></code></p><p><link rel="shortcut icon" href="图标地址" type="image/x-icon"></p><p><link rel="icon" href="图标地址" type="image/x-icon"><br><code></code></p><p>打开时应该留着上次的设置。这个可以用localStorage做到（130KB）</p><p>此外，有的字体是简体输入显示成繁体，有的必须是繁体才能显示繁体。里面的字符集门道我也不熟，我猜可以用openCC，在检测到使用繁-繁字体时自动把原文的简体字部分转成繁体；但这种情况很少，就不做这功能了。</p><p>本来还觉得安卓滑来滑去的动画效果不够庄重，但懒得改了……</p><h3 id="内购点假想"><a href="#内购点假想" class="headerlink" title="内购点假想"></a>内购点假想</h3><p>虽然这个应用目前是自娱自乐的，不过还是假想了一下它的付费卖点。</p><p>App要让用户付费，最关键的就是让人觉得”我需要这个东西“ ”钱值这个功能“。功能不光指是实用性，还可以是品味、或者人为制造的稀缺性。 这些都在营销教程里讲烂的。这个字帖应用可能设计成内购的地方，比如某些高级的配色/纸张纹理质感，其实没什么卵用，但看上去很漂亮，很中国风，很衬托正统中华方块儿字的灵动气韵，很有国学味，用户就想买。</p><p>附加值首页可以弄个“每日字帖”，推送诗词，说得好像买了就有毅力每天在手机上一边欣赏书法一边积累背诵诗词似的。</p><p>那还有没别的内购点？比如导出成图片格式（便于打印后临摹）的功能也可以收费，当然懂行的用户会按Ctrl+P，或者screenshot。为此有必要提供一个空心字选项，还好canvas直接就有strokeText()函数。一行代码搞定。</p><h2 id="版本迭代和后续维护"><a href="#版本迭代和后续维护" class="headerlink" title="版本迭代和后续维护"></a>版本迭代和后续维护</h2><p>web页面的更新很简单，本地调试好了之后直接推送到服务器上即可。（什么webpack，没听说过）<br>整个程序，包括js、img不到100K。但几个字体加起来就有50M了。</p><p>要桌面版或者安卓版，也可以用Electron，node-webkit，QtWebEngine之类打一个包。反正就是浏览器壳里面塞一个webview，（直接用HBuilder之类就行，不用下一个安卓开发全家桶）。iOS就算了，没钱交开发者年费……</p>]]></content>
+        <content type="html"><![CDATA[<p>有一天我那个喜欢书法的大舅问我说，怎样在电脑上把印刷体弄成颜体？仔细询问目的后得知他想要一款能在平板电脑上用的能自定义字体、内容并生成字帖的软件。我闲得蛋疼，就自嗨写了一个《田农汉帖》<br><a id="more"></a><br>在线使用 <a href="http://tiannong.gitee.io/hantie/" target="_blank" rel="noopener">田农汉帖</a><br>源代码： <a href="https://gitee.com/tiannong/hantie" target="_blank" rel="noopener">gitee:tiannong/hantie</a></p><p>首先声明我真的不懂编程，甚至不会写javascript，对设计模式、开发之类更是一窍不通，只会复制粘贴，所以下面的内容没什么太大价值。总的来说只有一句话要说，就是软件开发不仅是技术活，也是个艺术活。</p><p>那我就啰嗦地讲下这个应用方方面面的摸索开发过程。</p><h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><h3 id="确定需求"><a href="#确定需求" class="headerlink" title="确定需求"></a>确定需求</h3><p>首先从确定需求开始。很简单，就是整一个能生成字帖的工具。大概是田字格那种字帖，上面写一些诗词之类。反正至少得自定义内容。自定义字体。</p><h3 id="同类应用对比"><a href="#同类应用对比" class="headerlink" title="同类应用对比"></a>同类应用对比</h3><p>然后就想上网看下现成的在线字帖工具是怎样的。哎呀，中文互联网真是乱七八糟，还要微信登录，广告满天飘。于是赶紧去App Store看了一眼，其实上架的字帖app不算少，功能也很完善，能想到的内购内容人家也都想到了。有的甚至还支持临摹。那我做的这玩意儿有什么用，不是重复造轮子吗？</p><h3 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h3><p>考虑到我写的这一坨代码的第一名用户他有一个平板电脑（不清楚具体型号），也不方便问是什么操作系统，并且 我不打算为不同操作系统单独写app，何况万一以后还会在PC上用这个软件，所以还是偷懒用HTML5。HTML5有一个好特性就是canvas。</p><p>编程目标是小、简洁美观、轻量化，确保在512MB内存的古董机子上也能跑， 所以找来找去用了MDUI——一个Material Design风格的超轻量级响应式高性能前端界面库。这玩意组件全面，不依赖第三方库<del>而且编码门槛低</del>。</p><p>俗话说天下代码一大抄（并不），接着去Github上找了一圈，有一个很简陋的字帖生成器原型，很好，就是在canvas上渲染的。单HTML文件，代码量不到两百行，最后效果居然还不错。就拿这个改了。</p><h3 id="界面设计和交互逻辑"><a href="#界面设计和交互逻辑" class="headerlink" title="界面设计和交互逻辑"></a>界面设计和交互逻辑</h3><p>既然用了Material Design的前端库，那照着Ehviewer抄吧。反正都长差不多。MDUI的组件真的很丰富，就是徒眼看元素缩进有点晕。<br>第一版的设计是，左边一个抽屉。分成“设置”、“生成字帖”两个按钮。在设置界面调整各种参数，录入文字，然后在”生成字帖“观看效果。但这样的交互其实很麻烦：为什么还要再点回去才能看到最终的字帖生成效果？（还要忍受抽屉的伸缩动画）为什么不能实时地修改？<br>所以后面改了一版，弄了个Tab，第一个Tab是各种排版微调设置，第二个Tab就是效果预览。虽然做不到实时预览效果，但好歹只要点一下就能看到最终效果。这样抽屉就空下来了，那就放一个“关于”吧，写一些作者信息，开源组件许可证，捐助链接之类的。</p><p>对了，因为没有后端，也就没有渲染模板引擎来处理路径，总不可能a href吧？况且也没有后端程序来在页面间传递参数。我们尽量在一个html文件里面用js来引值传值，设置style。所以抽屉标签页的切换就是通过以下代码完成的：</p><figure class="hljs highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">show_home</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">​<span class="keyword">var</span> home_content = <span class="built_in">document</span>.getElementById(<span class="string">"home_content"</span>)</span><br><span class="line">​<span class="keyword">var</span> about_content = <span class="built_in">document</span>.getElementById(<span class="string">"about_content"</span>)</span><br><span class="line">​about_content.style.display = <span class="string">"none"</span>;</span><br><span class="line">​home_content.style.display = <span class="string">"block"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>The hack works。不优雅但是有效够用。</p><h3 id="Less-is-more"><a href="#Less-is-more" class="headerlink" title="Less is more"></a>Less is more</h3><p>一开始不能设计太多功能——比如分享到朋友圈——这些玩意儿要额外引入和native API交互的东西。但目前最应该做的是完成20%的核心需求，循序渐进地把最重要的部分写完，再去考虑剩下的扩展功能。</p><p>前期应该做的事情：</p><ul><li>熟悉前端框架的组件用法</li><li>弄清楚canvas的渲染流程</li><li>一点点增添功能，比如格子样式，字号，字体更换</li></ul><p>前期阶段不应该做的事情：</p><ul><li>忙着添加各种自定义纸张质感而忽略了主要功能的开发</li><li>着手对其他CJK语言的支持</li><li>整些没用的功能例如用户登录、分享到朋友圈/微信/微博 </li><li>太早写开发文档自嗨</li></ul><p>这些功能要么会引入累赘的模块让代码复杂性成倍上升，要么会引发著作权/法律问题，或者让自己挖太大的坑而失去填坑的热情。</p><h3 id="canvas的那些坑"><a href="#canvas的那些坑" class="headerlink" title="canvas的那些坑"></a>canvas的那些坑</h3><p>上面说过了核心代码就是往canvas上渲染东西。就是循环读取每一个汉字，然后计算坐标，画很多canvas来绘制底格和汉字（确保缩放时不会错位）<br>至于字体，可以通过如下方法指定给canvas：<br><figure class="hljs highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">font</span>-<span class="title">face</span> &#123;</span><br><span class="line">  <span class="built_in">font</span>-<span class="attribute">family</span>: <span class="string">"myFont"</span>;</span><br><span class="line">  <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">"./custom.ttf"</span>); </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> cvs = <span class="built_in">document</span>.querySelector(<span class="string">'canvas'</span>)</span><br><span class="line"><span class="keyword">const</span> ctx = cvs.getContext(<span class="string">'2d'</span>)</span><br><span class="line">context.font = <span class="string">'30px myFont'</span></span><br><span class="line">ctx.fillText(<span class="string">'测试文本'</span>, <span class="number">50</span>, <span class="number">50</span>)</span><br></pre></td></tr></table></figure></p><p>每次修改排版设置后，通过按钮的onclick事件call函数来销毁掉所有canvas（注意是直接销毁上次绘制字帖时动态生成的element，不是仅仅擦除画布），再重新开始绘制。简单粗暴。</p><p>其实自己本来也想做临摹功能，估计就是接收屏幕触摸事件，在canvas绘制轨迹；搞不好还能做成软笔效果（就像华为手机上的手写输入法的那种笔锋），不过心想这不是给自己挖坑吗，我还得写一大套起落笔算法。虽然之前参与过的画板项目myPaint有现成的软笔笔锋算法。但多一事不如少一事……</p><p>还有一个坑是在绘制纸张纹理时，发现怎么死活都画不到canvas上。后来把代码改成这样，等image load结束后再绘制就正常了：</p><figure class="hljs highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ground_texture.onload = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">const</span> pattern = ctx.createPattern(ground_texture, <span class="string">"repeat"</span>);</span><br><span class="line">ctx.fillStyle = pattern;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>类似地，字体加载也有这个问题，见下。</p><h3 id="字体加载和缓存"><a href="#字体加载和缓存" class="headerlink" title="字体加载和缓存"></a>字体加载和缓存</h3><p>大部分浏览器，字体是懒加载的，在@font-face中声明了字体并不意味着下载此字体，只有在使用了这个字体，浏览器才会下载。</p><p>对于DOM+CSS来说没有问题，因为页面可以先显示默认的字体，当自定义字体加载完成后，页面自动呈现新字体。但是对canvas来说就不行了，因为在绘制的时候自定义字体还未加载完，那么绘制到画布会使用的默认字体，等自定义字体加载完，画布是不会自动更换像素的。</p><p>网络上找了一下有一个类似异步的document.fonts.ready写法，然后发现可以用<a href="https://developer.mozilla.org/en-US/docs/Web/API/FontFace/FontFace" target="_blank" rel="noopener">FontFace</a>，等加载完毕后再回调canvas绘制。</p><figure class="hljs highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myFont = new <span class="type">FontFace</span>('myFont', 'url(./custom.ttf)')</span><br><span class="line">myFont.load().then(font =&gt; &#123; document.fonts.add(font)&#125;).then(() =&gt; <span class="meta">&#123;....&#125;</span>)</span><br></pre></td></tr></table></figure><p>这些接口在不同浏览器引擎支持程度不一样，最差的当然是IE，当Safari也好不到哪里去。Edge也不咋样。不过Android 的Webview倒是对这个特性支持不错。<br>在等待的时间里还可以通过显示剩余时间不可预测的进度条（就像Windows设置界面里的用户登录迟缓进度条一样）让使用者对字体资源的加载情形有个数。<br>之后浏览器应该会形成font cache，无需重复加载了。但我试了一下发现有时候过太久还是要重新加载，国内这网络环境少说也得十秒钟，体验不大好（就算有progress bar）。</p><h3 id="字体的版权和繁简问题"><a href="#字体的版权和繁简问题" class="headerlink" title="字体的版权和繁简问题"></a>字体的版权和繁简问题</h3><p>由于大部分字体是需要授权的商业字体，稍有不慎容易引发律师函。所以在字体的选择上，应该找那些对个人/家庭使用免费授权的，或者是开源字体（注意 开源≠随便用≠免费）。<br>字体使用上的规矩还很复杂，比如说把微软雅黑打印出来给人看合不合法呢？拿来做企业的宣传广告合不合法呢？预载到打印机上合不合法呢？私下拷贝、流通合不合法呢？草，我为什么要研究这个。根据微软的<a href="https://docs.microsoft.com/zh-cn/typography/fonts/font-faq" target="_blank" rel="noopener">《字体限制常见问答》</a>和苹果的<a href="https://images.apple.com/legal/sla/docs/macOS1013.pdf" target="_blank" rel="noopener">《macOS许可协议》</a>来看，情况还很多，还涉及字体作为“软件”和“美术作品” 的不同定义的问题，需要自行反复理解。</p><p>网络上找到一段解释：</p><blockquote><p>由于许可证主要禁止将字体「嵌入」到当前系统以外的网页或软件中，只需要弄清楚「嵌入」的概念即可。也就是说如果你使用了某种字体的文件在传输时，使得对方无论是否安装了该字体都能显示出相同的效果，那么说明你「嵌入」了这一字体。因此，在网页设计中通过样式表（CSS）的 font-family 字段指定特定字体并不构成「嵌入」，因为这只是告知客户端尝试调用其本机安装的该字体来渲染页面；如果用户没有安装任何指定的字体，则只会显示出浏览器和/或操作系统规定的某种回退（fallback）字体。类似地，在 app 中指定系统内建的某个字体、由操作系统在运行时从系统资源库中调用，也不构成「嵌入」。相反，如果你将字体文件拷贝到自己的网页服务器上或 app 的资源文件中，然后在代码中直接调用这些字体文件本身，哪怕是原封不动地用着系统内建的字体，也是违反协议的。</p></blockquote><p>谁能想到，浓眉大眼的微软雅黑居然也不能乱用……总之一句话，考虑到潜在风险，最好不要用操作系统自带字体。</p><p>好在有很多别的选择。目前向个人用户免费开放字体（有条件）的有方正字库、汉仪字体、新蒂字体、文悦。里面印刷体手写体都有。记得阅读许可协议，确定自己的行为没有违反字体授权。不然对方法务部门可不是闹着玩的。<br>最后选定的是这几款：</p><ul><li>方正柳公权楷书</li><li>方正字迹-书体坊勤礼碑颜体-简</li><li>汉仪新蒂文徵明体</li><li>汉仪程行简</li><li>汉仪颜楷W</li></ul><p>众所周知Google Fonts被墙了很久，国外其他服务在中国大陆也很不稳定。方正、汉仪的云字库还要注册，太麻烦了。一个原则就是：要在断网的时候也能用。</p><h3 id="其他小细节和质感提升"><a href="#其他小细节和质感提升" class="headerlink" title="其他小细节和质感提升"></a>其他小细节和质感提升</h3><p>首先是配色。MDUI自带了一套主题配色方案，考虑了强调色、对比度。基本不用人操心，只需要用mdui-theme-开头的一系列类就完事了。主题配色的那一段html我直接从MDUI官网抄过来的。默认界面可以古朴端庄一些，考虑到这是一个字帖App，可以用浅灰-鹅黄，宫红-墨黑这种，深灰不可以看起来不吉利。反正明度一定要低，不能有太廉价的塑料味儿。至于字帖的字体颜色和田字格配色就别用默认的工业配色盘了，可以从“中国传统色”里面选。</p><p>另外界面字体可以换方正标雅宋：严肃中带着端庄，简洁不失秀丽，一看就有国学味儿——不认识方正标雅宋的请自行打开学〇强国App观摩一下。 宋刻本字体配Google的Material Design有一种中西结合、跨越千年的木刻纹路和冰冷屏幕碰撞的奇妙质感。</p><p>另外快捷方式图标可以用GIMP或者Inkscape绘制一下——美工工具链当然也得用开源的。注意icon的字体的版权。放进HTML的head里。这样添加到桌面/主屏幕 就有漂亮的图标了。（咕咕咕中）</p><figure class="hljs highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;link <span class="attribute">rel</span>=<span class="string">"shortcut icon"</span> <span class="attribute">href</span>=<span class="string">"图标地址"</span> <span class="attribute">type</span>=<span class="string">"image/x-icon"</span>&gt;</span><br><span class="line">&lt;link <span class="attribute">rel</span>=<span class="string">"icon"</span> <span class="attribute">href</span>=<span class="string">"图标地址"</span> <span class="attribute">type</span>=<span class="string">"image/x-icon"</span>&gt;</span><br></pre></td></tr></table></figure><p>打开时应该留着上次的设置。这个可以用localStorage做到（130KB）</p><p>此外，有的字体是简体输入显示成繁体，有的必须是繁体才能显示繁体。里面的字符集门道我也不熟，我猜可以用openCC，在检测到使用繁-繁字体时自动把原文的简体字部分转成繁体；但这种情况很少，就不做这功能了。</p><p>本来还觉得安卓滑来滑去的动画效果不够庄重，但懒得改了……</p><h3 id="内购点假想"><a href="#内购点假想" class="headerlink" title="内购点假想"></a>内购点假想</h3><p>虽然这个应用目前是自娱自乐的，不过还是假想了一下它的付费卖点。</p><p>App要让用户付费，最关键的就是让人觉得”我需要这个东西“ ”钱值这个功能“。功能不光指是实用性，还可以是品味、或者人为制造的稀缺性。 这些都在营销教程里讲烂的。这个字帖应用可能设计成内购的地方，比如某些高级的配色/纸张纹理质感，其实没什么卵用，但看上去很漂亮，很中国风，很衬托正统中华方块儿字的灵动气韵，很有国学味，用户就想买。</p><p>附加值首页可以弄个“每日字帖”，推送诗词，说得好像买了就有毅力每天在手机上一边欣赏书法一边积累背诵诗词似的。</p><p>那还有没别的内购点？比如导出成图片格式（便于打印后临摹）的功能也可以收费，当然懂行的用户会按Ctrl+P，或者screenshot。为此有必要提供一个空心字选项，还好canvas直接就有strokeText()函数。一行代码搞定。</p><h2 id="版本迭代和后续维护"><a href="#版本迭代和后续维护" class="headerlink" title="版本迭代和后续维护"></a>版本迭代和后续维护</h2><p>web页面的更新很简单，本地调试好了之后直接推送到服务器上即可。（什么webpack，没听说过）<br>整个程序，包括js、img不到100K。但几个字体加起来就有50M了。</p><p>要桌面版或者安卓版，也可以用Electron，node-webkit，QtWebEngine之类打一个包。反正就是浏览器壳里面塞一个webview，（直接用HBuilder之类就行，不用下一个安卓开发全家桶）。iOS就算了，没钱交开发者年费……</p>]]></content>
       
       
       <categories>
@@ -527,31 +583,6 @@
     </entry>
     
     <entry>
-      <title>ACG和简化的世界</title>
-      <link href="/post/simplified-world/"/>
-      <url>/post/simplified-world/</url>
-      
-        <content type="html"><![CDATA[<p>ACG作品写得最多的一个主题就是恋爱与成长。当然，谁不愿意吃糖呢？“没有人永远17岁，但永远有人17岁。”  </p><a id="more"></a><p>晚上喝了点……无酒精饮料。 突然想写写这个想法。自从大学时接触ACG（这比很多人都晚），到现在也有七八年了。虽然现在工作边忙，几乎没有什么闲暇狂热地追动画和漫画。按”阅历”而言肯定比不上那些核心爱圈的大佬，而只能算是半个爱好者。每年市场上都有很多作品推出，有好有坏，眼花缭乱，但我想说，我喜欢那些没有变的东西——比如说永远不变的青春题材。</p><p>说到青春题材，有个最常见的设定就是：主人公是个高中生。主角相貌普通（还行）没什么社交经验，悸动的生活似乎和自己无缘，一直以来过着平淡无奇的日子……正和幽幽发光的屏幕外的万千死宅一样。你知道后面肯定会发生什么，你也在期待着接下来的变化，无论是代入那个主角，还是冷静地作为读者阅读一出故事。</p><p>高中是人生中一个很好的节点：青春期，比较好展开恋爱线路；二是学校背景，容易接触异性，也有共同话题；就算你坐在教室靠窗最后一桌，属于回家部的部员，宅得要命，异性谈话经验0；但不知怎么的，突然人生就变成蔷薇色的——比如要拯救因人数不足而废部的社团，帮助破解学园神秘传说；或是有个小可爱突发奇想要制造飞机火箭，想寻找童年的宝物，要么突然发现小行星要撞地球……</p><p>这些事件的皮其实不重要，重要的是在解决的过程中，能深入对方的内心，并且帮助屏幕外的看客回想起一些自己感受过的温暖……看着看着，就发现人生可以有这么多可能的美好走向，只要肯迈出第一步——就有可能拥有一个幸福的结局。</p><p>正面意义太丰富了有没有？简直是低婚率国家最佳鼓动人心教材。可惜看完这一部，就去找下一个作品了，并没有很多人真的转化为行动（？）</p><p>但是大部分ACG作品都和童话一样，明显地不“真实”：一是场景就如同戏言小剧场般，该简化掉的东西都会简化，虽然说是“作品中出现的所有东西都应该为情节而服务”，比如从来都是对儿子的恋情笑嘻嘻全盘接受的父母（有的甚至根本不出场），虽然朋友很少但后宫很多，所有悲痛都会释怀，晴天后就是<del>菜花</del>彩虹绽放……泪水抹去后复归欢笑。啊，还有懒得吐槽的主角光环和悲惨的基友角色。还有谜之生物，谜之助攻，谜之投怀送抱……令观众摘下眼镜，缓缓说一句：“这写的是什么玩意儿？”</p><p>先说童话——我们一直童话有一个误解，仿佛那是写给小孩子听的东西。其实原因在于国内的童话创作水平一直不大行，好像也没什么像样的本土童话作家（什么，郑渊洁？郑渊洁那个不是童话，那是低幼版的成人故事。）说起来，日本的童话文学水平还是很高的，我最近读了一些安房直子、新美南吉、小川未明的童话，加上以前读的宫泽贤治全家桶。这些作者很多是文艺界先锋或者是妇女解放运动的先驱。</p><p>在日式童话里，虽然出场元素都是些小男孩小女孩、山精、老婆婆、油菜田、豆腐店、狐狸、旅人、钟表店啥的，说的故事也很浅显，也不会显露太多的时代特征，但主题就很深刻，比如梗结于实现好友的心愿还是遵从内心自私的想法的矛盾，对维持”家族名声“和追求良知真相的矛盾，以及（写得比较委婉得）物欲和情欲的贪念带来的悲剧；有的手法也被ACG作品借用了去。只是现在玩家很苛刻，一般ACG作品都会给个不错的结尾（除非是制作组坚信剧情的情感张力足以弥补破缺的遗憾，或者是真的昏了脑袋乱写）有的就太过自说自话了，导致出场人物的思考方式和现实微妙地脱轨，反而失了童话的本真。</p><p>讲真，在幻想作品中，除了人物性情品质之外，别的恐怕多半不能作为现实参考。假如中毒过深，那恐怕会在现实的两性交往中吃一鼻子灰。 </p><blockquote><p>比如说身份地位相差悬殊的两人——一般剧情设置的冲突点就是：一是冲破差异搭建起平等亲密的关系，二是取得对方相关人的认同。上次看一个脚本家访谈说，”角色设定太过高傲也会引起受众反感，所以一般处理的方法是“看起来不可接触但实际上意外地接地气”。“</p><p> 我注意到，这种线路中，剧情显得一厢情愿的地方往往出现在让对方家庭接纳上。为了维持名门气质的设定，首先对方老爸就不可能太和蔼可亲对吧？然后要么唇枪舌战一番证明自己有能力照顾好他女儿，要么接受对方出的离谱的考验。 按照作品只能有一条清晰主线的原则，这些附加部分最多有二十分钟的剧情，enter键按一会儿就搞定了，作为good end前的锦上添花——而不会变成涉及四代人的宗族恩怨的爱恨情仇关系大杂烩。</p></blockquote><p>可是现实中，谁家会愿意女儿跟着一个不靠谱的穷小子生活受苦呢？喜欢对方的话，就应该提供足够好的生活，以及扎实可靠的人生前景；没有这个的话，其他的软实力恐怕都没用。  </p><p>所以有人说，黄油就是男性版的韩剧。玩家只是在一遍遍追溯和重演中，去怀念、（过度）弥补过去日子的缺憾。</p><p>上面这些话都是以高中题材的ACG作品为前提展开胡说的。除了高中生，还有一些变种，比如高中教师，大学，以及刚入社会、被黑心公司压榨得喘不过气的社会人（多见于异世界转生题材）。但是反正我感觉日本人就很喜欢硬塞一个高中进去，就算出于皇国与共和国的国运阴谋战争的间隙，男主也必须去上学。要么更加直截了当：自己是小女孩。现在作品真的很多元化，什么设定都有。</p><p>但纵观那些留下来并为人所心心记念的作品，可以看出受众所看重的恐怕还是那些传统而温暖的东西。比如讲述受外界条件阻隔的恋人努力走到一起；互相缺乏了解的两个人努力地想拉近心的关系，其中又因敏感或是误解而带来泪水，但最终心心相契之类。</p><p>这些情意，如同一湾清泉，滋润被冷漠得现实折腾得千疮百孔的人的内心。无论在电子技术不发达的时代，或者是现在人手各种电子产品的时候，人永远都在渴望不孤独，能获得人和人之间的心灵相通。 就算现在业界衰退，以大厂牌可能都转型关门了，但这种对亲密关系的渴望仍然会以别的形式永远存在。就如同永远传颂的童话一般，它也一样不会破灭。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 随感 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> ACG </tag>
-            
-            <tag> 童话 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
       <title>迎接26岁</title>
       <link href="/post/birthday/"/>
       <url>/post/birthday/</url>
@@ -571,6 +602,31 @@
             <tag> 生活 </tag>
             
             <tag> 生日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>ACG和简化的世界</title>
+      <link href="/post/simplified-world/"/>
+      <url>/post/simplified-world/</url>
+      
+        <content type="html"><![CDATA[<p>ACG作品写得最多的一个主题就是恋爱与成长。当然，谁不愿意吃糖呢？“没有人永远17岁，但永远有人17岁。”  </p><a id="more"></a><p>晚上喝了点……无酒精饮料。 突然想写写这个想法。自从大学时接触ACG（这比很多人都晚），到现在也有七八年了。虽然现在工作边忙，几乎没有什么闲暇狂热地追动画和漫画。按”阅历”而言肯定比不上那些核心爱圈的大佬，而只能算是半个爱好者。每年市场上都有很多作品推出，有好有坏，眼花缭乱，但我想说，我喜欢那些没有变的东西——比如说永远不变的青春题材。</p><p>说到青春题材，有个最常见的设定就是：主人公是个高中生。主角相貌普通（还行）没什么社交经验，悸动的生活似乎和自己无缘，一直以来过着平淡无奇的日子……正和幽幽发光的屏幕外的万千死宅一样。你知道后面肯定会发生什么，你也在期待着接下来的变化，无论是代入那个主角，还是冷静地作为读者阅读一出故事。</p><p>高中是人生中一个很好的节点：青春期，比较好展开恋爱线路；二是学校背景，容易接触异性，也有共同话题；就算你坐在教室靠窗最后一桌，属于回家部的部员，宅得要命，异性谈话经验0；但不知怎么的，突然人生就变成蔷薇色的——比如要拯救因人数不足而废部的社团，帮助破解学园神秘传说；或是有个小可爱突发奇想要制造飞机火箭，想寻找童年的宝物，要么突然发现小行星要撞地球……</p><p>这些事件的皮其实不重要，重要的是在解决的过程中，能深入对方的内心，并且帮助屏幕外的看客回想起一些自己感受过的温暖……看着看着，就发现人生可以有这么多可能的美好走向，只要肯迈出第一步——就有可能拥有一个幸福的结局。</p><p>正面意义太丰富了有没有？简直是低婚率国家最佳鼓动人心教材。可惜看完这一部，就去找下一个作品了，并没有很多人真的转化为行动（？）</p><p>但是大部分ACG作品都和童话一样，明显地不“真实”：一是场景就如同戏言小剧场般，该简化掉的东西都会简化，虽然说是“作品中出现的所有东西都应该为情节而服务”，比如从来都是对儿子的恋情笑嘻嘻全盘接受的父母（有的甚至根本不出场），虽然朋友很少但后宫很多，所有悲痛都会释怀，晴天后就是<del>菜花</del>彩虹绽放……泪水抹去后复归欢笑。啊，还有懒得吐槽的主角光环和悲惨的基友角色。还有谜之生物，谜之助攻，谜之投怀送抱……令观众摘下眼镜，缓缓说一句：“这写的是什么玩意儿？”</p><p>先说童话——我们一直童话有一个误解，仿佛那是写给小孩子听的东西。其实原因在于国内的童话创作水平一直不大行，好像也没什么像样的本土童话作家（什么，郑渊洁？郑渊洁那个不是童话，那是低幼版的成人故事。）说起来，日本的童话文学水平还是很高的，我最近读了一些安房直子、新美南吉、小川未明的童话，加上以前读的宫泽贤治全家桶。这些作者很多是文艺界先锋或者是妇女解放运动的先驱。</p><p>在日式童话里，虽然出场元素都是些小男孩小女孩、山精、老婆婆、油菜田、豆腐店、狐狸、旅人、钟表店啥的，说的故事也很浅显，也不会显露太多的时代特征，但主题就很深刻，比如梗结于实现好友的心愿还是遵从内心自私的想法的矛盾，对维持”家族名声“和追求良知真相的矛盾，以及（写得比较委婉得）物欲和情欲的贪念带来的悲剧；有的手法也被ACG作品借用了去。只是现在玩家很苛刻，一般ACG作品都会给个不错的结尾（除非是制作组坚信剧情的情感张力足以弥补破缺的遗憾，或者是真的昏了脑袋乱写）有的就太过自说自话了，导致出场人物的思考方式和现实微妙地脱轨，反而失了童话的本真。</p><p>讲真，在幻想作品中，除了人物性情品质之外，别的恐怕多半不能作为现实参考。假如中毒过深，那恐怕会在现实的两性交往中吃一鼻子灰。 </p><blockquote><p>比如说身份地位相差悬殊的两人——一般剧情设置的冲突点就是：一是冲破差异搭建起平等亲密的关系，二是取得对方相关人的认同。上次看一个脚本家访谈说，”角色设定太过高傲也会引起受众反感，所以一般处理的方法是“看起来不可接触但实际上意外地接地气”。“</p><p> 我注意到，这种线路中，剧情显得一厢情愿的地方往往出现在让对方家庭接纳上。为了维持名门气质的设定，首先对方老爸就不可能太和蔼可亲对吧？然后要么唇枪舌战一番证明自己有能力照顾好他女儿，要么接受对方出的离谱的考验。 按照作品只能有一条清晰主线的原则，这些附加部分最多有二十分钟的剧情，enter键按一会儿就搞定了，作为good end前的锦上添花——而不会变成涉及四代人的宗族恩怨的爱恨情仇关系大杂烩。</p></blockquote><p>可是现实中，谁家会愿意女儿跟着一个不靠谱的穷小子生活受苦呢？喜欢对方的话，就应该提供足够好的生活，以及扎实可靠的人生前景；没有这个的话，其他的软实力恐怕都没用。  </p><p>所以有人说，黄油就是男性版的韩剧。玩家只是在一遍遍追溯和重演中，去怀念、（过度）弥补过去日子的缺憾。</p><p>上面这些话都是以高中题材的ACG作品为前提展开胡说的。除了高中生，还有一些变种，比如高中教师，大学，以及刚入社会、被黑心公司压榨得喘不过气的社会人（多见于异世界转生题材）。但是反正我感觉日本人就很喜欢硬塞一个高中进去，就算出于皇国与共和国的国运阴谋战争的间隙，男主也必须去上学。要么更加直截了当：自己是小女孩。现在作品真的很多元化，什么设定都有。</p><p>但纵观那些留下来并为人所心心记念的作品，可以看出受众所看重的恐怕还是那些传统而温暖的东西。比如讲述受外界条件阻隔的恋人努力走到一起；互相缺乏了解的两个人努力地想拉近心的关系，其中又因敏感或是误解而带来泪水，但最终心心相契之类。</p><p>这些情意，如同一湾清泉，滋润被冷漠得现实折腾得千疮百孔的人的内心。无论在电子技术不发达的时代，或者是现在人手各种电子产品的时候，人永远都在渴望不孤独，能获得人和人之间的心灵相通。 就算现在业界衰退，以大厂牌可能都转型关门了，但这种对亲密关系的渴望仍然会以别的形式永远存在。就如同永远传颂的童话一般，它也一样不会破灭。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 随感 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ACG </tag>
+            
+            <tag> 童话 </tag>
             
         </tags>
       
@@ -1007,9 +1063,9 @@
       
         <tags>
             
-            <tag> 软件 </tag>
-            
             <tag> 电子小说 </tag>
+            
+            <tag> 软件 </tag>
             
             <tag> ACG </tag>
             
@@ -1381,9 +1437,9 @@
       
         <tags>
             
-            <tag> 电子小说 </tag>
-            
             <tag> 游戏 </tag>
+            
+            <tag> 电子小说 </tag>
             
             <tag> 汉化 </tag>
             
@@ -1641,9 +1697,9 @@
       
         <tags>
             
-            <tag> 生活 </tag>
-            
             <tag> 编程 </tag>
+            
+            <tag> 生活 </tag>
             
             <tag> 网络 </tag>
             
@@ -1681,7 +1737,7 @@
       <link href="/post/qiangguo-sourcecode/"/>
       <url>/post/qiangguo-sourcecode/</url>
       
-        <content type="html"><![CDATA[<p>要问现在中国最热门的app是什么，大家都知道。</p><a id="more"></a><p>强国现在已经变成了一个动词。大家都喜欢强国得快一些，方便一些。当然，有需求就有实现。</p><p>目前Github上排名前列的自动化强国工具主要有fxxk-xuexiqiangguo和Panda-Learning两款。</p><p>前者源代码js写的，并且经过压缩，可读性很差（说白了，是我不熟悉javascript）。这次就来简单分析后者的Python代码，看看计算机程序是怎么实现大业自动化的。不打算逐行分析，只挑一些比较有代表性的功能实现部分说说。</p><p>从mydriver.py中可以看到它用的是selenium——一个无头浏览器框架，在启动时载入。搞爬虫的人都知道这种支援外部浏览器（如firefox、IE、chrome等）的自动化测试工具。Panda-Learning用的就是chrome。selenium和chrome之间要通过一个驱动程序来桥接——webdriver。</p><h2 id="装得更像真实用户"><a href="#装得更像真实用户" class="headerlink" title="装得更像真实用户"></a>装得更像真实用户</h2><p>主要用随机请求头和随机滑动窗口来处理。</p><p>PandaLearning内置了各种user agent的列表，每次登录时随机选一个，让http header看起来像真人的访问请求。</p><p>至于随机滑动窗口，还是用webdriver的driver_article.go_js()函数来执行滑动的javascript代码，模拟真人手指上下滑动的行为：</p><p><code></code><br><figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">for</span> i <span class="keyword">in</span> range(a_log, a_log + a_num):</span><br><span class="line">driver_article.get_url(links[i])</span><br><span class="line">time.sleep(random.randint(<span class="number">5</span>, <span class="number">15</span>))</span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">120</span>):</span><br><span class="line"><span class="keyword">if</span> random.random() &gt; <span class="number">0.5</span>:</span><br><span class="line">driver_article.go_js(<span class="string">'window.scrollTo(0, document.body.scrollHeight/120*&#123;&#125;)'</span>.format(j))</span><br></pre></td></tr></table></figure></p><p><code></code>  </p><h2 id="性能提升"><a href="#性能提升" class="headerlink" title="性能提升"></a>性能提升</h2><p>主要用上了多线程和headless browser。</p><p>为了提高程序性能、降低功耗，selenium在headless browser启动时，可以通过参数来选择不加载图片，关闭声音，不使用GPU，关闭沙盒。</p><p><code></code><br><figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> noimg:</span><br><span class="line"> self.options.add_argument(<span class="string">'blink-settings=imagesEnabled=false'</span>)  </span><br><span class="line"> <span class="keyword">if</span> nohead:</span><br><span class="line"> self.options.add_argument(<span class="string">'--headless'</span>)</span><br><span class="line"> self.options.add_argument(<span class="string">'--disable-extensions'</span>)</span><br><span class="line"> self.options.add_argument(<span class="string">'--disable-gpu'</span>)</span><br><span class="line"> self.options.add_argument(<span class="string">'--no-sandbox'</span>)</span><br><span class="line"> self.options.add_argument(<span class="string">'--mute-audio'</span>)  </span><br><span class="line"> self.options.add_argument(<span class="string">'--window-size=400,500'</span>)</span><br><span class="line"> self.options.add_argument(<span class="string">'--window-position=800,0'</span>)</span><br><span class="line"> self.options.add_argument(<span class="string">'--log-level=3'</span>)</span><br></pre></td></tr></table></figure></p><p><code></code>            </p><p>多线程的实现用了python内置的threading模块，在threads.py里，很简单的二十几行代码，顺便实现了线程锁。</p><h2 id="其他人性化的改进"><a href="#其他人性化的改进" class="headerlink" title="其他人性化的改进"></a>其他人性化的改进</h2><p>模拟账号登录是用了钉钉的登录接口。在登陆后保存cookie。</p><p>通过WebDriverWait()函数等待界面元素加载完成，来对付网络缓慢的问题。</p><h2 id="全平台打包发行"><a href="#全平台打包发行" class="headerlink" title="全平台打包发行"></a>全平台打包发行</h2><p>我们看到它居然支持win/osx/linux(rpm+deb)/rsp 。因为编程语言是Python，并没有平台相关的代码部分，移植到每个平台上也很容易。</p><p>Windows的发行版下貌似用的是pyInstaller打包，其实也可以用python 的portable版——虽然没有exe。每个发行版都内置了一个配置好webdriver的对应平台下的chromium，开箱即用。</p><p>魔高一尺，道高一丈。这种自动化工具的使用隐患很大——就技术而言，我猜可能的突破点在充当无头浏览器的chromium的某些特性上——chromium肯定和正式的chrome发行版有些不同；同时为了提升程序性能的一些作弊技巧也会成为软件弱点，比如可以反过来检测界面元素是否加载完全来判断你是否使用了真的浏览器。</p><h2 id="你会用吗？"><a href="#你会用吗？" class="headerlink" title="你会用吗？"></a>你会用吗？</h2><p>你说呢。</p>]]></content>
+        <content type="html"><![CDATA[<p>要问现在中国最热门的app是什么，大家都知道。</p><a id="more"></a><p>强国现在已经变成了一个动词。大家都喜欢强国得快一些，方便一些。当然，有需求就有实现。</p><p>目前Github上排名前列的自动化强国工具主要有fxxk-xuexiqiangguo和Panda-Learning两款。</p><p>前者源代码js写的，并且经过压缩，可读性很差（说白了，是我不熟悉javascript）。这次就来简单分析后者的Python代码，看看计算机程序是怎么实现大业自动化的。不打算逐行分析，只挑一些比较有代表性的功能实现部分说说。</p><p>从mydriver.py中可以看到它用的是selenium——一个无头浏览器框架，在启动时载入。搞爬虫的人都知道这种支援外部浏览器（如firefox、IE、chrome等）的自动化测试工具。Panda-Learning用的就是chrome。selenium和chrome之间要通过一个驱动程序来桥接——webdriver。</p><h2 id="装得更像真实用户"><a href="#装得更像真实用户" class="headerlink" title="装得更像真实用户"></a>装得更像真实用户</h2><p>主要用随机请求头和随机滑动窗口来处理。</p><p>PandaLearning内置了各种user agent的列表，每次登录时随机选一个，让http header看起来像真人的访问请求。</p><p>至于随机滑动窗口，还是用webdriver的driver_article.go_js()函数来执行滑动的javascript代码，模拟真人手指上下滑动的行为：</p><figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">for</span> i <span class="keyword">in</span> range(a_log, a_log + a_num):</span><br><span class="line">driver_article.get_url(links[i])</span><br><span class="line">time.sleep(random.randint(<span class="number">5</span>, <span class="number">15</span>))</span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">120</span>):</span><br><span class="line"><span class="keyword">if</span> random.random() &gt; <span class="number">0.5</span>:</span><br><span class="line">driver_article.go_js(<span class="string">'window.scrollTo(0, document.body.scrollHeight/120*&#123;&#125;)'</span>.format(j))</span><br></pre></td></tr></table></figure><h2 id="性能提升"><a href="#性能提升" class="headerlink" title="性能提升"></a>性能提升</h2><p>主要用上了多线程和headless browser。</p><p>为了提高程序性能、降低功耗，selenium在headless browser启动时，可以通过参数来选择不加载图片，关闭声音，不使用GPU，关闭沙盒。</p><figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> noimg:</span><br><span class="line"> self.options.add_argument(<span class="string">'blink-settings=imagesEnabled=false'</span>)  </span><br><span class="line"> <span class="keyword">if</span> nohead:</span><br><span class="line"> self.options.add_argument(<span class="string">'--headless'</span>)</span><br><span class="line"> self.options.add_argument(<span class="string">'--disable-extensions'</span>)</span><br><span class="line"> self.options.add_argument(<span class="string">'--disable-gpu'</span>)</span><br><span class="line"> self.options.add_argument(<span class="string">'--no-sandbox'</span>)</span><br><span class="line"> self.options.add_argument(<span class="string">'--mute-audio'</span>)  </span><br><span class="line"> self.options.add_argument(<span class="string">'--window-size=400,500'</span>)</span><br><span class="line"> self.options.add_argument(<span class="string">'--window-position=800,0'</span>)</span><br><span class="line"> self.options.add_argument(<span class="string">'--log-level=3'</span>)</span><br></pre></td></tr></table></figure><p>多线程的实现用了python内置的threading模块，在threads.py里，很简单的二十几行代码，顺便实现了线程锁。</p><h2 id="其他人性化的改进"><a href="#其他人性化的改进" class="headerlink" title="其他人性化的改进"></a>其他人性化的改进</h2><p>模拟账号登录是用了钉钉的登录接口。在登陆后保存cookie。</p><p>通过WebDriverWait()函数等待界面元素加载完成，来对付网络缓慢的问题。</p><h2 id="全平台打包发行"><a href="#全平台打包发行" class="headerlink" title="全平台打包发行"></a>全平台打包发行</h2><p>我们看到它居然支持win/osx/linux(rpm+deb)/rsp 。因为编程语言是Python，并没有平台相关的代码部分，移植到每个平台上也很容易。</p><p>Windows的发行版下貌似用的是pyInstaller打包，其实也可以用python 的portable版——虽然没有exe。每个发行版都内置了一个配置好webdriver的对应平台下的chromium，开箱即用。</p><p>魔高一尺，道高一丈。这种自动化工具的使用隐患很大——就技术而言，我猜可能的突破点在充当无头浏览器的chromium的某些特性上——chromium肯定和正式的chrome发行版有些不同；同时为了提升程序性能的一些作弊技巧也会成为软件弱点，比如可以反过来检测界面元素是否加载完全来判断你是否使用了真的浏览器。</p><h2 id="你会用吗？"><a href="#你会用吗？" class="headerlink" title="你会用吗？"></a>你会用吗？</h2><p>你说呢。</p>]]></content>
       
       
       <categories>
@@ -2181,31 +2237,6 @@
     </entry>
     
     <entry>
-      <title>AQUA：与你的永恒夏日 （下篇）</title>
-      <link href="/post/AQUA-2/"/>
-      <url>/post/AQUA-2/</url>
-      
-        <content type="html"><![CDATA[<p>本文是游戏《AQUA》的下半部分 LUKAS篇和AQUA篇的全剧透速览。</p><a id="more"></a><p>三条线看完之后，回到Title，会发现本来水蓝色的界面变成浓烈的黄昏色调。START按钮多了一个LUKAS篇（回忆篇）的选项。</p><p>LUKA篇是以年轻的研究员圭次的视角展开的。圭次进入ECReD机构分支“人体工学开发第十二研究室”负责开发第七代仿生生命体，这个小镇上的机构的部长就是千夏（千纱的母亲）。然后男主的母亲智惠也在里面当研究员。<br>圭次在研究所里表现还不错，但他也渐渐注意到一些不对劲的地方，比如上面似乎利用研究所的目的是搞一些违反伦理的研究。某次公寓楼的瓦斯泄露事故似乎是凶杀案……<br>话说圭次被分配了一个助理研究员沙織，正好是大学同学（怎么有一股ひまわり剧情的熟悉感），两个人之前有点同窗好感。在研究所一来二去混熟了……恋爱了……沙織也怀孕了。圭次向沙織求婚后，两个人幻想着以后的幸福生活……<br>沙織偶尔会提到自己本来是作为实验的参与者来到这个地方，但只有圭次重视她之类。（我觉得这里是圭次没听出来“实验的参与者”是被实验体的意思，而不是“实验研究员”）</p><p>就在沙織临产前的某天，ECReD的医学大楼突然警报大作说“危险药品泄露”，所有人被强制疏散。想到沙織还在里面体检，圭次激动地拨开人群冲了进去，却发现满身是血的沙織手成利刃，而地上满是被砍成重伤的研究员。此时沙織精神状态极其不稳定，觉得每个人都要害她。</p><p>这时候一个不认识的小女孩出现了，试图让变得癫狂的沙織镇定下来。成功是成功了，但沙織也陷入昏迷。</p><p>下一幕是ECReD的医师出来，用僵硬的语气告诉圭次，由于暴走时沙織的脑部功能损伤过大，沙織已经无力回天，而且根据沙織生前自愿签署的协议，自己的遗体捐献给ECReD做科研。圭次痛苦地质问为什么机构要把沙織当作实验品来玩弄。医师也激动地反问了一大段说你们知道我们医疗团队也在承担多少精神压力，天天给你们研究员收拾血淋淋的摊子，被派去分离脑神经，被命令做惨无人道的解剖。<br>圭次就此听到了研究所一些黑暗的真相。<br>因为沙織离世，圭次也就此抑郁下来，时间如同停滞一般。但一年后研究机构的上层者（“亚当”）又重新给圭次指派了一个助理研究员。报道的时候一看，就是那天阻止沙織暴乱的小女孩なずな。なずな这时候看起来还是个中学生，但却是个技术分野的天才。她一边帮圭次搞研究，慢慢地利用权限收集机构的内幕。她表示自己身不由己，但假如圭次愿意，她想和圭次一起离开机构。厌倦了人体研究的圭次去找部长千夏谈话，并质问为什么千夏也要参与这种不人道的研究。</p><p>然后千夏告诉他科研上的一件事，就是某个物理粒子会先收到自己发射出去的光，然后才是发射出光。也就是先果后因。然后千夏解释了一通某种乱七八糟的时空收缩因果理论（我没仔细看），并告诉圭次说，自己现在的这个女儿千纱其实是克隆体。由于那套时空理论，这个女儿必然会遭遇交通事故。而自己并不是想去参与ECReD上层的那些勾当，而是想利用科研资源去开发让虚拟粒子构筑（投影？）人类生命体的技术，从而保证自己能够在千纱出事后利用她的意识备份重新投影出一个“千纱”出来。然后千夏还给圭次看了个东西——之前在给沙織做诊疗时采集的沙織意识数据。</p><p>圭次被打动了，他想要复活恋人沙織。于是打算留了下来，于是和なずな道歉，并且承诺自己会给なずな妥善安排出去后的住处。<br>なずな很鄙夷地说，我不需要你的钱，我自己有地方住。就走了。</p><p>这里就可以说清楚为什么WIND线一开头，なずな老师没地方住，要住进男主家。为什么なずな和千夏有裂隙，并且在甜品店里对圭次说“你不要再一意孤行想要复活恋人了”</p><p>（所以男主不仅回乡重逢的幼驯染是克隆体，而且三年前遭遇事故之前的千纱据后面剧情描述也并不是最早的那个千纱）</p><p>ルカ是一个能量设施，里面提供智慧驱动的是叫做ラケル的东西，ラケル不是把电子设备植入人体，而是反过来把人体植入电子设备……（听起来有点恶心）也就是说把人类的脑神经取出来囚禁在电子设备上，从而操作着ルカ天线。</p><p>这里还提到，早先其实已经在做利用AQUA来部分修复人体的研究了，但需要植入“EC”，而且因为技术不成熟，实验体容易暴乱，并且承受过多的脑负担，生命都很短。 所以后来结束了研究。但有7个实验体除外——其中5个是监护人不肯，1个是联系不上，1个是还在实验中的。 （很明显，其中一个就是奈々璃。开篇正好是她接受该手术后8年后）</p><p>充满黑幕的LUKA篇看完后，终于到了AQUA篇：</p><p>なずな老师见到了ルナ（さとみ）——一个有很长蓝色双马尾的少女。嗯，是会悬浮的投影体。ルナ称呼なずな叫サエ。这时候なずな才说自己其实也并不是真的活体人类，而是智慧体，基本也是用AQUA搞出来的投影。前面有提过ルカ除了负责总管理的ラケル外，还需要数名不需要肉体的智慧体来运作，イヴ就是男主老妈智恵 。</p><p>然后远愿岬的那个传说，其实也不是江户时代那么远，而是最近几十年的真实事件，传说中的女性是凛的父亲的妹妹南白。为什么那个女性？因为南家有女性单传的预感能力。为了研究这种预感能力，ECReD想要强制把人作为实验体，那个女性是因为不从而跳海。而核能事故时凛的母亲也预感到了什么……（抱歉这段没有看得太清楚）……总之一切都是有预谋的。</p><p>再说ラケル。ラケル嵌入的人体脑神经其实会老化而更换。而现在维持运行的这副用的是千夏和智惠童年时的一个玩伴的脑神经。某一天这个玩伴再也没有赴约出现，就是被ECReD抓去……呃……了。<br>ラケル——也就是那个童年玩伴的意识与硬件的融合体——长期管理着AQUA设施ルカ。但她因为过于痛恨人类无休止的欲望和对自己的折磨而暴走。由于ラケル天线罢工，AQUA粒子失常，地陷发生，奈々璃的旧房子坠塌，凛跑去救她，在残垣断壁中鼓励还躲在里面、几乎自暴自弃的奈々璃。奈々璃鼓起勇气的同时恢复了记忆。男主开着なずな老师的氮气加速改装车后知后觉地到的时候，两个人已经平安无事了。<br>但不知为什么并没有如同千夏预测的那样，ラケル让所有人身上的AQUA粒子都错乱从而使人类毁灭，而是以全城停电、ルカ瘫痪来结束。<br>总之这座城市再也不能使用AQUA粒子带来的高科技了。同时在地震中因地下沉陷之故，ECReD的那个研究所也就此关闭运行。小镇失去了科研价值。</p><p>なずな最后问千夏，假如自己就是那个和自己同名的千夏的大女儿なずな的话，千夏会把自己当作家人吗？<br>千夏：这不可能，因为大女儿なずな的确是遭遇事故死了……<br>なずな：不，我就是她。<br>なずな道出真相：ECReD的上层告诉她想活下去的话就做个交易，把自己的脑神经让他们取出来拿去管理ルカ设施。自己同意了，但是又恳求给自己一副虚拟投影身体，让自己以“人”的姿态活着。</p><p>（我：打了大半天发现没几个真正意义的活人……）</p><p>在尾声中，なずな老师选择外出长期旅游，并承诺自己一定会回来。万年萝莉只是因为自己应该算是不老不死之身了，过了几百年再回来一定物是人非吧……</p><p>（all clear后的追加小故事这里就不多说了。）</p><p>说实话这作品剧情相当绕，而且假如不对胃口的话有点狗血……。作品后半段有不少科幻设定上的片假名，特有理论的叙述阅读起来相当难（日本人都在吐槽）。而且某些元素让我总是联想到《ひまわり pebble in the sky》。</p><p>至于主题，也不算难懂。</p><p>科技改变人的生活，也改变了人的内心。人是否能正确地驾驭科技，而不是被反噬……</p><p>和ひまわり相比，AQUA同样的情感细腻、格局宏大。但无论bgm还是厨子空间上，ひまわり的评分都比AQUA高。 个人觉得是前面的日常有点太催眠的缘故，导致WIND线中盘劝退不少玩家。虽然剧情很复杂，但叙述还算清晰利落，没有多余的诡计手法（我不是很喜欢ISLAND那种三番五次的反转）。</p><p>再说其他指标。本作音乐水平相当不错，符合故事的氛围；CG质量也很高；TIKERBELL SOUND LABEL给SORAHANE配乐更是美妙。尤其是ED 月子（stretta di mano）唱的《SUMMER DAYS》。 OP《Everlasting Blue》的MV制作精良，亦值得一看。另外有一个要表扬的东西是，SORAHANE的引擎搞得很好，里面内置了一个阅览系统，你可以在不同剧情篇章间跳转、拖动并预览进度，就像是非线编软件一般。剧情每一段都有一个带小标题的过场动画，feng社的星桥那种感觉。</p><p>假如碰过这社其他作品的人会发现，三部里面都出现过一家叫做シトランテ（紫兔兰亭）的餐馆/甜品店。而且小镇的名字都是月ヶ浜。可以说是一种彩蛋了。</p><p>另外据我所知SORAHANE社一些趣闻： AQUA的副业是卖Excel脚本工具和Office高端使用方法教程的；AQUA第三作《はるかかなた》从krkr2换成基于nw.js的某种引擎，但是这种引擎存在严重的bug，反复推出修复补丁后，终于在patch 3.02版本能正常运行，而且剧情评价很低，はるかかなたb不幸成为雷作；AQUA的脚本家原来是系统工程师，在生放送里提到“就算只有一次也好，在便利店之类的地方打工赚钱做游戏也好，要把自己想说的用作品的形式向世人公开”于是转行做游戏。想想还挺感动的。 </p><p>不过自从2014年的《はるかかなた》发售后，SORAHANE第四作迟迟没有消息……希望这家会社还能够给玩家带来这种“轻盈而严肃”的电子小说。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 笔记 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 电子小说 </tag>
-            
-            <tag> 鉴赏 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
       <title>AQUA：与你的永恒夏日 （上篇）</title>
       <link href="/post/AQUA/"/>
       <url>/post/AQUA/</url>
@@ -2227,6 +2258,31 @@
             <tag> 鉴赏 </tag>
             
             <tag> sorahane </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>AQUA：与你的永恒夏日 （下篇）</title>
+      <link href="/post/AQUA-2/"/>
+      <url>/post/AQUA-2/</url>
+      
+        <content type="html"><![CDATA[<p>本文是游戏《AQUA》的下半部分 LUKAS篇和AQUA篇的全剧透速览。</p><a id="more"></a><p>三条线看完之后，回到Title，会发现本来水蓝色的界面变成浓烈的黄昏色调。START按钮多了一个LUKAS篇（回忆篇）的选项。</p><p>LUKA篇是以年轻的研究员圭次的视角展开的。圭次进入ECReD机构分支“人体工学开发第十二研究室”负责开发第七代仿生生命体，这个小镇上的机构的部长就是千夏（千纱的母亲）。然后男主的母亲智惠也在里面当研究员。<br>圭次在研究所里表现还不错，但他也渐渐注意到一些不对劲的地方，比如上面似乎利用研究所的目的是搞一些违反伦理的研究。某次公寓楼的瓦斯泄露事故似乎是凶杀案……<br>话说圭次被分配了一个助理研究员沙織，正好是大学同学（怎么有一股ひまわり剧情的熟悉感），两个人之前有点同窗好感。在研究所一来二去混熟了……恋爱了……沙織也怀孕了。圭次向沙織求婚后，两个人幻想着以后的幸福生活……<br>沙織偶尔会提到自己本来是作为实验的参与者来到这个地方，但只有圭次重视她之类。（我觉得这里是圭次没听出来“实验的参与者”是被实验体的意思，而不是“实验研究员”）</p><p>就在沙織临产前的某天，ECReD的医学大楼突然警报大作说“危险药品泄露”，所有人被强制疏散。想到沙織还在里面体检，圭次激动地拨开人群冲了进去，却发现满身是血的沙織手成利刃，而地上满是被砍成重伤的研究员。此时沙織精神状态极其不稳定，觉得每个人都要害她。</p><p>这时候一个不认识的小女孩出现了，试图让变得癫狂的沙織镇定下来。成功是成功了，但沙織也陷入昏迷。</p><p>下一幕是ECReD的医师出来，用僵硬的语气告诉圭次，由于暴走时沙織的脑部功能损伤过大，沙織已经无力回天，而且根据沙織生前自愿签署的协议，自己的遗体捐献给ECReD做科研。圭次痛苦地质问为什么机构要把沙織当作实验品来玩弄。医师也激动地反问了一大段说你们知道我们医疗团队也在承担多少精神压力，天天给你们研究员收拾血淋淋的摊子，被派去分离脑神经，被命令做惨无人道的解剖。<br>圭次就此听到了研究所一些黑暗的真相。<br>因为沙織离世，圭次也就此抑郁下来，时间如同停滞一般。但一年后研究机构的上层者（“亚当”）又重新给圭次指派了一个助理研究员。报道的时候一看，就是那天阻止沙織暴乱的小女孩なずな。なずな这时候看起来还是个中学生，但却是个技术分野的天才。她一边帮圭次搞研究，慢慢地利用权限收集机构的内幕。她表示自己身不由己，但假如圭次愿意，她想和圭次一起离开机构。厌倦了人体研究的圭次去找部长千夏谈话，并质问为什么千夏也要参与这种不人道的研究。</p><p>然后千夏告诉他科研上的一件事，就是某个物理粒子会先收到自己发射出去的光，然后才是发射出光。也就是先果后因。然后千夏解释了一通某种乱七八糟的时空收缩因果理论（我没仔细看），并告诉圭次说，自己现在的这个女儿千纱其实是克隆体。由于那套时空理论，这个女儿必然会遭遇交通事故。而自己并不是想去参与ECReD上层的那些勾当，而是想利用科研资源去开发让虚拟粒子构筑（投影？）人类生命体的技术，从而保证自己能够在千纱出事后利用她的意识备份重新投影出一个“千纱”出来。然后千夏还给圭次看了个东西——之前在给沙織做诊疗时采集的沙織意识数据。</p><p>圭次被打动了，他想要复活恋人沙織。于是打算留了下来，于是和なずな道歉，并且承诺自己会给なずな妥善安排出去后的住处。<br>なずな很鄙夷地说，我不需要你的钱，我自己有地方住。就走了。</p><p>这里就可以说清楚为什么WIND线一开头，なずな老师没地方住，要住进男主家。为什么なずな和千夏有裂隙，并且在甜品店里对圭次说“你不要再一意孤行想要复活恋人了”</p><p>（所以男主不仅回乡重逢的幼驯染是克隆体，而且三年前遭遇事故之前的千纱据后面剧情描述也并不是最早的那个千纱）</p><p>ルカ是一个能量设施，里面提供智慧驱动的是叫做ラケル的东西，ラケル不是把电子设备植入人体，而是反过来把人体植入电子设备……（听起来有点恶心）也就是说把人类的脑神经取出来囚禁在电子设备上，从而操作着ルカ天线。</p><p>这里还提到，早先其实已经在做利用AQUA来部分修复人体的研究了，但需要植入“EC”，而且因为技术不成熟，实验体容易暴乱，并且承受过多的脑负担，生命都很短。 所以后来结束了研究。但有7个实验体除外——其中5个是监护人不肯，1个是联系不上，1个是还在实验中的。 （很明显，其中一个就是奈々璃。开篇正好是她接受该手术后8年后）</p><p>充满黑幕的LUKA篇看完后，终于到了AQUA篇：</p><p>なずな老师见到了ルナ（さとみ）——一个有很长蓝色双马尾的少女。嗯，是会悬浮的投影体。ルナ称呼なずな叫サエ。这时候なずな才说自己其实也并不是真的活体人类，而是智慧体，基本也是用AQUA搞出来的投影。前面有提过ルカ除了负责总管理的ラケル外，还需要数名不需要肉体的智慧体来运作，イヴ就是男主老妈智恵 。</p><p>然后远愿岬的那个传说，其实也不是江户时代那么远，而是最近几十年的真实事件，传说中的女性是凛的父亲的妹妹南白。为什么那个女性？因为南家有女性单传的预感能力。为了研究这种预感能力，ECReD想要强制把人作为实验体，那个女性是因为不从而跳海。而核能事故时凛的母亲也预感到了什么……（抱歉这段没有看得太清楚）……总之一切都是有预谋的。</p><p>再说ラケル。ラケル嵌入的人体脑神经其实会老化而更换。而现在维持运行的这副用的是千夏和智惠童年时的一个玩伴的脑神经。某一天这个玩伴再也没有赴约出现，就是被ECReD抓去……呃……了。<br>ラケル——也就是那个童年玩伴的意识与硬件的融合体——长期管理着AQUA设施ルカ。但她因为过于痛恨人类无休止的欲望和对自己的折磨而暴走。由于ラケル天线罢工，AQUA粒子失常，地陷发生，奈々璃的旧房子坠塌，凛跑去救她，在残垣断壁中鼓励还躲在里面、几乎自暴自弃的奈々璃。奈々璃鼓起勇气的同时恢复了记忆。男主开着なずな老师的氮气加速改装车后知后觉地到的时候，两个人已经平安无事了。<br>但不知为什么并没有如同千夏预测的那样，ラケル让所有人身上的AQUA粒子都错乱从而使人类毁灭，而是以全城停电、ルカ瘫痪来结束。<br>总之这座城市再也不能使用AQUA粒子带来的高科技了。同时在地震中因地下沉陷之故，ECReD的那个研究所也就此关闭运行。小镇失去了科研价值。</p><p>なずな最后问千夏，假如自己就是那个和自己同名的千夏的大女儿なずな的话，千夏会把自己当作家人吗？<br>千夏：这不可能，因为大女儿なずな的确是遭遇事故死了……<br>なずな：不，我就是她。<br>なずな道出真相：ECReD的上层告诉她想活下去的话就做个交易，把自己的脑神经让他们取出来拿去管理ルカ设施。自己同意了，但是又恳求给自己一副虚拟投影身体，让自己以“人”的姿态活着。</p><p>（我：打了大半天发现没几个真正意义的活人……）</p><p>在尾声中，なずな老师选择外出长期旅游，并承诺自己一定会回来。万年萝莉只是因为自己应该算是不老不死之身了，过了几百年再回来一定物是人非吧……</p><p>（all clear后的追加小故事这里就不多说了。）</p><p>说实话这作品剧情相当绕，而且假如不对胃口的话有点狗血……。作品后半段有不少科幻设定上的片假名，特有理论的叙述阅读起来相当难（日本人都在吐槽）。而且某些元素让我总是联想到《ひまわり pebble in the sky》。</p><p>至于主题，也不算难懂。</p><p>科技改变人的生活，也改变了人的内心。人是否能正确地驾驭科技，而不是被反噬……</p><p>和ひまわり相比，AQUA同样的情感细腻、格局宏大。但无论bgm还是厨子空间上，ひまわり的评分都比AQUA高。 个人觉得是前面的日常有点太催眠的缘故，导致WIND线中盘劝退不少玩家。虽然剧情很复杂，但叙述还算清晰利落，没有多余的诡计手法（我不是很喜欢ISLAND那种三番五次的反转）。</p><p>再说其他指标。本作音乐水平相当不错，符合故事的氛围；CG质量也很高；TIKERBELL SOUND LABEL给SORAHANE配乐更是美妙。尤其是ED 月子（stretta di mano）唱的《SUMMER DAYS》。 OP《Everlasting Blue》的MV制作精良，亦值得一看。另外有一个要表扬的东西是，SORAHANE的引擎搞得很好，里面内置了一个阅览系统，你可以在不同剧情篇章间跳转、拖动并预览进度，就像是非线编软件一般。剧情每一段都有一个带小标题的过场动画，feng社的星桥那种感觉。</p><p>假如碰过这社其他作品的人会发现，三部里面都出现过一家叫做シトランテ（紫兔兰亭）的餐馆/甜品店。而且小镇的名字都是月ヶ浜。可以说是一种彩蛋了。</p><p>另外据我所知SORAHANE社一些趣闻： AQUA的副业是卖Excel脚本工具和Office高端使用方法教程的；AQUA第三作《はるかかなた》从krkr2换成基于nw.js的某种引擎，但是这种引擎存在严重的bug，反复推出修复补丁后，终于在patch 3.02版本能正常运行，而且剧情评价很低，はるかかなたb不幸成为雷作；AQUA的脚本家原来是系统工程师，在生放送里提到“就算只有一次也好，在便利店之类的地方打工赚钱做游戏也好，要把自己想说的用作品的形式向世人公开”于是转行做游戏。想想还挺感动的。 </p><p>不过自从2014年的《はるかかなた》发售后，SORAHANE第四作迟迟没有消息……希望这家会社还能够给玩家带来这种“轻盈而严肃”的电子小说。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 电子小说 </tag>
+            
+            <tag> 鉴赏 </tag>
             
         </tags>
       
@@ -2511,9 +2567,9 @@
       
         <tags>
             
-            <tag> 电子小说 </tag>
-            
             <tag> 游戏 </tag>
+            
+            <tag> 电子小说 </tag>
             
             <tag> Python </tag>
             
@@ -2625,11 +2681,20 @@
   
     
     <entry>
+      <title>categories</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+    </entry>
+    
+    <entry>
       <title>about</title>
       <link href="/about/index.html"/>
       <url>/about/index.html</url>
       
-        <content type="html"><![CDATA[<p>桃乱扔</p><p>Chinese Madarin / Hinghua / English / Japanese </p><p>Comic / Anime / Visual Novel / Programming / Bicycling</p><p>奔三女性，现居东南沿海小城市，喜欢恋爱向的电子小说和严肃读物，懂得很多奇怪领域的杂学。</p><p>虽然念经济专业但编程技术比厨艺还好一丢丢。最近在自学吉他。</p><p>女友招募中</p>]]></content>
+        <content type="html"><![CDATA[<p>桃ましまろ</p><p>Chinese Madarin / Hinghua / English / Japanese </p><p>Comic / Anime / Visual Novel / Programming / Bicycling</p><p>奔三，现居东南沿海小城市，喜欢恋爱向电子小说和严肃读物，懂得很多奇怪领域的杂学。</p><p>虽然念经济专业但编程技术比厨艺还好一丢丢。最近在自学吉他。</p><p>女友招募中</p>]]></content>
       
     </entry>
     
@@ -2637,15 +2702,6 @@
       <title>友情链接</title>
       <link href="/blogroll/index.html"/>
       <url>/blogroll/index.html</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-    </entry>
-    
-    <entry>
-      <title>categories</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
       
         <content type="html"><![CDATA[]]></content>
       

@@ -127,7 +127,7 @@
     <div class="post-block">
       <link itemprop="mainEntityOfPage" href="https://stgapr.github.io/post/qiangguo-sourcecode/">
       <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-       <meta itemprop="name" content="桃乱扔">
+       <meta itemprop="name" content="桃ましまろ">
        <meta itemprop="description" content="">
        <meta itemprop="image" content="/images/avatar.png">
       </span>
@@ -167,12 +167,10 @@
 <h2 id="装得更像真实用户"><a href="#装得更像真实用户" class="headerlink" title="装得更像真实用户"></a>装得更像真实用户</h2><p>主要用随机请求头和随机滑动窗口来处理。</p>
 <p>PandaLearning内置了各种user agent的列表，每次登录时随机选一个，让http header看起来像真人的访问请求。</p>
 <p>至于随机滑动窗口，还是用webdriver的driver_article.go_js()函数来执行滑动的javascript代码，模拟真人手指上下滑动的行为：</p>
-<p><code></code><br><figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">for</span> i <span class="keyword">in</span> range(a_log, a_log + a_num):</span><br><span class="line">driver_article.get_url(links[i])</span><br><span class="line">time.sleep(random.randint(<span class="number">5</span>, <span class="number">15</span>))</span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">120</span>):</span><br><span class="line">	<span class="keyword">if</span> random.random() &gt; <span class="number">0.5</span>:</span><br><span class="line">	driver_article.go_js(<span class="string">'window.scrollTo(0, document.body.scrollHeight/120*&#123;&#125;)'</span>.format(j))</span><br></pre></td></tr></table></figure></p>
-<p><code></code>  </p>
+<figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">for</span> i <span class="keyword">in</span> range(a_log, a_log + a_num):</span><br><span class="line">driver_article.get_url(links[i])</span><br><span class="line">time.sleep(random.randint(<span class="number">5</span>, <span class="number">15</span>))</span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">120</span>):</span><br><span class="line">	<span class="keyword">if</span> random.random() &gt; <span class="number">0.5</span>:</span><br><span class="line">	driver_article.go_js(<span class="string">'window.scrollTo(0, document.body.scrollHeight/120*&#123;&#125;)'</span>.format(j))</span><br></pre></td></tr></table></figure>
 <h2 id="性能提升"><a href="#性能提升" class="headerlink" title="性能提升"></a>性能提升</h2><p>主要用上了多线程和headless browser。</p>
 <p>为了提高程序性能、降低功耗，selenium在headless browser启动时，可以通过参数来选择不加载图片，关闭声音，不使用GPU，关闭沙盒。</p>
-<p><code></code><br><figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> noimg:</span><br><span class="line">	 self.options.add_argument(<span class="string">'blink-settings=imagesEnabled=false'</span>)  </span><br><span class="line">	 <span class="keyword">if</span> nohead:</span><br><span class="line">	 	self.options.add_argument(<span class="string">'--headless'</span>)</span><br><span class="line">	 	self.options.add_argument(<span class="string">'--disable-extensions'</span>)</span><br><span class="line">	 	self.options.add_argument(<span class="string">'--disable-gpu'</span>)</span><br><span class="line">	 	self.options.add_argument(<span class="string">'--no-sandbox'</span>)</span><br><span class="line">	 self.options.add_argument(<span class="string">'--mute-audio'</span>)  </span><br><span class="line">	 self.options.add_argument(<span class="string">'--window-size=400,500'</span>)</span><br><span class="line">	 self.options.add_argument(<span class="string">'--window-position=800,0'</span>)</span><br><span class="line">	 self.options.add_argument(<span class="string">'--log-level=3'</span>)</span><br></pre></td></tr></table></figure></p>
-<p><code></code>            </p>
+<figure class="hljs highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> noimg:</span><br><span class="line">	 self.options.add_argument(<span class="string">'blink-settings=imagesEnabled=false'</span>)  </span><br><span class="line">	 <span class="keyword">if</span> nohead:</span><br><span class="line">	 	self.options.add_argument(<span class="string">'--headless'</span>)</span><br><span class="line">	 	self.options.add_argument(<span class="string">'--disable-extensions'</span>)</span><br><span class="line">	 	self.options.add_argument(<span class="string">'--disable-gpu'</span>)</span><br><span class="line">	 	self.options.add_argument(<span class="string">'--no-sandbox'</span>)</span><br><span class="line">	 self.options.add_argument(<span class="string">'--mute-audio'</span>)  </span><br><span class="line">	 self.options.add_argument(<span class="string">'--window-size=400,500'</span>)</span><br><span class="line">	 self.options.add_argument(<span class="string">'--window-position=800,0'</span>)</span><br><span class="line">	 self.options.add_argument(<span class="string">'--log-level=3'</span>)</span><br></pre></td></tr></table></figure>
 <p>多线程的实现用了python内置的threading模块，在threads.py里，很简单的二十几行代码，顺便实现了线程锁。</p>
 <h2 id="其他人性化的改进"><a href="#其他人性化的改进" class="headerlink" title="其他人性化的改进"></a>其他人性化的改进</h2><p>模拟账号登录是用了钉钉的登录接口。在登陆后保存cookie。</p>
 <p>通过WebDriverWait()函数等待界面元素加载完成，来对付网络缓慢的问题。</p>
@@ -256,15 +254,15 @@
   
 <div class="info sidebar-item" id="info">
   
-  <img class="author-avatar" src="/images/avatar.png" alt="桃乱扔">
+  <img class="author-avatar" src="/images/avatar.png" alt="桃ましまろ">
   
-  <h1 class="author-name">桃乱扔</h1>
+  <h1 class="author-name">桃ましまろ</h1>
   <h2 class="author-description"></h2>
   <div class="site-count">
     
     <div class="archives-count">
       <div class="site-count-title">Archives</div>
-      <div><a href="/archives/">101</a></div>
+      <div><a href="/archives/">103</a></div>
     </div>
     
     
@@ -282,7 +280,7 @@
     
     <div class="tags-count">
       <div class="site-count-title">Tags</div>
-      <div><a href="/tags/">102</a></div>
+      <div><a href="/tags/">107</a></div>
     </div>
     
   </div>
@@ -316,8 +314,6 @@
         <li><i class="fas fa-envelope"></i><a href="mailto:stgapr29@gmail.com" target="_blank">Email</a></li>
         
         <li><i class="fab fa-github"></i><a href="https://github.com/stgapr" target="_blank">Github</a></li>
-        
-        <li><i class="fab fa-github"></i><a href="https://weibo.com/6219139265" target="_blank">Weibo</a></li>
         
       </ul>
     </div>
@@ -444,7 +440,7 @@
     <div class="footer-container">
       <div class="footer-left">
         <div class="copyright">
-          <span class="author">桃乱扔</span><span class="year"><i class="far fa-copyright"></i>1993 - 2020</span>
+          <span class="author">桃ましまろ</span><span class="year"><i class="far fa-copyright"></i>1993 - 2020</span>
         </div>
         
         <div class="busuanzi">
