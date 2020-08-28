@@ -195,11 +195,11 @@
 <p>这个思路就很像微软的CHPE。</p>
 <p>box86好像相当成熟，甚至已经有人基于该项目做了一个retro gaming向的<a href="https://twisteros.com/" target="_blank" rel="noopener">树莓派系统Twister OS（原名Raspbian X）</a>。</p>
 <p>那我就选择box86来折腾了。顺便一提，目标平台可以是ARM HF（AArch64）也可以是32位的ARM。家里没有别的可折腾的ARM设备，可以考虑机顶盒或者Android手机了。也可以拿最好拿闲置的树莓派之类硬件。稍微有点千来块预算的，可以买一台<a href="https://plumz.me/archives/9636/" target="_blank" rel="noopener">ARM芯片的廉价笔记本Pinebook</a>。</p>
-<h2 id="构建box86"><a href="#构建box86" class="headerlink" title="构建box86"></a>构建box86</h2><h3 id="编译前准备"><a href="#编译前准备" class="headerlink" title="编译前准备"></a>编译前准备</h3><blockquote>
+<h2 id="构建box86"><a href="#构建box86" class="headerlink" title="构建box86"></a>构建box86</h2><h3 id="关于ARM的架构"><a href="#关于ARM的架构" class="headerlink" title="关于ARM的架构"></a>关于ARM的架构</h3><blockquote>
 <p>You <em>NEED</em> a 32-bit subsystem to run and build box86. box86 is useless on 64-bit only systems. Also, you <em>NEED</em> a 32-bit toolchain to build box86. A toolchain that only support 64-bit will not compile box86, and you’ll get errors (typically on aarch64, you get “-marm” not recognized).</p>
 </blockquote>
 <p>意思很明白：因为box86的原理是直接把X86_32代码转译到主机系统平台。要在（例如）ARM64平台上运行box86，需要为32位ARM构建box86，并且还需要具有32位库的chroot。重复一遍，<strong>box86不包含任何32位到64位的转换。</strong>当然我们在X86机器上交叉编译（比如编译到32位的ARM时）时，要提供一个32位的工具链。我们可以用Linaro。</p>
-<p>先<a href="http://releases.linaro.org/components/toolchain/binaries/" target="_blank" rel="noopener">去linaro网站</a>或者<a href="https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain" target="_blank" rel="noopener">ARM官网</a>或者<a href="https://mirrors.tuna.tsinghua.edu.cn/armbian-releases/_toolchains/" target="_blank" rel="noopener">清华镜像源</a>下载交叉编译工具链。记得选择带有x86_64_arm(v8l)-linux-gnueabihf字样的。<a href="https://www.cnblogs.com/lixuejian/p/12848728.html" target="_blank" rel="noopener">复习下交叉编译器的命名规则</a>，为了可以在ARMV8、ARM64等同时兼容64位和32位的CPU的32位模式上运行，我们必须保证目标程序集是32位的，让CPU向下兼容。</p>
+<h3 id="下载交叉编译工具链"><a href="#下载交叉编译工具链" class="headerlink" title="下载交叉编译工具链"></a>下载交叉编译工具链</h3><p>先<a href="http://releases.linaro.org/components/toolchain/binaries/" target="_blank" rel="noopener">去linaro网站</a>或者<a href="https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain" target="_blank" rel="noopener">ARM官网</a>或者<a href="https://mirrors.tuna.tsinghua.edu.cn/armbian-releases/_toolchains/" target="_blank" rel="noopener">清华镜像源</a>下载交叉编译工具链。记得选择带有x86_64_arm(v8l)-linux-gnueabihf字样的。<a href="https://www.cnblogs.com/lixuejian/p/12848728.html" target="_blank" rel="noopener">复习下交叉编译器的命名规则</a>，为了可以在ARMV8、ARM64等同时兼容64位和32位的CPU的32位模式上运行，我们必须保证目标程序集是32位的，让CPU向下兼容。</p>
 <p>注意工具链里的armv8l指的armv8标准的32位模式。而64位模式的工具链的关键字是Aarch64。另外官网指出宿主架构必须是32位小端序（little endian），在这里也就是armel（armle，arm eabi little-endian），不能是armeb。（不过工具链里面一般都是litle endian，除非特意标出是armeb。）</p>
 <p>soft floating point还是hard floating point（Armhf）的话，最好选HF。</p>
 <blockquote>
@@ -226,6 +226,14 @@
 <figure class="hljs highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">CFLAGS</span>=<span class="string">"-march=armv8-a -mtune=cortex-a53"</span></span><br></pre></td></tr></table></figure>
 <p>然后正式执行编译和链接。（后面的ARCH 、CROSS_COMPILE选项可以不要。假如makefile有好好地生成）</p>
 <figure class="hljs highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make -j8 <span class="attribute">ARCH</span>=arm <span class="attribute">CROSS_COMPILE</span>=armv8l-linux-gnueabihf-</span><br></pre></td></tr></table></figure>
+<p>大概10秒钟就编译好了。在build目录下会生成box86（可执行文件）和libdynarec.a（库，假如你有开启dynarec选项），还有cmake生成的一堆没用的参数文件。之后我们需要把这两个文件拷贝到目标ARM机器上。</p>
+<p>这时候我们确认一下程序的架构。切换到build目录下，运行</p>
+<figure class="hljs highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">file</span> ./box86</span><br></pre></td></tr></table></figure>
+<p>应该能看到类似</p>
+<blockquote>
+<p>ELF 32-bit LSB executable,ARM EABI5 version1 (SYSV), dynamically linked, interpreter…</p>
+</blockquote>
+<p>之类的信息。这说明这是一个Linux格式的可执行文件（ELF），32位，ARM架构。在编译的这台X86机器上该程序是执行不了的，它只能在ARM机器上执行。</p>
 <h3 id="（可选）编译GL4ES"><a href="#（可选）编译GL4ES" class="headerlink" title="（可选）编译GL4ES"></a>（可选）编译GL4ES</h3><p>不少Windows程序用的是DirectX，Wine也自己用OpenGL实现了一遍DirectX API。但假如你用的是嵌入式设备，就是那些只支持OpenGLES的，就麻烦了。好在<a href="https://github.com/ptitSeb/gl4es" target="_blank" rel="noopener">GL4ES</a>提供了GLES硬件的OpenGL接口功能，只是GL4ES目前在Wine上面工作得不是很好。聊胜于无吧。</p>
 <p>（待续）</p>
 
@@ -234,13 +242,13 @@
       
       <div class="post-tags">
         
+        <a class="post-tag button" href="/tags/技术/" rel="tag"><i class="fas fa-tags"></i>技术</a>
+        
         <a class="post-tag button" href="/tags/X86/" rel="tag"><i class="fas fa-tags"></i>X86</a>
         
         <a class="post-tag button" href="/tags/ARM/" rel="tag"><i class="fas fa-tags"></i>ARM</a>
         
         <a class="post-tag button" href="/tags/程序仿真/" rel="tag"><i class="fas fa-tags"></i>程序仿真</a>
-        
-        <a class="post-tag button" href="/tags/技术/" rel="tag"><i class="fas fa-tags"></i>技术</a>
         
       </div>
       
@@ -255,6 +263,8 @@
       
     </div>
     <div class="page-nav-prev page-nav-item">
+      
+      <a href="/post/tateyoko/" rel="prev" title="写了一个竖排书籍的横向重排版工具"><span class="nav-title">写了一个竖排书籍的横向重排版工具</span><i class="fas fa-angle-right"></i></a>
       
     </div>
   </nav>
@@ -312,7 +322,7 @@
     
     <div class="archives-count">
       <div class="site-count-title">Archives</div>
-      <div><a href="/archives/">103</a></div>
+      <div><a href="/archives/">104</a></div>
     </div>
     
     
@@ -330,7 +340,7 @@
     
     <div class="tags-count">
       <div class="site-count-title">Tags</div>
-      <div><a href="/tags/">107</a></div>
+      <div><a href="/tags/">112</a></div>
     </div>
     
   </div>
@@ -351,7 +361,7 @@
     <hr>
     <div class="post-toc sidebar-item" id="toc-div">
       <div><i class="fas fa-list-ol"></i>Table of Contents</div>
-      <div class="post-toc-content"><ol class="list-group toc"><li class="toc-item toc-level-2"><a class="list-group-item toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="list-group-item toc-link" href="#可行性和方案"><span class="toc-text">可行性和方案</span></a><ol class="list-group toc-child"><li class="toc-item toc-level-3"><a class="list-group-item toc-link" href="#hangover-和box86"><span class="toc-text">hangover 和box86</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="list-group-item toc-link" href="#构建box86"><span class="toc-text">构建box86</span></a><ol class="list-group toc-child"><li class="toc-item toc-level-3"><a class="list-group-item toc-link" href="#编译前准备"><span class="toc-text">编译前准备</span></a></li><li class="toc-item toc-level-3"><a class="list-group-item toc-link" href="#编译box86"><span class="toc-text">编译box86</span></a></li><li class="toc-item toc-level-3"><a class="list-group-item toc-link" href="#（可选）编译GL4ES"><span class="toc-text">（可选）编译GL4ES</span></a></li></ol></li></ol></div>
+      <div class="post-toc-content"><ol class="list-group toc"><li class="toc-item toc-level-2"><a class="list-group-item toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="list-group-item toc-link" href="#可行性和方案"><span class="toc-text">可行性和方案</span></a><ol class="list-group toc-child"><li class="toc-item toc-level-3"><a class="list-group-item toc-link" href="#hangover-和box86"><span class="toc-text">hangover 和box86</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="list-group-item toc-link" href="#构建box86"><span class="toc-text">构建box86</span></a><ol class="list-group toc-child"><li class="toc-item toc-level-3"><a class="list-group-item toc-link" href="#关于ARM的架构"><span class="toc-text">关于ARM的架构</span></a></li><li class="toc-item toc-level-3"><a class="list-group-item toc-link" href="#下载交叉编译工具链"><span class="toc-text">下载交叉编译工具链</span></a></li><li class="toc-item toc-level-3"><a class="list-group-item toc-link" href="#编译box86"><span class="toc-text">编译box86</span></a></li><li class="toc-item toc-level-3"><a class="list-group-item toc-link" href="#（可选）编译GL4ES"><span class="toc-text">（可选）编译GL4ES</span></a></li></ol></li></ol></div>
     </div>
     
     

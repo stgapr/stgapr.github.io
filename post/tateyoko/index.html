@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#33363b">
+    <meta name="msapplication-TileColor" content="#33363b">
+    
+    
+    
+    
+    <meta name="keywords" content="Life, Tech, Galgame, Anime, Manga, Programming, Harmonica, Novel, Guitar, Cooking">
+    
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+    
+    
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicons/android-chrome-192x192.png">
+    
+    
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+    
+    
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+    
+    
+    <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#33363b">
+    
+    
+    <link rel="manifest" href="/favicons/site.webmanifest">
+    
+    
+    <meta name="msapplication-config" content="/favicons/browserconfig.xml">
+    
+    
+    <link rel="alternate" href="/atom.xml" title="水与榕" type="application/atom+xml">
+    
+    
+    <link rel="shortcut icon" type="image/x-icon" href="/favicons/favicon.ico">
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+    
+    <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+    
+    
+<link rel="stylesheet" type="text/css" href="/css/page.css">
+<link rel="stylesheet" type="text/css" href="/css/post.css">
+
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/atom-one-dark.css">
+    <link rel="stylesheet" type="text/css" href="/css/lightgallery.min.css">
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script defer type="text/javascript" src="/js/util.js"></script>
+    <script defer type="text/javascript" src="/js/scrollspy.js"></script>
+    <script defer type="text/javascript" src="/js/fontawesome-all.min.js"></script>
+    <script defer type="text/javascript" src="/js/lightgallery.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-fullscreen.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-hash.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-pager.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-thumbnail.min.js"></script>
+    <script defer type="text/javascript" src="/js/lg-zoom.min.js"></script>
+    
+    <script defer src="/js/busuanzi.pure.mini.js"></script>
+    
+    
+    <script defer type="text/javascript" src="/js/search.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+      var searchPath = "search.xml";
+      if (searchPath.length === 0) {
+        searchPath = "search.xml";
+      }
+      var path = "/" + searchPath;
+      searchFunc(path, "search-input", "search-result");
+    });
+    </script>
+    
+    
+    <script defer type="text/javascript" src="/js/index.js"></script>
+    
+    <script defer type="text/javascript" src="/js/custom.js"></script>
+    <title>写了一个竖排书籍的横向重排版工具 | 水与榕</title>
+  </head>
+  <body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN" data-spy="scroll" data-target=".list-group">
+    
+<header id="header" class="header" style="background: #33363b;">
+  <div class="container">
+    <div class="header-container">
+      <div class="header-title">
+        <h1 class="title"><a href="/">水与榕</a></h1>
+        <h2 class="subtitle"></h2>
+      </div>
+      
+    </div>
+    <nav id="nav" class="nav">
+      <a id="nav-toggle" class="nav-toggle" aria-hidden="true"><i class="fas fa-bars" aria-label="Toggle Navbar"></i></a>
+      <ul id="menu" role="menubar" aria-hidden="false">
+        
+        <li role="menuitem"><a href="/">Home</a></li>
+        
+        <li role="menuitem"><a href="/archives/">Archives</a></li>
+        
+        <li role="menuitem"><a href="/categories/">Categories</a></li>
+        
+        <li role="menuitem"><a href="/tags/">Tags</a></li>
+        
+        <li role="menuitem"><a href="/about/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <main id="main" class="main">
+      <div class="container">
+        <div class="main-container">
+          <div class="content">
+            
+<div id="post" class="page">
+  
+  <article class="article post card animate" itemscope="" itemtype="http://schema.org/Article">
+    <div class="post-block">
+      <link itemprop="mainEntityOfPage" href="https://stgapr.github.io/post/tateyoko/">
+      <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+       <meta itemprop="name" content="桃ましまろ">
+       <meta itemprop="description" content="">
+       <meta itemprop="image" content="/images/avatar.png">
+      </span>
+      <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+       <meta itemprop="name" content="水与榕">
+      </span>
+    </div>
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">写了一个竖排书籍的横向重排版工具</h1>
+      <div class="post-meta">
+        
+        <span class="post-date">
+          <i class="far fa-calendar-plus"></i><span><time title="post-date" itemprop="dateCreated datePublished" datetime="2020-08-28T22:03:14+08:00">2020-08-28 22:03:14</time></span>
+        </span>
+        
+        
+        
+        <span class="post-meta-divider divider">|</span>
+        
+        <span class="post-categories">
+          
+          <i class="far fa-folder-open"></i><span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/笔记/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a></span>
+        </span>
+        
+        
+        
+        
+      </div>
+    </header>
+    <main class="post-main" itemprop="articleBody">
+      <p>众所周知世界上有两种书写方向，横的和竖的。个人兴趣上偶尔会读一些竖排的<strong>扫描版</strong>书籍，感觉非常不习惯，于是就想着有没有这种重排<strong>扫描版</strong>书籍文字方向的软件……结果上网一看，tm居然没有。那就自己写一个吧。</p>
+<a id="more"></a>
+<p>纵书的文字怎么弄成横书的？理论上很简单，把每个字一个个重新横着放就行了。说得机械一点，就是把每个汉字顺时针旋转九十度，然后再把书页横过来看就行了。</p>
+<p>关键是怎么把汉字顺时针旋转九十度。因为计算机是不认识纸页上”字“ 的概念的。不，OCR不行，不少扫描书籍分辨率感人，OCR没有人脑那种上下文脑补能力，实际效果一塌糊涂。</p>
+<p>于是我想到了Kindle排版软件k2pdfopt的文本回流（reflow）技术，也就是把在不OCR的前提下，把每个文字切成块再处理，这就有点像强行把雕版印刷弄成活字印刷。</p>
+<p>但是问题是在识别。微博上的Libre盖子也提到过他为了方便阅读电路设计图，用OpenCV和python做了一个旋转（英语和数字）文字方向180度的小工具。不过他没有放代码出来，于是我自己上网去找，发现还真有一个现成的用OpenCV的<a href="https://www.cnblogs.com/SaltyFishQF/p/11474482.html" target="_blank" rel="noopener">竖排古籍文字识别的side project</a>可以借鉴。</p>
+<p>我通读了一下代码，大体来说作者是用投影法，也就是计算x和y方向的像素权重。确定什么地方是文字，什么地方是空白的文字间隙。对于竖排文字呢，就是先纵向投影，确定两列文字间的分隔点，然后再把每一列单独拿出来横向投影，确定单字和单字之间的分割点。这样就能框定出每个汉字的区域。</p>
+<p>这种算法虽然简单，但意外地很有效，不用上神经网络这种牛刀，而且效果比OpenCV自带的字块腐蚀/扩张算法要好得多（不会出现过度分割）；投影法对于不会互相交叉的印刷体文字效果很好。</p>
+<p>好，那么这个切割算法怎么拿来干今天这件事呢？很简单，我需要增加的代码无非就是把识别到的每个文字字块（OpenCV里面叫做<strong>兴趣区域</strong> ROI）切下来，都绕着中心点顺时针旋转90度，贴回页面的原来位置就行了。还tm别说，OpenCV就连旋转都要需要用上矩阵映射变换啥的，查代码示例花了我好久。</p>
+<p>此外有一些预处理，比如先灰度再二值化，减小页面污渍的干扰。</p>
+<p>写完代码之后跑了一下，参数调得不要太离谱的话，效果大概是这样的：</p>
+<p><img src="/tateyoko/recognize-rect.png" alt="字块的识别"></p>
+<p>以及最后的转换效果是这样的：</p>
+<p><img src="/tateyoko/good-result.png" alt="最终转换效果"></p>
+<p>很明显那些被错误旋转的书名号看起来很搞笑，不过总体效果还不赖。我这里还有一个早些时候测试日文书页处理的截图，当时还没加上图像二值化+正片叠底的部分，可以看到字块互相重叠就像是修正纸互相覆盖一样。但问题还是在于里面的标点符号</p>
+<p><img src="//stgapr.github.io/post/tateyoko/lilis/source/_drafts/tateyoko/japanese-result.png" alt=""></p>
+<p>也就是说直角引号（「」和『』）之类，实际上是不能旋转的，不然会向上面这样横躺着非常难看。（我猜这个地方可能还要另外开一个线程来OCR，识别到类似的符号就针对性地不处理。）</p>
+<p>当然这上面是很清晰的扫描版，实际上效果会差一些。比如同学发给我测试的古籍，令人发指的分辨率，加上墨渍干扰简直惨不忍睹：</p>
+<p><img src="/tateyoko/bad-result.png" alt="效果不佳"></p>
+<p>…………</p>
+<p>不展开讲了。</p>
+<p>此外有一些参数需要操作者来自己调整，比如<strong>横向分割阈值</strong>。这个阈值太大了，会把”是“”吕“之类的字横切成两半，而这个参数太小的话又会把两个字识别成一个。我就把这个阈值参数叫做“吕切系数”了，类似地，还有”吅切系数“。这个参数可以通过命令行传入。这和有人热爱开手动挡的车一样，有一些可自己操控的东西是一种乐趣。</p>
+<p>为了方便潜在的用户调整这些参数（人还是需要有点梦想的），我用wxpython的可视化UI 设计工具<a href="https://github.com/wxFormBuilder/wxFormBuilder/" target="_blank" rel="noopener">wxformbuilder</a>给软件加上个简单的GUI，主要是可以调阈值并半实时预览了（和命令行版本一样，2~3秒的延迟），此外还写了py2exe的打包脚本，以及浪费一点时间把代码中有关二值化、图像叠合、旋转的部分——之前这部分是OpenCV处理——用PIL库重写了一遍，真的是浪费事件，发现PIL的速度反而没有OpenCV快！那我还是基于OpenCV版来改进程序吧……</p>
+<p>上网搜索的时候一看，OpenCV 4都在2019年已经发布了，虽然python里面为了legacy 起见还是”import cv2“。OpenCV3和4有很多高大上看不懂的特性比如支持CUDA并行处理，还可以用OpenML加速啥的。不了不了我觉得还是不要碰这个领域……</p>
+<p>虽然现在还是缓慢迭代期（图形化界面甚至还不能用），但总有一天会release的，对吧？（代码现在还没开源，等修得差不多了连同可执行文件一起放出来）</p>
+<p><img src="/tateyoko/tateyoko-ui.jpg" alt="beta版本界面"></p>
+<p>顺便一提这个工具目前叫做”Tateyoko“，也是日语里的”纵横“。我那饱读故纸堆的大学同学建议可以叫做”梨枣“，搜了一下，</p>
+<blockquote>
+<p>“旧时刻书制版多用梨木或枣木，故以“梨枣”作书版的代称。</p>
+</blockquote>
+<p>还挺有……内涵的？</p>
+
+    </main>
+    <footer class="post-footer">
+      
+      <div class="post-tags">
+        
+        <a class="post-tag button" href="/tags/阅读/" rel="tag"><i class="fas fa-tags"></i>阅读</a>
+        
+        <a class="post-tag button" href="/tags/代码/" rel="tag"><i class="fas fa-tags"></i>代码</a>
+        
+        <a class="post-tag button" href="/tags/排版/" rel="tag"><i class="fas fa-tags"></i>排版</a>
+        
+      </div>
+      
+    </footer>
+  </article>
+  
+  
+  <nav class="page-nav">
+    <div class="page-nav-next page-nav-item">
+      
+      <a href="/post/gal-on-settopbox-1/" rel="next" title="在机顶盒上打黄油（上）"><i class="fas fa-angle-left"></i><span class="nav-title">在机顶盒上打黄油（上）</span></a>
+      
+    </div>
+    <div class="page-nav-prev page-nav-item">
+      
+    </div>
+  </nav>
+  
+  
+  
+
+<div class="comments" id="comments">
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<div id="gitalk-container"></div>
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'fc5cc78006347ed7f2b8',
+        clientSecret: 'eb4cc326feb2418f9add0833f57adbe9e423fb43',
+        id: window.location.pathname,
+        repo: 'lilis',
+        owner: 'stgapr',
+        admin: 'stgapr'
+    })
+    gitalk.render('gitalk-container')
+</script>
+
+
+</div>
+
+
+
+  
+</div>
+
+          </div>
+          
+          
+          
+<aside class="sidebar" id="sidebar" style="background: url(/images/background.png);">
+  
+  <div class="search">
+    <div class="form-group">
+      <i class="fas fa-search"></i><input type="search" id="search-input" name="q" results="0" placeholder="Search" class="form-control">
+    </div>
+  </div>
+  <div class="search-result-box" id="search-result"></div>
+  
+  
+<div class="info sidebar-item" id="info">
+  
+  <img class="author-avatar" src="/images/avatar.png" alt="桃ましまろ">
+  
+  <h1 class="author-name">桃ましまろ</h1>
+  <h2 class="author-description"></h2>
+  <div class="site-count">
+    
+    <div class="archives-count">
+      <div class="site-count-title">Archives</div>
+      <div><a href="/archives/">104</a></div>
+    </div>
+    
+    
+    
+    <span class="site-count-divider divider">|</span>
+    
+    <div class="categories-count">
+      <div class="site-count-title">Categories</div>
+      <div><a href="/categories/">5</a></div>
+    </div>
+    
+    
+    
+    <span class="site-count-divider divider">|</span>
+    
+    <div class="tags-count">
+      <div class="site-count-title">Tags</div>
+      <div><a href="/tags/">112</a></div>
+    </div>
+    
+  </div>
+  
+  <div class="rss">
+    <a class="rss-link button sidebar-item" href="/atom.xml"><i class="fas fa-rss"></i>RSS</a>
+  </div>
+  
+</div>
+
+
+  <div class="sidebar-sticky">
+    
+    
+    
+    
+    
+    
+    
+    <hr>
+    <div class="social-link sidebar-item">
+      <div><i class="far fa-address-card"></i>Social Links<p></p></div>
+      <ul>
+        
+        <li><i class="fas fa-envelope"></i><a href="mailto:stgapr29@gmail.com" target="_blank">Email</a></li>
+        
+        <li><i class="fab fa-github"></i><a href="https://github.com/stgapr" target="_blank">Github</a></li>
+        
+      </ul>
+    </div>
+    
+    
+    <hr>
+    <div class="blogroll sidebar-item">
+      <div><i class="fas fa-link"></i>Blogroll</div>
+      <ul>
+        
+        <li><a href="https://yuukoamamiya.github.io/" target="_blank">雨宫优子</a></li>
+        
+        <li><a href="https://plumz.me/" target="_blank">plum</a></li>
+        
+        <li><a href="https://incises.github.io/" target="_blank">Incises</a></li>
+        
+        <li><a href="https://mistakey.top/" target="_blank">叶月辉夜</a></li>
+        
+        <li><a href="https://sh.alynx.moe" target="_blank">喵's StackHarbor</a></li>
+        
+        <li><a href="https://pockies.github.io/" target="_blank">Pockies</a></li>
+        
+        <li><a href="http://noodlefighter.com/" target="_blank">虾包</a></li>
+        
+        <li><a href="https://www.natech.top/" target="_blank">无聊人士的低语</a></li>
+        
+        <li><a href="https://linhai1990.com/" target="_blank">四海为家的兔子</a></li>
+        
+        <li><a href="https://touko.moe/" target="_blank">Touko</a></li>
+        
+        <li><a href="https://suzumiyashirone.github.io/" target="_blank">涼宮シロネ</a></li>
+        
+        <li><a href="https://www.gazyip.cn/" target="_blank">八个比特</a></li>
+        
+        <li><a href="https://qwonsuzune.wordpress.com/" target="_blank">沙子小房间</a></li>
+        
+        <li><a href="https://zankyo.cc/" target="_blank">青花鱼</a></li>
+        
+        <li><a href="https://blog.uuz.moe/" target="_blank">雨宮千夏の博麗神社</a></li>
+        
+        <li><a href="https://luojia.me/" target="_blank">佳佳酱</a></li>
+        
+        <li><a href="https://lnet.me/" target="_blank">澜灯</a></li>
+        
+        <li><a href="https://taoxinhao.cn/" target="_blank">陶新昊</a></li>
+        
+        <li><a href="https://www.wikimoe.com/" target="_blank">WIKIMOE</a></li>
+        
+        <li><a href="http://www.misakas.com/" target="_blank">misakas</a></li>
+        
+        <li><a href="https://blog.ixk.me/" target="_blank">ixk.me</a></li>
+        
+        <li><a href="http://blog.dangodango.cn/" target="_blank">团子的小小世界</a></li>
+        
+        <li><a href="http://blog.9bie.org:8081/" target="_blank">⑨bie</a></li>
+        
+        <li><a href="https://utsuho.cn/" target="_blank">喵の空</a></li>
+        
+        <li><a href="https://www.rabbittu.com/" target="_blank">某兔子の御用花园</a></li>
+        
+        <li><a href="http://pea3nut.info/" target="_blank">花生PeA</a></li>
+        
+        <li><a href="http://www.iinorii.com/blog/" target="_blank">いつの間に</a></li>
+        
+        <li><a href="https://www.senayuki.top/" target="_blank">纷飞的小屋</a></li>
+        
+        <li><a href="http://whitebox.im/" target="_blank">白色箱子</a></li>
+        
+        <li><a href="http://code5light.com/" target="_blank">多事之秋</a></li>
+        
+        <li><a href="https://diygod.me/friends/" target="_blank">DIYGOD</a></li>
+        
+        <li><a href="https://ephen.me/" target="_blank">Ephen</a></li>
+        
+        <li><a href="https://ikk.me/" target="_blank">ikk.me</a></li>
+        
+        <li><a href="https://ikmoe.com/" target="_blank">月宅酱</a></li>
+        
+        <li><a href="https://www.rexskz.info/" target="_blank">ReX/Zeng</a></li>
+        
+        <li><a href="https://2heng.xin/" target="_blank">さくら荘の白猫</a></li>
+        
+        <li><a href="https://www.fczbl.vip/" target="_blank">犬's blog</a></li>
+        
+        <li><a href="https://aoaoao.me/" target="_blank">Aaron</a></li>
+        
+        <li><a href="https://blog.0xbbc.com/" target="_blank">3004</a></li>
+        
+        <li><a href="http://mouto.org/" target="_blank">卜卜口</a></li>
+        
+        <li><a href="https://wind.moe/links/" target="_blank">Windless</a></li>
+        
+        <li><a href="https://oao.moe/links/" target="_blank">oao</a></li>
+        
+        <li><a href="http://im.dimpurr.com/" target="_blank">钉子の次元</a></li>
+        
+        <li><a href="http://acgtyrant.com/" target="_blank">acgtyrant</a></li>
+        
+        <li><a href="https://asaba.sakuragawa.moe/" target="_blank">樱川浅羽</a></li>
+        
+        <li><a href="https://buta.moe/" target="_blank">Take Space</a></li>
+        
+        <li><a href="http://takumiyuki.hatenablog.com/" target="_blank">TakumiYuki</a></li>
+        
+        <li><a href="https://flandre-scarlet.moe/blog/" target="_blank">Re:memory</a></li>
+        
+      </ul>
+    </div>
+    
+  </div>
+</aside>
+
+
+          
+        </div>
+      </div>
+    </main>
+    
+<footer id="footer" class="footer" style="background: #33363b;">
+  <div class="container">
+    <div class="back-to-top">
+      <button id="back-to-top"><i class="fas fa-angle-double-up" aria-label="Back to Top"></i></button>
+    </div>
+    <div class="footer-container">
+      <div class="footer-left">
+        <div class="copyright">
+          <span class="author">桃ましまろ</span><span class="year"><i class="far fa-copyright"></i>1993 - 2020</span>
+        </div>
+        
+        <div class="busuanzi">
+          <span id="busuanzi_container_site_pv"><i class="fas fa-eye" aria-label="Site Visit Count" aria-hidden="false"></i><span id="busuanzi_value_site_pv"></span></span><span id="busuanzi_container_site_uv"><i class="fas fa-user" aria-label="Site User Count" aria-hidden="false"></i><span id="busuanzi_value_site_uv"></span></span><span id="busuanzi_container_page_pv"><i class="far fa-file-alt"></i><span id="busuanzi_value_page_pv" aria-label="Page Click Count" aria-hidden="false"></span></span>
+        </div>
+        
+      </div>
+      <div class="footer-right">
+        <div class="custom-info">
+          
+          底下啥都没有了~
+          
+        </div>
+        <div class="powered-by">
+          Proudly Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> | Theme is <a href="https://github.com/AlynxZhou/hexo-theme-aria/" target="_blank">ARIA</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  </body>
+</html>

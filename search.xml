@@ -3,11 +3,11 @@
   
     
     <entry>
-      <title>在机顶盒上打黄油（上）</title>
-      <link href="/post/gal-on-settopbox-1/"/>
-      <url>/post/gal-on-settopbox-1/</url>
+      <title>写了一个竖排书籍的横向重排版工具</title>
+      <link href="/post/tateyoko/"/>
+      <url>/post/tateyoko/</url>
       
-        <content type="html"><![CDATA[<p>在这篇硬核文章中，我将介绍如何在ARM芯片的廉价机顶盒上运行X86平台的galgame。不是远程桌面，也不是kirikiroid，货真价实童叟无欺。但是有点hardcore。所以分成上下篇写。</p><p>首先感谢@虾包 的技术支持。</p><a id="more"></a><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有时候我们实在蛋疼，找不到替代品，非得在Linux或者OS X上跑传统的Windows<del>游戏</del>生产力软件。想到的方案，除了用QEMU、bochs等虚拟机，就是Wine（或者crossover之类衍生版），特定种类游戏的话可能有人做其他平台的引擎移植（像ons、pymo、kikiroid）。</p><p>Wine的原理是把Windows API用POSIX 实现了一遍，然后让（兼容POSIX标准的）宿主系统去执行。虽然Wine也最近除了X86版本的release，也提供了ARM版本的，连Android的ARM或X86架构的 release都有。但是——ARM release的只能跑ARM的程序，X86 release的只能跑X86的程序。毕竟CPU架构如天堑。</p><p>不过最近微博上看到M$核心程序员兼女装大佬Tlaster买了台特别昂贵的笔记本Surface Pro X，跑传说中的Windows on ARM系统。她晒了一张图：</p><p><img src="//stgapr.github.io/post/gal-on-settopbox-1/tsukiyori_SQ1.PNG" alt="在ARM架构的SQ1芯片上跑X86程序"></p><p>这就有点牛逼了。因为这款笔记本跑的是高通定制的ARM架构的SQ1处理器。而黄油厂商我还没听说过技术先进到提供ARM platform  target的Galgame。也就是说这个版本的Windows 在二进制层面实现了一个X86到ARM的指令转换。不需要X86 EXE作任何修改、远非几年前的Windows RT能做得到的。</p><h2 id="可行性和方案"><a href="#可行性和方案" class="headerlink" title="可行性和方案"></a>可行性和方案</h2><p>于是我就想做类似的事情。首先去查了<a href="https://docs.microsoft.com/en-us/windows/arm/" target="_blank" rel="noopener">Windows Documentation</a>SDN上查了一下原理。发现类似64位windows兼容32位windows程序的途径——用<a href="https://docs.microsoft.com/en-us/windows/win32/winprog64/running-32-bit-applications" target="_blank" rel="noopener">WoW64层</a>，并且缓存这些已翻译的代码块，以减少指令翻译的开销，并在代码再次运行时进行优化。<br>所以Windows10 on ARM的windows目录里面，加上原本的X86_64和X86_32兼容设施——至少有三套system文件夹，啊不，实际上是四套：</p><p><strong>System32</strong>: ARM 64 位系统文件</p><p><strong>SyCHPE32</strong>： CHPE DLL，供 x86 程序调用，内部是 ARM 机器码（使得核心系统库不需要进行二进制翻译，减少性能损失)</p><p><strong>SysARM32</strong>: ARM 32 位系统文件</p><p><strong>SysWOW64</strong>: x86 32 位系统文件</p><p>其中给ARM处理器做X86指令的二进制翻译的关键DLL是<a href="https://docs.microsoft.com/en-us/windows/win32/winprog64/wow64-implementation-details" target="_blank" rel="noopener">xtajit.dll</a>。并且官方说这个函数巨复杂巨长，毕竟两种架构的CPU指令集完全不一样。根据爱好者测试，X86程序在ARM处理器上的翻译执行效率大概能达到原生的60%左右。WineHQ社区估计一时半会儿也没有精力重复造轮子，一是净室原则，二是Intel反复敲打版权风险。还好发现github上也有几个实验性项目。</p><p>如<a href="https://wiki.winehq.org/Emulation" target="_blank" rel="noopener">WineHQ的这篇wiki</a>所说，想实现ARM平台跑X86程序（先不说操作系统），大概有三种曲线救国的途径：</p><ul><li><p>处理器模拟。也就是异构模拟。最省事，也最慢。也就是用QEMU、virtualbox之类的虚拟机软件模拟整个X86 CPU，上面再装一个X86的操作系统。Bluestack、Windroy等都是一个原理。</p></li><li><p>用户模式模拟。也就是用QEMU user space emulator之类的用户态X86仿真程序，在syscall级别跳出。效率稍微好一点。有的人可能玩过一些基于chroot或者proot——在安卓手机上跑Linux的<a href="https://github.com/meefik/linuxdeploy" target="_blank" rel="noopener">deploylinux</a>和Anlinux。优点是可以利用宿主的Linux内核，不需要再整一套镜像（因此，假如要跑windows exe，还需要配合X86版本的wine）。代表项目<a href="https://github.com/ptitSeb/box86" target="_blank" rel="noopener">box86</a></p></li><li><p>在操作系统API层面的仿真。和用户模式模拟类似，但更快一点。代表项目如<a href="https://github.com/AndreRH/hangover" target="_blank" rel="noopener">hangover</a>（宿醉。这名字起的……）</p><p>有人可能会提起ExGear，但是：</p></li></ul><blockquote><p>A solution that I explored already in the past was ExaGear, which allowed running of x86 applications on ARM by emulating the CPU instructions, but not the entire PC.</p><p>Well ExaGear, although quite good, had one very big flaw: it was running everything in the i386 (x86) environment, which also is the case for the GPU drivers, which limited the the software only for use with applications that did not require 3D acceleration. Basically, any game that used “modern” graphics did not work, since it required OpenGL, which our ODROIDs lack the necessary drivers for and especially not for i386.</p></blockquote><p>于是工具落在了hangover和box86两者之间。</p><h3 id="hangover-和box86"><a href="#hangover-和box86" class="headerlink" title="hangover 和box86"></a>hangover 和box86</h3><p>hangover有一个缺点，它要靠QEMU做X86到ARM指令的转换，而且加入要用Wine也必须是64位的。hangover的开发方向主要是在64位平台（AArch64，X86_64）上跑64位程序，只是顺便兼容32位。它的Android分支也停止开发很久了。</p><p>而box86专心兼容X86_32（<strong>它不支持64位用户程序</strong>），用的X86 emulator是<a href="https://github.com/wfeldt/libx86emu" target="_blank" rel="noopener">libx86emu</a>的修改版。并且据官方readme文档所言，“box86 uses the native versions of some “system” libraries, like libc, libm, SDL, and OpenGL, it’s easy to integrate and use, and performance can be surprisingly high in some cases.”  </p><blockquote><p>应用程序所需的许多库都从ARM板重定向到了库，比如说Box86可以从ARM主机系统使用SDL2，而不是使用i386的SDL2。这也包括GPU驱动程序。如果应用程序需要运行OpenGL，它将不再要求i386 OpenGL驱动程序，而是ARM OpenGL驱动程序。还有许多其他库，例如SDL，OpenAL，X11等，也可以从本机ARM环境中使用，而不是使用i386中的所有库。这也意味着与需要完整i386环境的ExaGear相比，i386中需要的库要少得多。</p></blockquote><p>这个思路就很像微软的CHPE。</p><p>box86好像相当成熟，甚至已经有人基于该项目做了一个retro gaming向的<a href="https://twisteros.com/" target="_blank" rel="noopener">树莓派系统Twister OS（原名Raspbian X）</a>。</p><p>那我就选择box86来折腾了。顺便一提，目标平台可以是ARM HF（AArch64）也可以是32位的ARM。家里没有别的可折腾的ARM设备，可以考虑机顶盒或者Android手机了。也可以拿最好拿闲置的树莓派之类硬件。稍微有点千来块预算的，可以买一台<a href="https://plumz.me/archives/9636/" target="_blank" rel="noopener">ARM芯片的廉价笔记本Pinebook</a>。</p><h2 id="构建box86"><a href="#构建box86" class="headerlink" title="构建box86"></a>构建box86</h2><h3 id="编译前准备"><a href="#编译前准备" class="headerlink" title="编译前准备"></a>编译前准备</h3><blockquote><p>You <em>NEED</em> a 32-bit subsystem to run and build box86. box86 is useless on 64-bit only systems. Also, you <em>NEED</em> a 32-bit toolchain to build box86. A toolchain that only support 64-bit will not compile box86, and you’ll get errors (typically on aarch64, you get “-marm” not recognized).</p></blockquote><p>意思很明白：因为box86的原理是直接把X86_32代码转译到主机系统平台。要在（例如）ARM64平台上运行box86，需要为32位ARM构建box86，并且还需要具有32位库的chroot。重复一遍，<strong>box86不包含任何32位到64位的转换。</strong>当然我们在X86机器上交叉编译（比如编译到32位的ARM时）时，要提供一个32位的工具链。我们可以用Linaro。</p><p>先<a href="http://releases.linaro.org/components/toolchain/binaries/" target="_blank" rel="noopener">去linaro网站</a>或者<a href="https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain" target="_blank" rel="noopener">ARM官网</a>或者<a href="https://mirrors.tuna.tsinghua.edu.cn/armbian-releases/_toolchains/" target="_blank" rel="noopener">清华镜像源</a>下载交叉编译工具链。记得选择带有x86_64_arm(v8l)-linux-gnueabihf字样的。<a href="https://www.cnblogs.com/lixuejian/p/12848728.html" target="_blank" rel="noopener">复习下交叉编译器的命名规则</a>，为了可以在ARMV8、ARM64等同时兼容64位和32位的CPU的32位模式上运行，我们必须保证目标程序集是32位的，让CPU向下兼容。</p><p>注意工具链里的armv8l指的armv8标准的32位模式。而64位模式的工具链的关键字是Aarch64。另外官网指出宿主架构必须是32位小端序（little endian），在这里也就是armel（armle，arm eabi little-endian），不能是armeb。（不过工具链里面一般都是litle endian，除非特意标出是armeb。）</p><p>soft floating point还是hard floating point（Armhf）的话，最好选HF。</p><blockquote><p>用softfp模式，会存在不必要的浮点到整数、整数到浮点的转换。而使用hard模式，在每次浮点相关函数调用时，平均能节省20个CPU周期。对ARM这样每个周期都很重要的体系结构来说，这样的提升无疑是巨大的。对一些严重依赖于浮点运算的程序，更是可以达到300%的性能提升。</p></blockquote><p>我下载的包名是gcc-linaro-7.5.0-2019.12-x86_64_armv8l-linux-gnueabihf.tar.xz。</p><p>解压。</p><figure class="hljs highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">xz</span> <span class="selector-tag">-d</span> <span class="selector-tag">gcc-linaro-7</span><span class="selector-class">.5</span><span class="selector-class">.0-2019</span><span class="selector-class">.12-x86_64_armv8l-linux-gnueabihf</span><span class="selector-class">.tar</span><span class="selector-class">.xz</span></span><br></pre></td></tr></table></figure><p>安装到喜欢的目录。</p><figure class="hljs highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -<span class="selector-tag">p</span> /usr/local/toochain</span><br><span class="line">sudo tar -xvf gcc-linaro-<span class="number">7.5</span>.<span class="number">0</span>-<span class="number">2019.12</span>-x86_64_armv8l-linux-gnueabihf<span class="selector-class">.tar</span> -C /usr/local/toolchain</span><br></pre></td></tr></table></figure><p>添加环境变量并刷新环境。</p><figure class="hljs highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PATH=<span class="variable">$PATH</span><span class="symbol">:/usr/local/toolchain/gcc-linaro-</span><span class="number">7.5</span>.<span class="number">0</span>-<span class="number">2019.12</span>-x86_64_armv8l-linux-gnueabihf/bin</span><br><span class="line">source ~<span class="regexp">/.bashrc</span></span><br></pre></td></tr></table></figure><p>验证下是否能识别到编译器。</p><figure class="hljs highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">armv8l-linux-gnueabihf-gcc -v</span><br></pre></td></tr></table></figure><h3 id="编译box86"><a href="#编译box86" class="headerlink" title="编译box86"></a>编译box86</h3><p>先把代码拉下来。<br><figure class="hljs highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">clone</span> <span class="title">https</span>://github.com/ptitSeb/box86.git</span><br></pre></td></tr></table></figure></p><p>cmake。<br><figure class="hljs highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd box86; mkdir build; cd build; </span><br><span class="line">cmake <span class="built_in">..</span> <span class="attribute">-DARM_DYNAREC</span>=ON \</span><br><span class="line"><span class="attribute">-DCMAKE_BUILD_TYPE</span>=RelWithDebInfo \</span><br><span class="line"><span class="attribute">-DCMAKE_SYSTEM_PROCESSOR</span>=arm \</span><br><span class="line"><span class="attribute">-DCMAKE_C_COMPILER</span>=armv8l-linux-gnueabihf-gcc;</span><br></pre></td></tr></table></figure></p><p>注意-DCMAKE_C_COMPILER，交叉编译的时候不指定的话会出现平台参数错误。</p><p>这里面有一个dynarec选项。JIT / Dynarec / Hotspot之类的技术会把转换过的指令段缓存起来，有助于提高程序载入速度。这也是在CMakeLists.txt里面实现控制逻辑的。</p><blockquote><p>The Dynarec is only avaiable on ARM Cpu. Notes also that VFPv3 and NEON are required for the Dynarec. Activate it by using <code>-DARM_DYNAREC=1</code>. Also, be sure to use <code>-marm</code> in compilation flags (because many compileur use Thumb as default, and the dynarec will not work in this mode).</p></blockquote><p>box64特有的其他编译选项见<a href="https://github.com/ptitSeb/box86/blob/master/COMPILE.md" target="_blank" rel="noopener">COMPILE.md</a>。</p><p>此外也可以手动指定编译参数。假如你的目标设备没有在CMakeLists.txt里面add_definitions、 set(CMAKE_ASM_FLAGS=…)的话。自己的目标平台相关参数可以去网络上找。也可以参考 -gcc –target-help。</p><figure class="hljs highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">CFLAGS</span>=<span class="string">"-march=armv8-a -mtune=cortex-a53"</span></span><br></pre></td></tr></table></figure><p>然后正式执行编译和链接。（后面的ARCH 、CROSS_COMPILE选项可以不要。假如makefile有好好地生成）</p><figure class="hljs highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make -j8 <span class="attribute">ARCH</span>=arm <span class="attribute">CROSS_COMPILE</span>=armv8l-linux-gnueabihf-</span><br></pre></td></tr></table></figure><h3 id="（可选）编译GL4ES"><a href="#（可选）编译GL4ES" class="headerlink" title="（可选）编译GL4ES"></a>（可选）编译GL4ES</h3><p>不少Windows程序用的是DirectX，Wine也自己用OpenGL实现了一遍DirectX API。但假如你用的是嵌入式设备，就是那些只支持OpenGLES的，就麻烦了。好在<a href="https://github.com/ptitSeb/gl4es" target="_blank" rel="noopener">GL4ES</a>提供了GLES硬件的OpenGL接口功能，只是GL4ES目前在Wine上面工作得不是很好。聊胜于无吧。</p><p>（待续）</p>]]></content>
+        <content type="html"><![CDATA[<p>众所周知世界上有两种书写方向，横的和竖的。个人兴趣上偶尔会读一些竖排的<strong>扫描版</strong>书籍，感觉非常不习惯，于是就想着有没有这种重排<strong>扫描版</strong>书籍文字方向的软件……结果上网一看，tm居然没有。那就自己写一个吧。</p><a id="more"></a><p>纵书的文字怎么弄成横书的？理论上很简单，把每个字一个个重新横着放就行了。说得机械一点，就是把每个汉字顺时针旋转九十度，然后再把书页横过来看就行了。</p><p>关键是怎么把汉字顺时针旋转九十度。因为计算机是不认识纸页上”字“ 的概念的。不，OCR不行，不少扫描书籍分辨率感人，OCR没有人脑那种上下文脑补能力，实际效果一塌糊涂。</p><p>于是我想到了Kindle排版软件k2pdfopt的文本回流（reflow）技术，也就是把在不OCR的前提下，把每个文字切成块再处理，这就有点像强行把雕版印刷弄成活字印刷。</p><p>但是问题是在识别。微博上的Libre盖子也提到过他为了方便阅读电路设计图，用OpenCV和python做了一个旋转（英语和数字）文字方向180度的小工具。不过他没有放代码出来，于是我自己上网去找，发现还真有一个现成的用OpenCV的<a href="https://www.cnblogs.com/SaltyFishQF/p/11474482.html" target="_blank" rel="noopener">竖排古籍文字识别的side project</a>可以借鉴。</p><p>我通读了一下代码，大体来说作者是用投影法，也就是计算x和y方向的像素权重。确定什么地方是文字，什么地方是空白的文字间隙。对于竖排文字呢，就是先纵向投影，确定两列文字间的分隔点，然后再把每一列单独拿出来横向投影，确定单字和单字之间的分割点。这样就能框定出每个汉字的区域。</p><p>这种算法虽然简单，但意外地很有效，不用上神经网络这种牛刀，而且效果比OpenCV自带的字块腐蚀/扩张算法要好得多（不会出现过度分割）；投影法对于不会互相交叉的印刷体文字效果很好。</p><p>好，那么这个切割算法怎么拿来干今天这件事呢？很简单，我需要增加的代码无非就是把识别到的每个文字字块（OpenCV里面叫做<strong>兴趣区域</strong> ROI）切下来，都绕着中心点顺时针旋转90度，贴回页面的原来位置就行了。还tm别说，OpenCV就连旋转都要需要用上矩阵映射变换啥的，查代码示例花了我好久。</p><p>此外有一些预处理，比如先灰度再二值化，减小页面污渍的干扰。</p><p>写完代码之后跑了一下，参数调得不要太离谱的话，效果大概是这样的：</p><p><img src="/tateyoko/recognize-rect.png" alt="字块的识别"></p><p>以及最后的转换效果是这样的：</p><p><img src="/tateyoko/good-result.png" alt="最终转换效果"></p><p>很明显那些被错误旋转的书名号看起来很搞笑，不过总体效果还不赖。我这里还有一个早些时候测试日文书页处理的截图，当时还没加上图像二值化+正片叠底的部分，可以看到字块互相重叠就像是修正纸互相覆盖一样。但问题还是在于里面的标点符号</p><p><img src="//stgapr.github.io/post/tateyoko/lilis/source/_drafts/tateyoko/japanese-result.png" alt=""></p><p>也就是说直角引号（「」和『』）之类，实际上是不能旋转的，不然会向上面这样横躺着非常难看。（我猜这个地方可能还要另外开一个线程来OCR，识别到类似的符号就针对性地不处理。）</p><p>当然这上面是很清晰的扫描版，实际上效果会差一些。比如同学发给我测试的古籍，令人发指的分辨率，加上墨渍干扰简直惨不忍睹：</p><p><img src="/tateyoko/bad-result.png" alt="效果不佳"></p><p>…………</p><p>不展开讲了。</p><p>此外有一些参数需要操作者来自己调整，比如<strong>横向分割阈值</strong>。这个阈值太大了，会把”是“”吕“之类的字横切成两半，而这个参数太小的话又会把两个字识别成一个。我就把这个阈值参数叫做“吕切系数”了，类似地，还有”吅切系数“。这个参数可以通过命令行传入。这和有人热爱开手动挡的车一样，有一些可自己操控的东西是一种乐趣。</p><p>为了方便潜在的用户调整这些参数（人还是需要有点梦想的），我用wxpython的可视化UI 设计工具<a href="https://github.com/wxFormBuilder/wxFormBuilder/" target="_blank" rel="noopener">wxformbuilder</a>给软件加上个简单的GUI，主要是可以调阈值并半实时预览了（和命令行版本一样，2~3秒的延迟），此外还写了py2exe的打包脚本，以及浪费一点时间把代码中有关二值化、图像叠合、旋转的部分——之前这部分是OpenCV处理——用PIL库重写了一遍，真的是浪费事件，发现PIL的速度反而没有OpenCV快！那我还是基于OpenCV版来改进程序吧……</p><p>上网搜索的时候一看，OpenCV 4都在2019年已经发布了，虽然python里面为了legacy 起见还是”import cv2“。OpenCV3和4有很多高大上看不懂的特性比如支持CUDA并行处理，还可以用OpenML加速啥的。不了不了我觉得还是不要碰这个领域……</p><p>虽然现在还是缓慢迭代期（图形化界面甚至还不能用），但总有一天会release的，对吧？（代码现在还没开源，等修得差不多了连同可执行文件一起放出来）</p><p><img src="/tateyoko/tateyoko-ui.jpg" alt="beta版本界面"></p><p>顺便一提这个工具目前叫做”Tateyoko“，也是日语里的”纵横“。我那饱读故纸堆的大学同学建议可以叫做”梨枣“，搜了一下，</p><blockquote><p>“旧时刻书制版多用梨木或枣木，故以“梨枣”作书版的代称。</p></blockquote><p>还挺有……内涵的？</p>]]></content>
       
       
       <categories>
@@ -19,13 +19,40 @@
       
         <tags>
             
+            <tag> 阅读 </tag>
+            
+            <tag> 代码 </tag>
+            
+            <tag> 排版 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>在机顶盒上打黄油（上）</title>
+      <link href="/post/gal-on-settopbox-1/"/>
+      <url>/post/gal-on-settopbox-1/</url>
+      
+        <content type="html"><![CDATA[<p>在这篇硬核文章中，我将介绍如何在ARM芯片的廉价机顶盒上运行X86平台的galgame。不是远程桌面，也不是kirikiroid，货真价实童叟无欺。但是有点hardcore。所以分成上下篇写。</p><p>首先感谢@虾包 的技术支持。</p><a id="more"></a><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有时候我们实在蛋疼，找不到替代品，非得在Linux或者OS X上跑传统的Windows<del>游戏</del>生产力软件。想到的方案，除了用QEMU、bochs等虚拟机，就是Wine（或者crossover之类衍生版），特定种类游戏的话可能有人做其他平台的引擎移植（像ons、pymo、kikiroid）。</p><p>Wine的原理是把Windows API用POSIX 实现了一遍，然后让（兼容POSIX标准的）宿主系统去执行。虽然Wine也最近除了X86版本的release，也提供了ARM版本的，连Android的ARM或X86架构的 release都有。但是——ARM release的只能跑ARM的程序，X86 release的只能跑X86的程序。毕竟CPU架构如天堑。</p><p>不过最近微博上看到M$核心程序员兼女装大佬Tlaster买了台特别昂贵的笔记本Surface Pro X，跑传说中的Windows on ARM系统。她晒了一张图：</p><p><img src="//stgapr.github.io/post/gal-on-settopbox-1/tsukiyori_SQ1.PNG" alt="在ARM架构的SQ1芯片上跑X86程序"></p><p>这就有点牛逼了。因为这款笔记本跑的是高通定制的ARM架构的SQ1处理器。而黄油厂商我还没听说过技术先进到提供ARM platform  target的Galgame。也就是说这个版本的Windows 在二进制层面实现了一个X86到ARM的指令转换。不需要X86 EXE作任何修改、远非几年前的Windows RT能做得到的。</p><h2 id="可行性和方案"><a href="#可行性和方案" class="headerlink" title="可行性和方案"></a>可行性和方案</h2><p>于是我就想做类似的事情。首先去查了<a href="https://docs.microsoft.com/en-us/windows/arm/" target="_blank" rel="noopener">Windows Documentation</a>SDN上查了一下原理。发现类似64位windows兼容32位windows程序的途径——用<a href="https://docs.microsoft.com/en-us/windows/win32/winprog64/running-32-bit-applications" target="_blank" rel="noopener">WoW64层</a>，并且缓存这些已翻译的代码块，以减少指令翻译的开销，并在代码再次运行时进行优化。<br>所以Windows10 on ARM的windows目录里面，加上原本的X86_64和X86_32兼容设施——至少有三套system文件夹，啊不，实际上是四套：</p><p><strong>System32</strong>: ARM 64 位系统文件</p><p><strong>SyCHPE32</strong>： CHPE DLL，供 x86 程序调用，内部是 ARM 机器码（使得核心系统库不需要进行二进制翻译，减少性能损失)</p><p><strong>SysARM32</strong>: ARM 32 位系统文件</p><p><strong>SysWOW64</strong>: x86 32 位系统文件</p><p>其中给ARM处理器做X86指令的二进制翻译的关键DLL是<a href="https://docs.microsoft.com/en-us/windows/win32/winprog64/wow64-implementation-details" target="_blank" rel="noopener">xtajit.dll</a>。并且官方说这个函数巨复杂巨长，毕竟两种架构的CPU指令集完全不一样。根据爱好者测试，X86程序在ARM处理器上的翻译执行效率大概能达到原生的60%左右。WineHQ社区估计一时半会儿也没有精力重复造轮子，一是净室原则，二是Intel反复敲打版权风险。还好发现github上也有几个实验性项目。</p><p>如<a href="https://wiki.winehq.org/Emulation" target="_blank" rel="noopener">WineHQ的这篇wiki</a>所说，想实现ARM平台跑X86程序（先不说操作系统），大概有三种曲线救国的途径：</p><ul><li><p>处理器模拟。也就是异构模拟。最省事，也最慢。也就是用QEMU、virtualbox之类的虚拟机软件模拟整个X86 CPU，上面再装一个X86的操作系统。Bluestack、Windroy等都是一个原理。</p></li><li><p>用户模式模拟。也就是用QEMU user space emulator之类的用户态X86仿真程序，在syscall级别跳出。效率稍微好一点。有的人可能玩过一些基于chroot或者proot——在安卓手机上跑Linux的<a href="https://github.com/meefik/linuxdeploy" target="_blank" rel="noopener">deploylinux</a>和Anlinux。优点是可以利用宿主的Linux内核，不需要再整一套镜像（因此，假如要跑windows exe，还需要配合X86版本的wine）。代表项目<a href="https://github.com/ptitSeb/box86" target="_blank" rel="noopener">box86</a></p></li><li><p>在操作系统API层面的仿真。和用户模式模拟类似，但更快一点。代表项目如<a href="https://github.com/AndreRH/hangover" target="_blank" rel="noopener">hangover</a>（宿醉。这名字起的……）</p><p>有人可能会提起ExGear，但是：</p></li></ul><blockquote><p>A solution that I explored already in the past was ExaGear, which allowed running of x86 applications on ARM by emulating the CPU instructions, but not the entire PC.</p><p>Well ExaGear, although quite good, had one very big flaw: it was running everything in the i386 (x86) environment, which also is the case for the GPU drivers, which limited the the software only for use with applications that did not require 3D acceleration. Basically, any game that used “modern” graphics did not work, since it required OpenGL, which our ODROIDs lack the necessary drivers for and especially not for i386.</p></blockquote><p>于是工具落在了hangover和box86两者之间。</p><h3 id="hangover-和box86"><a href="#hangover-和box86" class="headerlink" title="hangover 和box86"></a>hangover 和box86</h3><p>hangover有一个缺点，它要靠QEMU做X86到ARM指令的转换，而且加入要用Wine也必须是64位的。hangover的开发方向主要是在64位平台（AArch64，X86_64）上跑64位程序，只是顺便兼容32位。它的Android分支也停止开发很久了。</p><p>而box86专心兼容X86_32（<strong>它不支持64位用户程序</strong>），用的X86 emulator是<a href="https://github.com/wfeldt/libx86emu" target="_blank" rel="noopener">libx86emu</a>的修改版。并且据官方readme文档所言，“box86 uses the native versions of some “system” libraries, like libc, libm, SDL, and OpenGL, it’s easy to integrate and use, and performance can be surprisingly high in some cases.”  </p><blockquote><p>应用程序所需的许多库都从ARM板重定向到了库，比如说Box86可以从ARM主机系统使用SDL2，而不是使用i386的SDL2。这也包括GPU驱动程序。如果应用程序需要运行OpenGL，它将不再要求i386 OpenGL驱动程序，而是ARM OpenGL驱动程序。还有许多其他库，例如SDL，OpenAL，X11等，也可以从本机ARM环境中使用，而不是使用i386中的所有库。这也意味着与需要完整i386环境的ExaGear相比，i386中需要的库要少得多。</p></blockquote><p>这个思路就很像微软的CHPE。</p><p>box86好像相当成熟，甚至已经有人基于该项目做了一个retro gaming向的<a href="https://twisteros.com/" target="_blank" rel="noopener">树莓派系统Twister OS（原名Raspbian X）</a>。</p><p>那我就选择box86来折腾了。顺便一提，目标平台可以是ARM HF（AArch64）也可以是32位的ARM。家里没有别的可折腾的ARM设备，可以考虑机顶盒或者Android手机了。也可以拿最好拿闲置的树莓派之类硬件。稍微有点千来块预算的，可以买一台<a href="https://plumz.me/archives/9636/" target="_blank" rel="noopener">ARM芯片的廉价笔记本Pinebook</a>。</p><h2 id="构建box86"><a href="#构建box86" class="headerlink" title="构建box86"></a>构建box86</h2><h3 id="关于ARM的架构"><a href="#关于ARM的架构" class="headerlink" title="关于ARM的架构"></a>关于ARM的架构</h3><blockquote><p>You <em>NEED</em> a 32-bit subsystem to run and build box86. box86 is useless on 64-bit only systems. Also, you <em>NEED</em> a 32-bit toolchain to build box86. A toolchain that only support 64-bit will not compile box86, and you’ll get errors (typically on aarch64, you get “-marm” not recognized).</p></blockquote><p>意思很明白：因为box86的原理是直接把X86_32代码转译到主机系统平台。要在（例如）ARM64平台上运行box86，需要为32位ARM构建box86，并且还需要具有32位库的chroot。重复一遍，<strong>box86不包含任何32位到64位的转换。</strong>当然我们在X86机器上交叉编译（比如编译到32位的ARM时）时，要提供一个32位的工具链。我们可以用Linaro。</p><h3 id="下载交叉编译工具链"><a href="#下载交叉编译工具链" class="headerlink" title="下载交叉编译工具链"></a>下载交叉编译工具链</h3><p>先<a href="http://releases.linaro.org/components/toolchain/binaries/" target="_blank" rel="noopener">去linaro网站</a>或者<a href="https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain" target="_blank" rel="noopener">ARM官网</a>或者<a href="https://mirrors.tuna.tsinghua.edu.cn/armbian-releases/_toolchains/" target="_blank" rel="noopener">清华镜像源</a>下载交叉编译工具链。记得选择带有x86_64_arm(v8l)-linux-gnueabihf字样的。<a href="https://www.cnblogs.com/lixuejian/p/12848728.html" target="_blank" rel="noopener">复习下交叉编译器的命名规则</a>，为了可以在ARMV8、ARM64等同时兼容64位和32位的CPU的32位模式上运行，我们必须保证目标程序集是32位的，让CPU向下兼容。</p><p>注意工具链里的armv8l指的armv8标准的32位模式。而64位模式的工具链的关键字是Aarch64。另外官网指出宿主架构必须是32位小端序（little endian），在这里也就是armel（armle，arm eabi little-endian），不能是armeb。（不过工具链里面一般都是litle endian，除非特意标出是armeb。）</p><p>soft floating point还是hard floating point（Armhf）的话，最好选HF。</p><blockquote><p>用softfp模式，会存在不必要的浮点到整数、整数到浮点的转换。而使用hard模式，在每次浮点相关函数调用时，平均能节省20个CPU周期。对ARM这样每个周期都很重要的体系结构来说，这样的提升无疑是巨大的。对一些严重依赖于浮点运算的程序，更是可以达到300%的性能提升。</p></blockquote><p>我下载的包名是gcc-linaro-7.5.0-2019.12-x86_64_armv8l-linux-gnueabihf.tar.xz。</p><p>解压。</p><figure class="hljs highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">xz</span> <span class="selector-tag">-d</span> <span class="selector-tag">gcc-linaro-7</span><span class="selector-class">.5</span><span class="selector-class">.0-2019</span><span class="selector-class">.12-x86_64_armv8l-linux-gnueabihf</span><span class="selector-class">.tar</span><span class="selector-class">.xz</span></span><br></pre></td></tr></table></figure><p>安装到喜欢的目录。</p><figure class="hljs highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -<span class="selector-tag">p</span> /usr/local/toochain</span><br><span class="line">sudo tar -xvf gcc-linaro-<span class="number">7.5</span>.<span class="number">0</span>-<span class="number">2019.12</span>-x86_64_armv8l-linux-gnueabihf<span class="selector-class">.tar</span> -C /usr/local/toolchain</span><br></pre></td></tr></table></figure><p>添加环境变量并刷新环境。</p><figure class="hljs highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PATH=<span class="variable">$PATH</span><span class="symbol">:/usr/local/toolchain/gcc-linaro-</span><span class="number">7.5</span>.<span class="number">0</span>-<span class="number">2019.12</span>-x86_64_armv8l-linux-gnueabihf/bin</span><br><span class="line">source ~<span class="regexp">/.bashrc</span></span><br></pre></td></tr></table></figure><p>验证下是否能识别到编译器。</p><figure class="hljs highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">armv8l-linux-gnueabihf-gcc -v</span><br></pre></td></tr></table></figure><h3 id="编译box86"><a href="#编译box86" class="headerlink" title="编译box86"></a>编译box86</h3><p>先把代码拉下来。<br><figure class="hljs highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">clone</span> <span class="title">https</span>://github.com/ptitSeb/box86.git</span><br></pre></td></tr></table></figure></p><p>cmake。<br><figure class="hljs highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd box86; mkdir build; cd build; </span><br><span class="line">cmake <span class="built_in">..</span> <span class="attribute">-DARM_DYNAREC</span>=ON \</span><br><span class="line"><span class="attribute">-DCMAKE_BUILD_TYPE</span>=RelWithDebInfo \</span><br><span class="line"><span class="attribute">-DCMAKE_SYSTEM_PROCESSOR</span>=arm \</span><br><span class="line"><span class="attribute">-DCMAKE_C_COMPILER</span>=armv8l-linux-gnueabihf-gcc;</span><br></pre></td></tr></table></figure></p><p>注意-DCMAKE_C_COMPILER，交叉编译的时候不指定的话会出现平台参数错误。</p><p>这里面有一个dynarec选项。JIT / Dynarec / Hotspot之类的技术会把转换过的指令段缓存起来，有助于提高程序载入速度。这也是在CMakeLists.txt里面实现控制逻辑的。</p><blockquote><p>The Dynarec is only avaiable on ARM Cpu. Notes also that VFPv3 and NEON are required for the Dynarec. Activate it by using <code>-DARM_DYNAREC=1</code>. Also, be sure to use <code>-marm</code> in compilation flags (because many compileur use Thumb as default, and the dynarec will not work in this mode).</p></blockquote><p>box64特有的其他编译选项见<a href="https://github.com/ptitSeb/box86/blob/master/COMPILE.md" target="_blank" rel="noopener">COMPILE.md</a>。</p><p>此外也可以手动指定编译参数。假如你的目标设备没有在CMakeLists.txt里面add_definitions、 set(CMAKE_ASM_FLAGS=…)的话。自己的目标平台相关参数可以去网络上找。也可以参考 -gcc –target-help。</p><figure class="hljs highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">CFLAGS</span>=<span class="string">"-march=armv8-a -mtune=cortex-a53"</span></span><br></pre></td></tr></table></figure><p>然后正式执行编译和链接。（后面的ARCH 、CROSS_COMPILE选项可以不要。假如makefile有好好地生成）</p><figure class="hljs highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make -j8 <span class="attribute">ARCH</span>=arm <span class="attribute">CROSS_COMPILE</span>=armv8l-linux-gnueabihf-</span><br></pre></td></tr></table></figure><p>大概10秒钟就编译好了。在build目录下会生成box86（可执行文件）和libdynarec.a（库，假如你有开启dynarec选项），还有cmake生成的一堆没用的参数文件。之后我们需要把这两个文件拷贝到目标ARM机器上。</p><p>这时候我们确认一下程序的架构。切换到build目录下，运行</p><figure class="hljs highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">file</span> ./box86</span><br></pre></td></tr></table></figure><p>应该能看到类似</p><blockquote><p>ELF 32-bit LSB executable,ARM EABI5 version1 (SYSV), dynamically linked, interpreter…</p></blockquote><p>之类的信息。这说明这是一个Linux格式的可执行文件（ELF），32位，ARM架构。在编译的这台X86机器上该程序是执行不了的，它只能在ARM机器上执行。</p><h3 id="（可选）编译GL4ES"><a href="#（可选）编译GL4ES" class="headerlink" title="（可选）编译GL4ES"></a>（可选）编译GL4ES</h3><p>不少Windows程序用的是DirectX，Wine也自己用OpenGL实现了一遍DirectX API。但假如你用的是嵌入式设备，就是那些只支持OpenGLES的，就麻烦了。好在<a href="https://github.com/ptitSeb/gl4es" target="_blank" rel="noopener">GL4ES</a>提供了GLES硬件的OpenGL接口功能，只是GL4ES目前在Wine上面工作得不是很好。聊胜于无吧。</p><p>（待续）</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 技术 </tag>
+            
             <tag> X86 </tag>
             
             <tag> ARM </tag>
             
             <tag> 程序仿真 </tag>
-            
-            <tag> 技术 </tag>
             
         </tags>
       
@@ -100,9 +127,9 @@
       
         <tags>
             
-            <tag> ACG </tag>
-            
             <tag> 音乐 </tag>
+            
+            <tag> ACG </tag>
             
             <tag> 乐器 </tag>
             
@@ -165,6 +192,29 @@
     </entry>
     
     <entry>
+      <title>生活报告</title>
+      <link href="/post/recent-seikatsu/"/>
+      <url>/post/recent-seikatsu/</url>
+      
+        <content type="html"><![CDATA[<p>很久没写日志，怕要被友链除名了。稍微记录一下生活状况。</p><p>可能是自我意识过剩，总是会思考在面对“网线另一端的不特定读者”时，要用什么口气写下文字。最近翻阅以前（高中时代）的日记时，也觉得很是幼稚，偶尔还有偏激的地方。但这毕竟是成长的一环节。</p><p>沿海小城此刻已经进入了台风季节，每天呼呼作响地刮风。榴莲上市了又下架了，菠萝也差不多下市了，但卖西瓜的敞篷小货车仍然能每天下工回来都能看到。因为疫情期还没过，街面广播天天在放国家安全法，还有举报偷渡回国人员什么的，耳朵都快起茧了。这种灰尘扑面又有点闷湿的天气，就有点九十年代的感觉。</p><p>最近家里装了纱窗，但一不小心没有在傍晚天暗前关窗的话，还是会被乘虚而入的蚊子叮个半死。还是得偶尔配合用电热蚊香液。</p><a id="more"></a><p><img src="//stgapr.github.io/post/recent-seikatsu/blahaj.jpg" alt="周末晒太阳的宜家鲨鲨"></p><p>我发现自己身上同时会有拖延症和超前症，正如大学舍友Ace所言，“考试前一周就特别想打游戏，但游戏也打不安心。”  我想，可能是工作/学习/考试本身是个没什么满足感的事情，于是就想用别的什么可以带来短时愉悦反馈的娱乐来逃避，或者干脆尽快把它做掉，免得心里挂碍。</p><p>拖延症和超前症本身问题不大，是人在心理上故意挑战效率极限。熬夜的原因可能也类似（试图在深夜中报复性地补偿回自己白天被占据的时间，虽然是个恶循环）。但工作本身只是养家糊口的手段，我比较崇奉尽可能快（但是比较保证质量）地干完一件事。或者你在无趣的事情中找一些乐趣也是可以的。但，沉迷于智能设备的垃圾信息流是万万不行的。那些只是浮光掠影，是不断撩动的欲望和满足后无聊的转轮。</p><p>不行的话就打日兔拳，或者百田一本。日兔拳是一种心情愉悦的表情组合（虽然我也不知道它是什么意思），大概是自我激励？ 百田一本就是“假如我在限定的时间里不做完某件事，我就去买一张最讨厌的艺人的专辑”。</p><p>最近在工作之余稍微把荔园在线(szuonline.cn)镜像下来了。荔园在线是一个深圳大学的论坛的个人备份站，同时还有国内其他高校的一部分帖子存档（原站大多已经无法访问）。我觉得这些是了解2000年-2008年左右校园生活、社会风貌和其他方面考古的重要史料。虽然不是特别全。我觉得应该有一部分人意识到它的重要性了。 顺便一提，镜像工具用的是teleport Ultra，爬的速率很慢，大概只有几十KB每秒，总共数十万文件都是靠挂在后台细水长流慢慢down下来。</p><p>这座小城市的生活节奏和十年前、二十年前没什么变化，虽然新城区越来越大，甚至已经在侵蚀城乡结合部，甚至原来的农村。 以后城市和城市会不会蔓延且相接呢？就算如此，人和人的距离仍然还是那么远。比如，我完全不知道海峡对面的网友的生活形态，他们在读什么书，听什么音乐，看什么新闻，在虚拟和现实世界的认知与这边有多少不同 。说起来这座城市还有一个偏僻的岛屿现在是中华民国的实际管辖区域。 上大学时经常去环岛南路看”一国两制统一中国“，天气好的时候能透过浮动的海面雾气看到对面的岛屿”三民主义统一中国“的牌子。这里和那里，就如同隔海互相喊话（并且偶尔射击炮弹）一样，互相固执地主张。</p><p>除了地域、风俗和语言的隔阂外，阶层、亚文化圈也逐渐地把人分成了一个个互相陌生的群体。</p><p>最近在PS4上试玩了D.C.4。马戏团这个万年冷饭系列我只打过D.C.Ⅱ，并且对其命名复杂的FD和外传游戏望而生畏。不过这次我从老硬盘里找出了杂贺匡写的D.C.和D.C.Ⅱ小说，津津有味地回味了一番。D.C.4好像和前作的人物没什么关系——除了体验版最后出现的芳乃樱。俗话说“流水的初音岛，铁打的芳乃樱”（还有一个万年基友杉並）。虽然这一作仍然发生在樱花永远盛开的岛屿……角色配置几乎也一模一样，但这次不在初音岛上了，新的岛名（以及学校名）汉字又写作香香见，不得不说很土（干嘛不写作“鏡”？）。</p><p>Da Capo，还有Dal Segno大家都知道是音乐里的演奏记号。每次里面剧情推进到确立恋爱关系后，樱花树都会凋谢这个意象很好：魔法结束了，必须有一些该面对的现实了——然后是新的开始。结虽然里面的恋爱桥段现在看起来没什么新意，但能给人一种……世纪初的淳朴感。D.C.4体验版搞的那些哭泣的梦境，破碎的镜面之类的暗示，丝毫不慌。</p><p>D.C.系列主作的几首OP都很好。这里推荐一张用上世纪的计算机音源复刻这个系列主题曲的专辑《<a href="https://music.163.com/#/album?id=2627980" target="_blank" rel="noopener">D.C.S.F -COMPUTER WORLD-</a>》。没想到用音色有限的硬音源也能改编得这么动听。</p><p><img src="https://p1.music.126.net/glw639PVbJpb-vnaETrkXw==/5638295627313680.jpg" alt=""></p><p>自己生得比较晚，没有遇上百花齐放的个人计算机早期时代。现在国内也有Retro Game，Retro Computer，以及复古音源的热潮。</p><p>趁着大降价，买了一台23.8寸的小米显示器1A（工作制表和PS4两用）。其实考虑过1400元左右的型号，但感觉那点参数提升也没什么用。本着穷人节俭用钱的原则这个就好了。这个显示器还可以看双页漫画嘛！打谱的时候也看得很清楚！可以同时看有四十列的Excel表格！——使劲给自己暗示其实用性后，我终于买下了它。</p><p>说起来，虽然自己听的曲子基本都是gal OST，但一首曲子适不适合改编成吉他是很容易。首先和弦不能太复杂，节奏型要稳定，音域太广的话就得考虑移调，调整指法谱也是很费劲的。HyperCaffinated上次说“你这分解和弦的琶音看起来一股钢琴味” 。</p><p>最近在读的书……一是Aniruddh D. Patel 的《音乐，语言和脑》。只是稍微对这个交叉领域感兴趣。（原版《<a href="https://book.douban.com/subject/2843084/" target="_blank" rel="noopener">Music, Language, and the Brain</a>》大概要五六十刀，中文版定价只要49人民币。赞美社会主义出版物定价——可惜当当没货！）网络上有无插图的文字版，将就着看。</p><p>另外读了小林泰三的《看海的人》（中篇合集），以及《醉步男》。相当硬核的科幻。还有《青春之歌》，啊没错就是杨沫的那部革命小说。只是在几个特定日子才会被缅怀的理想时代的遗痕。</p><p>我记得高中时候我经常翘了体育课跑去图书馆看书，图书馆里面有很多八九十年代的藏书，不少定价才几分几毛钱。九十年代的书籍给我的印象不怎么好，有很多官场小说，社会纪实，情爱小说，凶杀暴力恐怖故事，封面设计还非常土，不知道学校怎么选书的。</p><p>对了，还重读了太宰治的《女生徒》，很细腻微妙的心理变化。说起太宰，我记得把青梅拉黑有一段时间了，因为她买了本精装版的《人间失格》放在桌头，等了三周还没看完（不过我对太宰的性情并没有什么意见。虽然那本书都快烂大街，是谁都会说一句“生而为人我很抱歉”）。我只是想着等她读完，然后大概试探一下文学力。结果发现她完全不懂人类细腻的情感（以及相关文艺作品），整天就看些漫威，美国队长之类的好莱坞爽片。总的来说就是没心没肺。我不知道这几年她怎么过来的，只是有点遗憾。但毕竟每个人都有自己的活法，道不同那就拉倒呗。</p><p>人生大部分时候是平凡无奇的，并不可能时刻刺激颠簸。大部分人应该也只是普通地过完一生（并且不因时代的动荡而命运坎坷就算是很幸运了）。活了这么久，对世界并不围绕你转也该有点认识了。</p><p>说起来高中毕业也快十年了，我完全不知道同龄人现在在哪里，过着怎样的生活（已经xx自由，或者是变成“后浪”？）说起来，毕业的时候我们对未来只是从旁人的只言片语中拼凑起的粗糙蓝图，相信“只要努力就能……“。 现在虽然不很懂，但比较老油条地知道了大家的起跑线并不总是同一条，以及终点也不只一个。 我还在纠结（明年）有聚会的话我去不去参加呢？我应该不会去，这样就能把他们的印象留在十八岁。……也有一部分担忧自己”混得不如别人“的自卑在里面。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 生活 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>《未来夏娃》和安卓恋人</title>
       <link href="/post/l-eve-future/"/>
       <url>/post/l-eve-future/</url>
@@ -188,29 +238,6 @@
             <tag> 科幻 </tag>
             
             <tag> 恋爱 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
-      <title>生活报告</title>
-      <link href="/post/recent-seikatsu/"/>
-      <url>/post/recent-seikatsu/</url>
-      
-        <content type="html"><![CDATA[<p>很久没写日志，怕要被友链除名了。稍微记录一下生活状况。</p><p>可能是自我意识过剩，总是会思考在面对“网线另一端的不特定读者”时，要用什么口气写下文字。最近翻阅以前（高中时代）的日记时，也觉得很是幼稚，偶尔还有偏激的地方。但这毕竟是成长的一环节。</p><p>沿海小城此刻已经进入了台风季节，每天呼呼作响地刮风。榴莲上市了又下架了，菠萝也差不多下市了，但卖西瓜的敞篷小货车仍然能每天下工回来都能看到。因为疫情期还没过，街面广播天天在放国家安全法，还有举报偷渡回国人员什么的，耳朵都快起茧了。这种灰尘扑面又有点闷湿的天气，就有点九十年代的感觉。</p><p>最近家里装了纱窗，但一不小心没有在傍晚天暗前关窗的话，还是会被乘虚而入的蚊子叮个半死。还是得偶尔配合用电热蚊香液。</p><a id="more"></a><p><img src="//stgapr.github.io/post/recent-seikatsu/blahaj.jpg" alt="周末晒太阳的宜家鲨鲨"></p><p>我发现自己身上同时会有拖延症和超前症，正如大学舍友Ace所言，“考试前一周就特别想打游戏，但游戏也打不安心。”  我想，可能是工作/学习/考试本身是个没什么满足感的事情，于是就想用别的什么可以带来短时愉悦反馈的娱乐来逃避，或者干脆尽快把它做掉，免得心里挂碍。</p><p>拖延症和超前症本身问题不大，是人在心理上故意挑战效率极限。熬夜的原因可能也类似（试图在深夜中报复性地补偿回自己白天被占据的时间，虽然是个恶循环）。但工作本身只是养家糊口的手段，我比较崇奉尽可能快（但是比较保证质量）地干完一件事。或者你在无趣的事情中找一些乐趣也是可以的。但，沉迷于智能设备的垃圾信息流是万万不行的。那些只是浮光掠影，是不断撩动的欲望和满足后无聊的转轮。</p><p>不行的话就打日兔拳，或者百田一本。日兔拳是一种心情愉悦的表情组合（虽然我也不知道它是什么意思），大概是自我激励？ 百田一本就是“假如我在限定的时间里不做完某件事，我就去买一张最讨厌的艺人的专辑”。</p><p>最近在工作之余稍微把荔园在线(szuonline.cn)镜像下来了。荔园在线是一个深圳大学的论坛的个人备份站，同时还有国内其他高校的一部分帖子存档（原站大多已经无法访问）。我觉得这些是了解2000年-2008年左右校园生活、社会风貌和其他方面考古的重要史料。虽然不是特别全。我觉得应该有一部分人意识到它的重要性了。 顺便一提，镜像工具用的是teleport Ultra，爬的速率很慢，大概只有几十KB每秒，总共数十万文件都是靠挂在后台细水长流慢慢down下来。</p><p>这座小城市的生活节奏和十年前、二十年前没什么变化，虽然新城区越来越大，甚至已经在侵蚀城乡结合部，甚至原来的农村。 以后城市和城市会不会蔓延且相接呢？就算如此，人和人的距离仍然还是那么远。比如，我完全不知道海峡对面的网友的生活形态，他们在读什么书，听什么音乐，看什么新闻，在虚拟和现实世界的认知与这边有多少不同 。说起来这座城市还有一个偏僻的岛屿现在是中华民国的实际管辖区域。 上大学时经常去环岛南路看”一国两制统一中国“，天气好的时候能透过浮动的海面雾气看到对面的岛屿”三民主义统一中国“的牌子。这里和那里，就如同隔海互相喊话（并且偶尔射击炮弹）一样，互相固执地主张。</p><p>除了地域、风俗和语言的隔阂外，阶层、亚文化圈也逐渐地把人分成了一个个互相陌生的群体。</p><p>最近在PS4上试玩了D.C.4。马戏团这个万年冷饭系列我只打过D.C.Ⅱ，并且对其命名复杂的FD和外传游戏望而生畏。不过这次我从老硬盘里找出了杂贺匡写的D.C.和D.C.Ⅱ小说，津津有味地回味了一番。D.C.4好像和前作的人物没什么关系——除了体验版最后出现的芳乃樱。俗话说“流水的初音岛，铁打的芳乃樱”（还有一个万年基友杉並）。虽然这一作仍然发生在樱花永远盛开的岛屿……角色配置几乎也一模一样，但这次不在初音岛上了，新的岛名（以及学校名）汉字又写作香香见，不得不说很土（干嘛不写作“鏡”？）。</p><p>Da Capo，还有Dal Segno大家都知道是音乐里的演奏记号。每次里面剧情推进到确立恋爱关系后，樱花树都会凋谢这个意象很好：魔法结束了，必须有一些该面对的现实了——然后是新的开始。结虽然里面的恋爱桥段现在看起来没什么新意，但能给人一种……世纪初的淳朴感。D.C.4体验版搞的那些哭泣的梦境，破碎的镜面之类的暗示，丝毫不慌。</p><p>D.C.系列主作的几首OP都很好。这里推荐一张用上世纪的计算机音源复刻这个系列主题曲的专辑《<a href="https://music.163.com/#/album?id=2627980" target="_blank" rel="noopener">D.C.S.F -COMPUTER WORLD-</a>》。没想到用音色有限的硬音源也能改编得这么动听。</p><p><img src="https://p1.music.126.net/glw639PVbJpb-vnaETrkXw==/5638295627313680.jpg" alt=""></p><p>自己生得比较晚，没有遇上百花齐放的个人计算机早期时代。现在国内也有Retro Game，Retro Computer，以及复古音源的热潮。</p><p>趁着大降价，买了一台23.8寸的小米显示器1A（工作制表和PS4两用）。其实考虑过1400元左右的型号，但感觉那点参数提升也没什么用。本着穷人节俭用钱的原则这个就好了。这个显示器还可以看双页漫画嘛！打谱的时候也看得很清楚！可以同时看有四十列的Excel表格！——使劲给自己暗示其实用性后，我终于买下了它。</p><p>说起来，虽然自己听的曲子基本都是gal OST，但一首曲子适不适合改编成吉他是很容易。首先和弦不能太复杂，节奏型要稳定，音域太广的话就得考虑移调，调整指法谱也是很费劲的。HyperCaffinated上次说“你这分解和弦的琶音看起来一股钢琴味” 。</p><p>最近在读的书……一是Aniruddh D. Patel 的《音乐，语言和脑》。只是稍微对这个交叉领域感兴趣。（原版《<a href="https://book.douban.com/subject/2843084/" target="_blank" rel="noopener">Music, Language, and the Brain</a>》大概要五六十刀，中文版定价只要49人民币。赞美社会主义出版物定价——可惜当当没货！）网络上有无插图的文字版，将就着看。</p><p>另外读了小林泰三的《看海的人》（中篇合集），以及《醉步男》。相当硬核的科幻。还有《青春之歌》，啊没错就是杨沫的那部革命小说。只是在几个特定日子才会被缅怀的理想时代的遗痕。</p><p>我记得高中时候我经常翘了体育课跑去图书馆看书，图书馆里面有很多八九十年代的藏书，不少定价才几分几毛钱。九十年代的书籍给我的印象不怎么好，有很多官场小说，社会纪实，情爱小说，凶杀暴力恐怖故事，封面设计还非常土，不知道学校怎么选书的。</p><p>对了，还重读了太宰治的《女生徒》，很细腻微妙的心理变化。说起太宰，我记得把青梅拉黑有一段时间了，因为她买了本精装版的《人间失格》放在桌头，等了三周还没看完（不过我对太宰的性情并没有什么意见。虽然那本书都快烂大街，是谁都会说一句“生而为人我很抱歉”）。我只是想着等她读完，然后大概试探一下文学力。结果发现她完全不懂人类细腻的情感（以及相关文艺作品），整天就看些漫威，美国队长之类的好莱坞爽片。总的来说就是没心没肺。我不知道这几年她怎么过来的，只是有点遗憾。但毕竟每个人都有自己的活法，道不同那就拉倒呗。</p><p>人生大部分时候是平凡无奇的，并不可能时刻刺激颠簸。大部分人应该也只是普通地过完一生（并且不因时代的动荡而命运坎坷就算是很幸运了）。活了这么久，对世界并不围绕你转也该有点认识了。</p><p>说起来高中毕业也快十年了，我完全不知道同龄人现在在哪里，过着怎样的生活（已经xx自由，或者是变成“后浪”？）说起来，毕业的时候我们对未来只是从旁人的只言片语中拼凑起的粗糙蓝图，相信“只要努力就能……“。 现在虽然不很懂，但比较老油条地知道了大家的起跑线并不总是同一条，以及终点也不只一个。 我还在纠结（明年）有聚会的话我去不去参加呢？我应该不会去，这样就能把他们的印象留在十八岁。……也有一部分担忧自己”混得不如别人“的自卑在里面。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 笔记 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 生活 </tag>
             
         </tags>
       
@@ -258,9 +285,9 @@
       
         <tags>
             
-            <tag> ACG </tag>
-            
             <tag> 音乐 </tag>
+            
+            <tag> ACG </tag>
             
             <tag> 乐器 </tag>
             
@@ -395,9 +422,9 @@
             
             <tag> 游戏 </tag>
             
-            <tag> 编程 </tag>
-            
             <tag> 音乐 </tag>
+            
+            <tag> 编程 </tag>
             
         </tags>
       
@@ -574,34 +601,9 @@
             
             <tag> 生活 </tag>
             
-            <tag> 阅读 </tag>
-            
             <tag> 网络 </tag>
             
-        </tags>
-      
-    </entry>
-    
-    <entry>
-      <title>迎接26岁</title>
-      <link href="/post/birthday/"/>
-      <url>/post/birthday/</url>
-      
-        <content type="html"><![CDATA[<p>转眼自己也26岁了。不知道按传统的什么虚岁的鬼算法，家人亲戚朋友眼里自己像是马上奔三一样，恨不得把我嫁出去（？）。</p><p> 说是转眼，站在人生的任何时点回顾过去，都会觉得不过一刹那吧？岁月就在为生活奔忙和懈怠松懈间缓慢而坚定地流逝了。</p><a id="more"></a><p>关于生日，成年后也没有怎么特别讲究地庆祝。但偶尔在家带着小小的仪式感纪念一下也不错。吃个小蛋糕啥的。从小到大许过的愿望已经忘记了，里面应该有几次是闭眼假装许愿，但其实脑袋空空。</p><p>回顾最近几年，虽然有点小坎坷，但总体来说很幸运。其实一出生开始都按着还行的步骤走，属于传说中那种“别人家的孩子”，除了大学堕落了一阵，但后来从辣鸡国企中跳槽、第一次公考就搞定了，新单位的福利不错，同事也很好，工作还是比较愉快的。家庭条件也小康，并不需要疯狂加班悲壮地以命换钱。其实普通人的生活是最珍贵的对吧？说真的，没什么太过苛求的东西。虽然经常能听到谁家的孩子出国留学，巨资年薪云云，但肯定在看不见的地方有自己的艰辛吧？人外有人天外有天，要知足常乐。 </p><p>虽然感情上没啥动静……但其他方面应该知足了。其实我也不知道同龄人在干什么，因为毕业后怪癖发作把所有人联系方式都删了，现在加回去也没什么意思，甚至同学会也不怎么想去了。只是从零星的消息中听说，他们有的在国外，有的在大厂，有的已经结婚了，甚至考虑生二胎了，有的跳槽了N次，有的在大城市奋斗。我是比较懒和自我的人，鸡血对我没什么用，我觉得自己出生的这座四线小城市就挺好的。每个人都有自己的活法，没必要干涉别人的价值观。</p><p>工作到现在，算有点小积蓄，目前正在考虑和高中同学基友去JP自由行，我们都是受亚文化影响的JP爱好者。这阵子在从各种渠道收集信息。想想从小到大从大从来没出国过，而且还是自己规划行程，还挺激动。但某个大佬安慰说“其实也就那一回事，毕竟是文明现代国家”。 </p><p>更长远的计划……就是多读书，懂得更多的人情逻辑，学会控制情绪，还有多了解外面的世界，以及打理好自己的生活（比如研究新菜品，折腾家居布置），以及坚持锻炼。（好像有点多啊？）</p><p>前几周还在思考要给自己什么生日礼物。想来想去好像没什么特别需要的东西，硬要说的话，希望和人一起去看《天气之子》？ <!--但喜欢的人好像很忙？-->   虽然也不是非得和人一起去看，一个人看勉强也行……</p><p>有人说，成长就是和自己和解的过程，我觉得重要的事情也包括对生活保持好奇和热情，不断探索未知的领域。</p><p>希望年老之时，回首往事，不会觉得太空虚。（装老年人状）</p><p>祝我生日快乐。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 随感 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 生活 </tag>
-            
-            <tag> 生日 </tag>
+            <tag> 阅读 </tag>
             
         </tags>
       
@@ -627,6 +629,31 @@
             <tag> ACG </tag>
             
             <tag> 童话 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>迎接26岁</title>
+      <link href="/post/birthday/"/>
+      <url>/post/birthday/</url>
+      
+        <content type="html"><![CDATA[<p>转眼自己也26岁了。不知道按传统的什么虚岁的鬼算法，家人亲戚朋友眼里自己像是马上奔三一样，恨不得把我嫁出去（？）。</p><p> 说是转眼，站在人生的任何时点回顾过去，都会觉得不过一刹那吧？岁月就在为生活奔忙和懈怠松懈间缓慢而坚定地流逝了。</p><a id="more"></a><p>关于生日，成年后也没有怎么特别讲究地庆祝。但偶尔在家带着小小的仪式感纪念一下也不错。吃个小蛋糕啥的。从小到大许过的愿望已经忘记了，里面应该有几次是闭眼假装许愿，但其实脑袋空空。</p><p>回顾最近几年，虽然有点小坎坷，但总体来说很幸运。其实一出生开始都按着还行的步骤走，属于传说中那种“别人家的孩子”，除了大学堕落了一阵，但后来从辣鸡国企中跳槽、第一次公考就搞定了，新单位的福利不错，同事也很好，工作还是比较愉快的。家庭条件也小康，并不需要疯狂加班悲壮地以命换钱。其实普通人的生活是最珍贵的对吧？说真的，没什么太过苛求的东西。虽然经常能听到谁家的孩子出国留学，巨资年薪云云，但肯定在看不见的地方有自己的艰辛吧？人外有人天外有天，要知足常乐。 </p><p>虽然感情上没啥动静……但其他方面应该知足了。其实我也不知道同龄人在干什么，因为毕业后怪癖发作把所有人联系方式都删了，现在加回去也没什么意思，甚至同学会也不怎么想去了。只是从零星的消息中听说，他们有的在国外，有的在大厂，有的已经结婚了，甚至考虑生二胎了，有的跳槽了N次，有的在大城市奋斗。我是比较懒和自我的人，鸡血对我没什么用，我觉得自己出生的这座四线小城市就挺好的。每个人都有自己的活法，没必要干涉别人的价值观。</p><p>工作到现在，算有点小积蓄，目前正在考虑和高中同学基友去JP自由行，我们都是受亚文化影响的JP爱好者。这阵子在从各种渠道收集信息。想想从小到大从大从来没出国过，而且还是自己规划行程，还挺激动。但某个大佬安慰说“其实也就那一回事，毕竟是文明现代国家”。 </p><p>更长远的计划……就是多读书，懂得更多的人情逻辑，学会控制情绪，还有多了解外面的世界，以及打理好自己的生活（比如研究新菜品，折腾家居布置），以及坚持锻炼。（好像有点多啊？）</p><p>前几周还在思考要给自己什么生日礼物。想来想去好像没什么特别需要的东西，硬要说的话，希望和人一起去看《天气之子》？ <!--但喜欢的人好像很忙？-->   虽然也不是非得和人一起去看，一个人看勉强也行……</p><p>有人说，成长就是和自己和解的过程，我觉得重要的事情也包括对生活保持好奇和热情，不断探索未知的领域。</p><p>希望年老之时，回首往事，不会觉得太空虚。（装老年人状）</p><p>祝我生日快乐。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 随感 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 生活 </tag>
+            
+            <tag> 生日 </tag>
             
         </tags>
       
@@ -1383,9 +1410,9 @@
             
             <tag> 生活 </tag>
             
-            <tag> 健康 </tag>
-            
             <tag> 书籍 </tag>
+            
+            <tag> 健康 </tag>
             
             <tag> 医学 </tag>
             
@@ -1437,9 +1464,9 @@
       
         <tags>
             
-            <tag> 游戏 </tag>
-            
             <tag> 电子小说 </tag>
+            
+            <tag> 游戏 </tag>
             
             <tag> 汉化 </tag>
             
@@ -1697,9 +1724,9 @@
       
         <tags>
             
-            <tag> 编程 </tag>
-            
             <tag> 生活 </tag>
+            
+            <tag> 编程 </tag>
             
             <tag> 网络 </tag>
             
@@ -2237,6 +2264,31 @@
     </entry>
     
     <entry>
+      <title>AQUA：与你的永恒夏日 （下篇）</title>
+      <link href="/post/AQUA-2/"/>
+      <url>/post/AQUA-2/</url>
+      
+        <content type="html"><![CDATA[<p>本文是游戏《AQUA》的下半部分 LUKAS篇和AQUA篇的全剧透速览。</p><a id="more"></a><p>三条线看完之后，回到Title，会发现本来水蓝色的界面变成浓烈的黄昏色调。START按钮多了一个LUKAS篇（回忆篇）的选项。</p><p>LUKA篇是以年轻的研究员圭次的视角展开的。圭次进入ECReD机构分支“人体工学开发第十二研究室”负责开发第七代仿生生命体，这个小镇上的机构的部长就是千夏（千纱的母亲）。然后男主的母亲智惠也在里面当研究员。<br>圭次在研究所里表现还不错，但他也渐渐注意到一些不对劲的地方，比如上面似乎利用研究所的目的是搞一些违反伦理的研究。某次公寓楼的瓦斯泄露事故似乎是凶杀案……<br>话说圭次被分配了一个助理研究员沙織，正好是大学同学（怎么有一股ひまわり剧情的熟悉感），两个人之前有点同窗好感。在研究所一来二去混熟了……恋爱了……沙織也怀孕了。圭次向沙織求婚后，两个人幻想着以后的幸福生活……<br>沙織偶尔会提到自己本来是作为实验的参与者来到这个地方，但只有圭次重视她之类。（我觉得这里是圭次没听出来“实验的参与者”是被实验体的意思，而不是“实验研究员”）</p><p>就在沙織临产前的某天，ECReD的医学大楼突然警报大作说“危险药品泄露”，所有人被强制疏散。想到沙織还在里面体检，圭次激动地拨开人群冲了进去，却发现满身是血的沙織手成利刃，而地上满是被砍成重伤的研究员。此时沙織精神状态极其不稳定，觉得每个人都要害她。</p><p>这时候一个不认识的小女孩出现了，试图让变得癫狂的沙織镇定下来。成功是成功了，但沙織也陷入昏迷。</p><p>下一幕是ECReD的医师出来，用僵硬的语气告诉圭次，由于暴走时沙織的脑部功能损伤过大，沙織已经无力回天，而且根据沙織生前自愿签署的协议，自己的遗体捐献给ECReD做科研。圭次痛苦地质问为什么机构要把沙織当作实验品来玩弄。医师也激动地反问了一大段说你们知道我们医疗团队也在承担多少精神压力，天天给你们研究员收拾血淋淋的摊子，被派去分离脑神经，被命令做惨无人道的解剖。<br>圭次就此听到了研究所一些黑暗的真相。<br>因为沙織离世，圭次也就此抑郁下来，时间如同停滞一般。但一年后研究机构的上层者（“亚当”）又重新给圭次指派了一个助理研究员。报道的时候一看，就是那天阻止沙織暴乱的小女孩なずな。なずな这时候看起来还是个中学生，但却是个技术分野的天才。她一边帮圭次搞研究，慢慢地利用权限收集机构的内幕。她表示自己身不由己，但假如圭次愿意，她想和圭次一起离开机构。厌倦了人体研究的圭次去找部长千夏谈话，并质问为什么千夏也要参与这种不人道的研究。</p><p>然后千夏告诉他科研上的一件事，就是某个物理粒子会先收到自己发射出去的光，然后才是发射出光。也就是先果后因。然后千夏解释了一通某种乱七八糟的时空收缩因果理论（我没仔细看），并告诉圭次说，自己现在的这个女儿千纱其实是克隆体。由于那套时空理论，这个女儿必然会遭遇交通事故。而自己并不是想去参与ECReD上层的那些勾当，而是想利用科研资源去开发让虚拟粒子构筑（投影？）人类生命体的技术，从而保证自己能够在千纱出事后利用她的意识备份重新投影出一个“千纱”出来。然后千夏还给圭次看了个东西——之前在给沙織做诊疗时采集的沙織意识数据。</p><p>圭次被打动了，他想要复活恋人沙織。于是打算留了下来，于是和なずな道歉，并且承诺自己会给なずな妥善安排出去后的住处。<br>なずな很鄙夷地说，我不需要你的钱，我自己有地方住。就走了。</p><p>这里就可以说清楚为什么WIND线一开头，なずな老师没地方住，要住进男主家。为什么なずな和千夏有裂隙，并且在甜品店里对圭次说“你不要再一意孤行想要复活恋人了”</p><p>（所以男主不仅回乡重逢的幼驯染是克隆体，而且三年前遭遇事故之前的千纱据后面剧情描述也并不是最早的那个千纱）</p><p>ルカ是一个能量设施，里面提供智慧驱动的是叫做ラケル的东西，ラケル不是把电子设备植入人体，而是反过来把人体植入电子设备……（听起来有点恶心）也就是说把人类的脑神经取出来囚禁在电子设备上，从而操作着ルカ天线。</p><p>这里还提到，早先其实已经在做利用AQUA来部分修复人体的研究了，但需要植入“EC”，而且因为技术不成熟，实验体容易暴乱，并且承受过多的脑负担，生命都很短。 所以后来结束了研究。但有7个实验体除外——其中5个是监护人不肯，1个是联系不上，1个是还在实验中的。 （很明显，其中一个就是奈々璃。开篇正好是她接受该手术后8年后）</p><p>充满黑幕的LUKA篇看完后，终于到了AQUA篇：</p><p>なずな老师见到了ルナ（さとみ）——一个有很长蓝色双马尾的少女。嗯，是会悬浮的投影体。ルナ称呼なずな叫サエ。这时候なずな才说自己其实也并不是真的活体人类，而是智慧体，基本也是用AQUA搞出来的投影。前面有提过ルカ除了负责总管理的ラケル外，还需要数名不需要肉体的智慧体来运作，イヴ就是男主老妈智恵 。</p><p>然后远愿岬的那个传说，其实也不是江户时代那么远，而是最近几十年的真实事件，传说中的女性是凛的父亲的妹妹南白。为什么那个女性？因为南家有女性单传的预感能力。为了研究这种预感能力，ECReD想要强制把人作为实验体，那个女性是因为不从而跳海。而核能事故时凛的母亲也预感到了什么……（抱歉这段没有看得太清楚）……总之一切都是有预谋的。</p><p>再说ラケル。ラケル嵌入的人体脑神经其实会老化而更换。而现在维持运行的这副用的是千夏和智惠童年时的一个玩伴的脑神经。某一天这个玩伴再也没有赴约出现，就是被ECReD抓去……呃……了。<br>ラケル——也就是那个童年玩伴的意识与硬件的融合体——长期管理着AQUA设施ルカ。但她因为过于痛恨人类无休止的欲望和对自己的折磨而暴走。由于ラケル天线罢工，AQUA粒子失常，地陷发生，奈々璃的旧房子坠塌，凛跑去救她，在残垣断壁中鼓励还躲在里面、几乎自暴自弃的奈々璃。奈々璃鼓起勇气的同时恢复了记忆。男主开着なずな老师的氮气加速改装车后知后觉地到的时候，两个人已经平安无事了。<br>但不知为什么并没有如同千夏预测的那样，ラケル让所有人身上的AQUA粒子都错乱从而使人类毁灭，而是以全城停电、ルカ瘫痪来结束。<br>总之这座城市再也不能使用AQUA粒子带来的高科技了。同时在地震中因地下沉陷之故，ECReD的那个研究所也就此关闭运行。小镇失去了科研价值。</p><p>なずな最后问千夏，假如自己就是那个和自己同名的千夏的大女儿なずな的话，千夏会把自己当作家人吗？<br>千夏：这不可能，因为大女儿なずな的确是遭遇事故死了……<br>なずな：不，我就是她。<br>なずな道出真相：ECReD的上层告诉她想活下去的话就做个交易，把自己的脑神经让他们取出来拿去管理ルカ设施。自己同意了，但是又恳求给自己一副虚拟投影身体，让自己以“人”的姿态活着。</p><p>（我：打了大半天发现没几个真正意义的活人……）</p><p>在尾声中，なずな老师选择外出长期旅游，并承诺自己一定会回来。万年萝莉只是因为自己应该算是不老不死之身了，过了几百年再回来一定物是人非吧……</p><p>（all clear后的追加小故事这里就不多说了。）</p><p>说实话这作品剧情相当绕，而且假如不对胃口的话有点狗血……。作品后半段有不少科幻设定上的片假名，特有理论的叙述阅读起来相当难（日本人都在吐槽）。而且某些元素让我总是联想到《ひまわり pebble in the sky》。</p><p>至于主题，也不算难懂。</p><p>科技改变人的生活，也改变了人的内心。人是否能正确地驾驭科技，而不是被反噬……</p><p>和ひまわり相比，AQUA同样的情感细腻、格局宏大。但无论bgm还是厨子空间上，ひまわり的评分都比AQUA高。 个人觉得是前面的日常有点太催眠的缘故，导致WIND线中盘劝退不少玩家。虽然剧情很复杂，但叙述还算清晰利落，没有多余的诡计手法（我不是很喜欢ISLAND那种三番五次的反转）。</p><p>再说其他指标。本作音乐水平相当不错，符合故事的氛围；CG质量也很高；TIKERBELL SOUND LABEL给SORAHANE配乐更是美妙。尤其是ED 月子（stretta di mano）唱的《SUMMER DAYS》。 OP《Everlasting Blue》的MV制作精良，亦值得一看。另外有一个要表扬的东西是，SORAHANE的引擎搞得很好，里面内置了一个阅览系统，你可以在不同剧情篇章间跳转、拖动并预览进度，就像是非线编软件一般。剧情每一段都有一个带小标题的过场动画，feng社的星桥那种感觉。</p><p>假如碰过这社其他作品的人会发现，三部里面都出现过一家叫做シトランテ（紫兔兰亭）的餐馆/甜品店。而且小镇的名字都是月ヶ浜。可以说是一种彩蛋了。</p><p>另外据我所知SORAHANE社一些趣闻： AQUA的副业是卖Excel脚本工具和Office高端使用方法教程的；AQUA第三作《はるかかなた》从krkr2换成基于nw.js的某种引擎，但是这种引擎存在严重的bug，反复推出修复补丁后，终于在patch 3.02版本能正常运行，而且剧情评价很低，はるかかなたb不幸成为雷作；AQUA的脚本家原来是系统工程师，在生放送里提到“就算只有一次也好，在便利店之类的地方打工赚钱做游戏也好，要把自己想说的用作品的形式向世人公开”于是转行做游戏。想想还挺感动的。 </p><p>不过自从2014年的《はるかかなた》发售后，SORAHANE第四作迟迟没有消息……希望这家会社还能够给玩家带来这种“轻盈而严肃”的电子小说。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 电子小说 </tag>
+            
+            <tag> 鉴赏 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>AQUA：与你的永恒夏日 （上篇）</title>
       <link href="/post/AQUA/"/>
       <url>/post/AQUA/</url>
@@ -2258,31 +2310,6 @@
             <tag> 鉴赏 </tag>
             
             <tag> sorahane </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
-      <title>AQUA：与你的永恒夏日 （下篇）</title>
-      <link href="/post/AQUA-2/"/>
-      <url>/post/AQUA-2/</url>
-      
-        <content type="html"><![CDATA[<p>本文是游戏《AQUA》的下半部分 LUKAS篇和AQUA篇的全剧透速览。</p><a id="more"></a><p>三条线看完之后，回到Title，会发现本来水蓝色的界面变成浓烈的黄昏色调。START按钮多了一个LUKAS篇（回忆篇）的选项。</p><p>LUKA篇是以年轻的研究员圭次的视角展开的。圭次进入ECReD机构分支“人体工学开发第十二研究室”负责开发第七代仿生生命体，这个小镇上的机构的部长就是千夏（千纱的母亲）。然后男主的母亲智惠也在里面当研究员。<br>圭次在研究所里表现还不错，但他也渐渐注意到一些不对劲的地方，比如上面似乎利用研究所的目的是搞一些违反伦理的研究。某次公寓楼的瓦斯泄露事故似乎是凶杀案……<br>话说圭次被分配了一个助理研究员沙織，正好是大学同学（怎么有一股ひまわり剧情的熟悉感），两个人之前有点同窗好感。在研究所一来二去混熟了……恋爱了……沙織也怀孕了。圭次向沙織求婚后，两个人幻想着以后的幸福生活……<br>沙織偶尔会提到自己本来是作为实验的参与者来到这个地方，但只有圭次重视她之类。（我觉得这里是圭次没听出来“实验的参与者”是被实验体的意思，而不是“实验研究员”）</p><p>就在沙織临产前的某天，ECReD的医学大楼突然警报大作说“危险药品泄露”，所有人被强制疏散。想到沙織还在里面体检，圭次激动地拨开人群冲了进去，却发现满身是血的沙織手成利刃，而地上满是被砍成重伤的研究员。此时沙織精神状态极其不稳定，觉得每个人都要害她。</p><p>这时候一个不认识的小女孩出现了，试图让变得癫狂的沙織镇定下来。成功是成功了，但沙織也陷入昏迷。</p><p>下一幕是ECReD的医师出来，用僵硬的语气告诉圭次，由于暴走时沙織的脑部功能损伤过大，沙織已经无力回天，而且根据沙織生前自愿签署的协议，自己的遗体捐献给ECReD做科研。圭次痛苦地质问为什么机构要把沙織当作实验品来玩弄。医师也激动地反问了一大段说你们知道我们医疗团队也在承担多少精神压力，天天给你们研究员收拾血淋淋的摊子，被派去分离脑神经，被命令做惨无人道的解剖。<br>圭次就此听到了研究所一些黑暗的真相。<br>因为沙織离世，圭次也就此抑郁下来，时间如同停滞一般。但一年后研究机构的上层者（“亚当”）又重新给圭次指派了一个助理研究员。报道的时候一看，就是那天阻止沙織暴乱的小女孩なずな。なずな这时候看起来还是个中学生，但却是个技术分野的天才。她一边帮圭次搞研究，慢慢地利用权限收集机构的内幕。她表示自己身不由己，但假如圭次愿意，她想和圭次一起离开机构。厌倦了人体研究的圭次去找部长千夏谈话，并质问为什么千夏也要参与这种不人道的研究。</p><p>然后千夏告诉他科研上的一件事，就是某个物理粒子会先收到自己发射出去的光，然后才是发射出光。也就是先果后因。然后千夏解释了一通某种乱七八糟的时空收缩因果理论（我没仔细看），并告诉圭次说，自己现在的这个女儿千纱其实是克隆体。由于那套时空理论，这个女儿必然会遭遇交通事故。而自己并不是想去参与ECReD上层的那些勾当，而是想利用科研资源去开发让虚拟粒子构筑（投影？）人类生命体的技术，从而保证自己能够在千纱出事后利用她的意识备份重新投影出一个“千纱”出来。然后千夏还给圭次看了个东西——之前在给沙織做诊疗时采集的沙織意识数据。</p><p>圭次被打动了，他想要复活恋人沙織。于是打算留了下来，于是和なずな道歉，并且承诺自己会给なずな妥善安排出去后的住处。<br>なずな很鄙夷地说，我不需要你的钱，我自己有地方住。就走了。</p><p>这里就可以说清楚为什么WIND线一开头，なずな老师没地方住，要住进男主家。为什么なずな和千夏有裂隙，并且在甜品店里对圭次说“你不要再一意孤行想要复活恋人了”</p><p>（所以男主不仅回乡重逢的幼驯染是克隆体，而且三年前遭遇事故之前的千纱据后面剧情描述也并不是最早的那个千纱）</p><p>ルカ是一个能量设施，里面提供智慧驱动的是叫做ラケル的东西，ラケル不是把电子设备植入人体，而是反过来把人体植入电子设备……（听起来有点恶心）也就是说把人类的脑神经取出来囚禁在电子设备上，从而操作着ルカ天线。</p><p>这里还提到，早先其实已经在做利用AQUA来部分修复人体的研究了，但需要植入“EC”，而且因为技术不成熟，实验体容易暴乱，并且承受过多的脑负担，生命都很短。 所以后来结束了研究。但有7个实验体除外——其中5个是监护人不肯，1个是联系不上，1个是还在实验中的。 （很明显，其中一个就是奈々璃。开篇正好是她接受该手术后8年后）</p><p>充满黑幕的LUKA篇看完后，终于到了AQUA篇：</p><p>なずな老师见到了ルナ（さとみ）——一个有很长蓝色双马尾的少女。嗯，是会悬浮的投影体。ルナ称呼なずな叫サエ。这时候なずな才说自己其实也并不是真的活体人类，而是智慧体，基本也是用AQUA搞出来的投影。前面有提过ルカ除了负责总管理的ラケル外，还需要数名不需要肉体的智慧体来运作，イヴ就是男主老妈智恵 。</p><p>然后远愿岬的那个传说，其实也不是江户时代那么远，而是最近几十年的真实事件，传说中的女性是凛的父亲的妹妹南白。为什么那个女性？因为南家有女性单传的预感能力。为了研究这种预感能力，ECReD想要强制把人作为实验体，那个女性是因为不从而跳海。而核能事故时凛的母亲也预感到了什么……（抱歉这段没有看得太清楚）……总之一切都是有预谋的。</p><p>再说ラケル。ラケル嵌入的人体脑神经其实会老化而更换。而现在维持运行的这副用的是千夏和智惠童年时的一个玩伴的脑神经。某一天这个玩伴再也没有赴约出现，就是被ECReD抓去……呃……了。<br>ラケル——也就是那个童年玩伴的意识与硬件的融合体——长期管理着AQUA设施ルカ。但她因为过于痛恨人类无休止的欲望和对自己的折磨而暴走。由于ラケル天线罢工，AQUA粒子失常，地陷发生，奈々璃的旧房子坠塌，凛跑去救她，在残垣断壁中鼓励还躲在里面、几乎自暴自弃的奈々璃。奈々璃鼓起勇气的同时恢复了记忆。男主开着なずな老师的氮气加速改装车后知后觉地到的时候，两个人已经平安无事了。<br>但不知为什么并没有如同千夏预测的那样，ラケル让所有人身上的AQUA粒子都错乱从而使人类毁灭，而是以全城停电、ルカ瘫痪来结束。<br>总之这座城市再也不能使用AQUA粒子带来的高科技了。同时在地震中因地下沉陷之故，ECReD的那个研究所也就此关闭运行。小镇失去了科研价值。</p><p>なずな最后问千夏，假如自己就是那个和自己同名的千夏的大女儿なずな的话，千夏会把自己当作家人吗？<br>千夏：这不可能，因为大女儿なずな的确是遭遇事故死了……<br>なずな：不，我就是她。<br>なずな道出真相：ECReD的上层告诉她想活下去的话就做个交易，把自己的脑神经让他们取出来拿去管理ルカ设施。自己同意了，但是又恳求给自己一副虚拟投影身体，让自己以“人”的姿态活着。</p><p>（我：打了大半天发现没几个真正意义的活人……）</p><p>在尾声中，なずな老师选择外出长期旅游，并承诺自己一定会回来。万年萝莉只是因为自己应该算是不老不死之身了，过了几百年再回来一定物是人非吧……</p><p>（all clear后的追加小故事这里就不多说了。）</p><p>说实话这作品剧情相当绕，而且假如不对胃口的话有点狗血……。作品后半段有不少科幻设定上的片假名，特有理论的叙述阅读起来相当难（日本人都在吐槽）。而且某些元素让我总是联想到《ひまわり pebble in the sky》。</p><p>至于主题，也不算难懂。</p><p>科技改变人的生活，也改变了人的内心。人是否能正确地驾驭科技，而不是被反噬……</p><p>和ひまわり相比，AQUA同样的情感细腻、格局宏大。但无论bgm还是厨子空间上，ひまわり的评分都比AQUA高。 个人觉得是前面的日常有点太催眠的缘故，导致WIND线中盘劝退不少玩家。虽然剧情很复杂，但叙述还算清晰利落，没有多余的诡计手法（我不是很喜欢ISLAND那种三番五次的反转）。</p><p>再说其他指标。本作音乐水平相当不错，符合故事的氛围；CG质量也很高；TIKERBELL SOUND LABEL给SORAHANE配乐更是美妙。尤其是ED 月子（stretta di mano）唱的《SUMMER DAYS》。 OP《Everlasting Blue》的MV制作精良，亦值得一看。另外有一个要表扬的东西是，SORAHANE的引擎搞得很好，里面内置了一个阅览系统，你可以在不同剧情篇章间跳转、拖动并预览进度，就像是非线编软件一般。剧情每一段都有一个带小标题的过场动画，feng社的星桥那种感觉。</p><p>假如碰过这社其他作品的人会发现，三部里面都出现过一家叫做シトランテ（紫兔兰亭）的餐馆/甜品店。而且小镇的名字都是月ヶ浜。可以说是一种彩蛋了。</p><p>另外据我所知SORAHANE社一些趣闻： AQUA的副业是卖Excel脚本工具和Office高端使用方法教程的；AQUA第三作《はるかかなた》从krkr2换成基于nw.js的某种引擎，但是这种引擎存在严重的bug，反复推出修复补丁后，终于在patch 3.02版本能正常运行，而且剧情评价很低，はるかかなたb不幸成为雷作；AQUA的脚本家原来是系统工程师，在生放送里提到“就算只有一次也好，在便利店之类的地方打工赚钱做游戏也好，要把自己想说的用作品的形式向世人公开”于是转行做游戏。想想还挺感动的。 </p><p>不过自从2014年的《はるかかなた》发售后，SORAHANE第四作迟迟没有消息……希望这家会社还能够给玩家带来这种“轻盈而严肃”的电子小说。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 笔记 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 电子小说 </tag>
-            
-            <tag> 鉴赏 </tag>
             
         </tags>
       
@@ -2567,9 +2594,9 @@
       
         <tags>
             
-            <tag> 游戏 </tag>
-            
             <tag> 电子小说 </tag>
+            
+            <tag> 游戏 </tag>
             
             <tag> Python </tag>
             
@@ -2681,20 +2708,20 @@
   
     
     <entry>
-      <title>categories</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-    </entry>
-    
-    <entry>
       <title>about</title>
       <link href="/about/index.html"/>
       <url>/about/index.html</url>
       
         <content type="html"><![CDATA[<p>桃ましまろ</p><p>Chinese Madarin / Hinghua / English / Japanese </p><p>Comic / Anime / Visual Novel / Programming / Bicycling</p><p>奔三，现居东南沿海小城市，喜欢恋爱向电子小说和严肃读物，懂得很多奇怪领域的杂学。</p><p>虽然念经济专业但编程技术比厨艺还好一丢丢。最近在自学吉他。</p><p>女友招募中</p>]]></content>
+      
+    </entry>
+    
+    <entry>
+      <title>categories</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
       
     </entry>
     
