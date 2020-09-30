@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2020-08-28T15:32:08.101Z</updated>
+  <updated>2020-09-30T15:36:50.138Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>别了，网络</title>
+    <link href="https://stgapr.github.io/post/recent-life/"/>
+    <id>https://stgapr.github.io/post/recent-life/</id>
+    <published>2020-09-30T14:27:13.000Z</published>
+    <updated>2020-09-30T15:36:50.138Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;昨天我把微博帐户注销了；刚才打着手电筒去阳台看自己种的几盆花，发现波斯菊已经绽芽了。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
   
   <entry>
     <title>写了一个竖排书籍的横向重排版工具</title>
@@ -187,29 +207,6 @@
   </entry>
   
   <entry>
-    <title>生活报告</title>
-    <link href="https://stgapr.github.io/post/recent-seikatsu/"/>
-    <id>https://stgapr.github.io/post/recent-seikatsu/</id>
-    <published>2020-05-09T13:09:03.000Z</published>
-    <updated>2020-08-08T06:38:48.673Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;很久没写日志，怕要被友链除名了。稍微记录一下生活状况。&lt;/p&gt;
-&lt;p&gt;可能是自我意识过剩，总是会思考在面对“网线另一端的不特定读者”时，要用什么口气写下文字。最近翻阅以前（高中时代）的日记时，也觉得很是幼稚，偶尔还有偏激的地方。但这毕竟是成长的一环节。&lt;/p&gt;
-&lt;p&gt;沿海小城此刻已经进入了台风季节，每天呼呼作响地刮风。榴莲上市了又下架了，菠萝也差不多下市了，但卖西瓜的敞篷小货车仍然能每天下工回来都能看到。因为疫情期还没过，街面广播天天在放国家安全法，还有举报偷渡回国人员什么的，耳朵都快起茧了。这种灰尘扑面又有点闷湿的天气，就有点九十年代的感觉。&lt;/p&gt;
-&lt;p&gt;最近家里装了纱窗，但一不小心没有在傍晚天暗前关窗的话，还是会被乘虚而入的蚊子叮个半死。还是得偶尔配合用电热蚊香液。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-  </entry>
-  
-  <entry>
     <title>《未来夏娃》和安卓恋人</title>
     <link href="https://stgapr.github.io/post/l-eve-future/"/>
     <id>https://stgapr.github.io/post/l-eve-future/</id>
@@ -233,6 +230,29 @@
       <category term="科幻" scheme="https://stgapr.github.io/tags/%E7%A7%91%E5%B9%BB/"/>
     
       <category term="恋爱" scheme="https://stgapr.github.io/tags/%E6%81%8B%E7%88%B1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>生活报告</title>
+    <link href="https://stgapr.github.io/post/recent-seikatsu/"/>
+    <id>https://stgapr.github.io/post/recent-seikatsu/</id>
+    <published>2020-05-09T13:09:03.000Z</published>
+    <updated>2020-08-08T06:38:48.673Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;很久没写日志，怕要被友链除名了。稍微记录一下生活状况。&lt;/p&gt;
+&lt;p&gt;可能是自我意识过剩，总是会思考在面对“网线另一端的不特定读者”时，要用什么口气写下文字。最近翻阅以前（高中时代）的日记时，也觉得很是幼稚，偶尔还有偏激的地方。但这毕竟是成长的一环节。&lt;/p&gt;
+&lt;p&gt;沿海小城此刻已经进入了台风季节，每天呼呼作响地刮风。榴莲上市了又下架了，菠萝也差不多下市了，但卖西瓜的敞篷小货车仍然能每天下工回来都能看到。因为疫情期还没过，街面广播天天在放国家安全法，还有举报偷渡回国人员什么的，耳朵都快起茧了。这种灰尘扑面又有点闷湿的天气，就有点九十年代的感觉。&lt;/p&gt;
+&lt;p&gt;最近家里装了纱窗，但一不小心没有在傍晚天暗前关窗的话，还是会被乘虚而入的蚊子叮个半死。还是得偶尔配合用电热蚊香液。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
     
   </entry>
   
@@ -468,30 +488,6 @@
       <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
     
       <category term="阅读" scheme="https://stgapr.github.io/tags/%E9%98%85%E8%AF%BB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>小而美的字帖应用——《田农汉帖》开发日志</title>
-    <link href="https://stgapr.github.io/post/tiannong-copybook/"/>
-    <id>https://stgapr.github.io/post/tiannong-copybook/</id>
-    <published>2019-11-09T12:51:01.000Z</published>
-    <updated>2020-08-16T07:46:52.996Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;有一天我那个喜欢书法的大舅问我说，怎样在电脑上把印刷体弄成颜体？仔细询问目的后得知他想要一款能在平板电脑上用的能自定义字体、内容并生成字帖的软件。我闲得蛋疼，就自嗨写了一个《田农汉帖》&lt;br&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="编程" scheme="https://stgapr.github.io/tags/%E7%BC%96%E7%A8%8B/"/>
-    
-      <category term="技术" scheme="https://stgapr.github.io/tags/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="软件开发" scheme="https://stgapr.github.io/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/"/>
     
   </entry>
   
