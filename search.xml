@@ -144,9 +144,9 @@
       
         <tags>
             
-            <tag> ACG </tag>
-            
             <tag> 音乐 </tag>
+            
+            <tag> ACG </tag>
             
             <tag> 乐器 </tag>
             
@@ -302,9 +302,9 @@
       
         <tags>
             
-            <tag> ACG </tag>
-            
             <tag> 音乐 </tag>
+            
+            <tag> ACG </tag>
             
             <tag> 乐器 </tag>
             
@@ -439,9 +439,9 @@
             
             <tag> 游戏 </tag>
             
-            <tag> 编程 </tag>
-            
             <tag> 音乐 </tag>
+            
+            <tag> 编程 </tag>
             
         </tags>
       
@@ -618,9 +618,9 @@
             
             <tag> 生活 </tag>
             
-            <tag> 网络 </tag>
-            
             <tag> 阅读 </tag>
+            
+            <tag> 网络 </tag>
             
         </tags>
       
@@ -2725,15 +2725,6 @@
   
     
     <entry>
-      <title>about</title>
-      <link href="/about/index.html"/>
-      <url>/about/index.html</url>
-      
-        <content type="html"><![CDATA[<p>桃ましまろ</p><p>Chinese Madarin / Hinghua / English / Japanese </p><p>Comic / Anime / Visual Novel / Programming / Bicycling</p><p>奔三，现居东南沿海小城市，喜欢恋爱向电子小说和严肃读物，懂得很多奇怪领域的杂学。</p><p>虽然念经济专业但编程技术比厨艺还好一丢丢。最近在自学吉他。</p><p>女友招募中</p>]]></content>
-      
-    </entry>
-    
-    <entry>
       <title>友情链接</title>
       <link href="/blogroll/index.html"/>
       <url>/blogroll/index.html</url>
@@ -2748,6 +2739,15 @@
       <url>/categories/index.html</url>
       
         <content type="html"><![CDATA[]]></content>
+      
+    </entry>
+    
+    <entry>
+      <title>about</title>
+      <link href="/about/index.html"/>
+      <url>/about/index.html</url>
+      
+        <content type="html"><![CDATA[<p>桃ましまろ</p><p>Chinese Madarin / Hinghua / English / Japanese </p><p>Comic / Anime / Visual Novel / Programming / Bicycling</p><p>奔三，现居东南沿海小城市，喜欢恋爱向电子小说和严肃读物，懂得很多奇怪领域的杂学。</p><p>虽然念经济专业但编程技术比厨艺还好一丢丢。最近在自学吉他。</p><p>女友招募中</p>]]></content>
       
     </entry>
     
