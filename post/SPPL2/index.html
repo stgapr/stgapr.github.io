@@ -167,7 +167,7 @@
 <figure class="hljs highlight python"><figcaption><span>[]</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> each <span class="keyword">in</span> rawfile:</span><br><span class="line">​    dollar,date=[],[]</span><br><span class="line">​    dollar=re.findall(<span class="string">'\$(.*)&lt;'</span>,str(each))</span><br><span class="line">​    date=re.findall(<span class="string">'Last updated: (.*)&lt;br&gt;'</span>,str(each))</span><br><span class="line">​    <span class="keyword">if</span> dollar!=[] <span class="keyword">and</span> dollar!=[<span class="string">''</span>]:</span><br><span class="line">​        print(dollar)</span><br><span class="line">​    <span class="keyword">if</span> date!=[] <span class="keyword">and</span> date !=[<span class="string">''</span>]:</span><br><span class="line">​        print(date)</span><br></pre></td></tr></table></figure>       
 <p>稍微整理一下，就得到了大约116个快照点的链接。这样就可以用request库把每一次快照的html弄下来了。在下一步处理之前可以先拿去格式化一下源码，免得由于\r\n之类的换行回车符干扰正则识别。</p>
 <p>其实不用正则的话也试一下beautifulsoup库。这个库还是很好用的，就是在解析器的选择上有些坑。LXML比较快，但有的写得不规范的html用LXML会解析失败，你就需要用默认的Python自带的html.parser，再不行的话就得上html5lib，据说html5lib是模拟浏览器的解析方式。故而兼容性上html5lib&gt;html.parser&gt;lxml，而执行速度上反之。</p>
-<figure class="hljs highlight python"><figcaption><span>[]</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> parent, dirnames, filenames <span class="keyword">in</span> os.walk(work_dir,  followlinks=<span class="keyword">True</span>):</span><br><span class="line">​    <span class="keyword">for</span> filename <span class="keyword">in</span> filenames:</span><br><span class="line">​        file_path = os.path.join(parent, filename)</span><br><span class="line">​        soup = BeautifulSoup(open(file_path,<span class="string">'r'</span>,encoding=<span class="string">'utf8'</span>),<span class="string">'lxml'</span>) </span><br><span class="line">​        d=str(soup.select(<span class="string">'span.funded'</span>)[<span class="number">0</span>])</span><br><span class="line">​        i=d.find(<span class="string">"Last updated"</span>)</span><br><span class="line">​        print(<span class="string">"日期"</span>,d[i+<span class="number">13</span>:i+<span class="number">25</span>].replace(<span class="string">'\n'</span>,<span class="string">''</span>),<span class="string">"金额"</span>,soup.select(<span class="string">'span.current'</span>)[<span class="number">0</span>].get_text())</span><br></pre></td></tr></table></figure>  
+<figure class="hljs highlight python"><figcaption><span>[]</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> parent, dirnames, filenames <span class="keyword">in</span> os.walk(work_dir,  followlinks=<span class="literal">True</span>):</span><br><span class="line">​    <span class="keyword">for</span> filename <span class="keyword">in</span> filenames:</span><br><span class="line">​        file_path = os.path.join(parent, filename)</span><br><span class="line">​        soup = BeautifulSoup(open(file_path,<span class="string">'r'</span>,encoding=<span class="string">'utf8'</span>),<span class="string">'lxml'</span>) </span><br><span class="line">​        d=str(soup.select(<span class="string">'span.funded'</span>)[<span class="number">0</span>])</span><br><span class="line">​        i=d.find(<span class="string">"Last updated"</span>)</span><br><span class="line">​        print(<span class="string">"日期"</span>,d[i+<span class="number">13</span>:i+<span class="number">25</span>].replace(<span class="string">'\n'</span>,<span class="string">''</span>),<span class="string">"金额"</span>,soup.select(<span class="string">'span.current'</span>)[<span class="number">0</span>].get_text())</span><br></pre></td></tr></table></figure>  
 <p>然后日期和众筹金额列就生成出来了，粘贴到Excel里面去（懒得用Eviews或者SPSS之类工具，数据点也就百来个，也没什么年度波动规律）<br>画了个折线图，然后把minori最近几年发售的游戏标上去，大概是这样：</p>
 <p><img src="//stgapr.github.io/post/SPPL2/dataimage.png" alt="历史曲线"></p>
 <p>那么SPPL2什么时候发售呢？看着走势不大妙啊，感觉30万美元都要等2020年了吧。我们可以从中等态势和悲观态势连个徒手拟合一下。</p>
@@ -181,9 +181,9 @@
       
       <div class="post-tags">
         
-        <a class="post-tag button" href="/tags/电子小说/" rel="tag"><i class="fas fa-tags"></i>电子小说</a>
-        
         <a class="post-tag button" href="/tags/游戏/" rel="tag"><i class="fas fa-tags"></i>游戏</a>
+        
+        <a class="post-tag button" href="/tags/电子小说/" rel="tag"><i class="fas fa-tags"></i>电子小说</a>
         
         <a class="post-tag button" href="/tags/Python/" rel="tag"><i class="fas fa-tags"></i>Python</a>
         
@@ -270,7 +270,7 @@
     
     <div class="categories-count">
       <div class="site-count-title">Categories</div>
-      <div><a href="/categories/">6</a></div>
+      <div><a href="/categories/">5</a></div>
     </div>
     
     
@@ -279,7 +279,7 @@
     
     <div class="tags-count">
       <div class="site-count-title">Tags</div>
-      <div><a href="/tags/">116</a></div>
+      <div><a href="/tags/">115</a></div>
     </div>
     
   </div>
