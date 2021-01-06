@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2021-01-06T13:50:07.858Z</updated>
+  <updated>2020-09-30T15:36:50.138Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -15,34 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>关于“水与榕”</title>
-    <link href="https://stgapr.github.io/post/2021/"/>
-    <id>https://stgapr.github.io/post/2021/</id>
-    <published>2021-01-06T12:05:03.000Z</published>
-    <updated>2021-01-06T13:50:07.858Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-      <category term="博客" scheme="https://stgapr.github.io/tags/%E5%8D%9A%E5%AE%A2/"/>
-    
-  </entry>
   
   <entry>
     <title>别了，网络</title>
@@ -487,6 +459,28 @@
     
     
       <category term="阶层" scheme="https://stgapr.github.io/tags/%E9%98%B6%E5%B1%82/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2019年11月阅读书目</title>
+    <link href="https://stgapr.github.io/post/read-2019-11/"/>
+    <id>https://stgapr.github.io/post/read-2019-11/</id>
+    <published>2019-12-07T09:23:57.000Z</published>
+    <updated>2019-12-07T10:49:11.803Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这个月推荐的书目是《爱欲之死》。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="阅读" scheme="https://stgapr.github.io/tags/%E9%98%85%E8%AF%BB/"/>
     
   </entry>
   
