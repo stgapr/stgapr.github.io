@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head><meta name="generator" content="Hexo 3.8.0">
+  <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -85,7 +85,7 @@
     <script defer type="text/javascript" src="/js/custom.js"></script>
     <title>AnthemScore | 水与榕</title>
   </head>
-  <body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN" data-spy="scroll" data-target=".list-group">
+  <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN" data-spy="scroll" data-target=".list-group">
     
 <header id="header" class="header" style="background: #33363b;">
   <div class="container">
@@ -123,15 +123,15 @@
             
 <div id="post" class="page">
   
-  <article class="article post card animate" itemscope="" itemtype="http://schema.org/Article">
+  <article class="article post card animate" itemscope itemtype="http://schema.org/Article">
     <div class="post-block">
       <link itemprop="mainEntityOfPage" href="https://stgapr.github.io/post/Anthemscore-linux/">
-      <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-       <meta itemprop="name" content="桃ましまろ">
-       <meta itemprop="description" content="">
+      <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+       <meta itemprop="name" content="Prism(walnuss)">
+       <meta itemprop="description" content>
        <meta itemprop="image" content="/images/avatar.png">
       </span>
-      <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
        <meta itemprop="name" content="水与榕">
       </span>
     </div>
@@ -149,7 +149,7 @@
         
         <span class="post-categories">
           
-          <i class="far fa-folder-open"></i><span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/笔记/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a></span>
+          <i class="far fa-folder-open"></i><span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/笔记/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a></span>
         </span>
         
         
@@ -167,7 +167,7 @@
 <p>最近在热情地投身Ubuntu，那我就尽量把工作和兴趣用的软件都带到Linux下面吧。</p>
 <p>AnthemScore这个软件，其实我建议在Windows底下用。因为有<a href="https://www.lunaverus.com/download" target="_blank" rel="noopener">显卡CUDA加速的Windows编译版本</a>（虽然也就是处理花上两分钟和二三十秒钟的差别，快不了多少）。再不行也有OS X 安装包。原因是Linux版比较烦的地方是自己装Qt依赖。因为Qt虽然是开源的，但最近变成商业软件，我没有研究它的license，似乎是不准随便打包分发。</p>
 <p>首先去<a href="https://www.lunaverus.com/" target="_blank" rel="noopener">开发者Lunaverus的网站</a>下载安装包。Linux x64 installer或zip都行。网速不快的话，建议还是（离线的）zip包。</p>
-<p>然后解压出来，放到随便什么目录下面，就称为\<anthemscore install="" dir\="">吧。</anthemscore></p>
+<p>然后解压出来，放到随便什么目录下面，就称为\<anthemscore install dir\>吧。</anthemscore></p>
 <p>现在装Qt。AnthemScore指定需要装的是Qt 5.12.5版。去<a href="https://www.qt.io/download-qt-installer" target="_blank" rel="noopener">Qt官网</a>下载Qt的通用online installer。执行它</p>
 <figure class="hljs highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x ./qt-unified-linux-x64<span class="number">-3.2</span><span class="number">.3</span>-online.run</span><br><span class="line">./qt-unified-linux-x64<span class="number">-3.2</span><span class="number">.3</span>-online.run</span><br></pre></td></tr></table></figure>
 <p>这个安装程序有内置代理设置，就不需要额外指定proxy-chains了。</p>
@@ -209,7 +209,7 @@
 <p>我试了一下《星天宫の庭で》。自己电脑是小米笔记本Pro16存顶配版（2017年年底买的）CPU是i7-8550U，处理时长大概要120秒，峰值时大概会吃掉6GB内存。大部分时间花在Finding notes步骤。</p>
 <p>有一个需要说明的微调选项是音符敏感度，太右边了会把一些没用的泛音列和杂音当成基音音符，太左边了又会遗漏音符。一般默认在中间就行。我不是很喜欢那个简陋的spectrum 音符调整界面。直接导出MusicXML格式后，换别的打谱软件调整就行。</p>
 <p>其他设置可以参考<a href="https://www.lunaverus.com/documentation" target="_blank" rel="noopener">官方教程</a></p>
-<p><img src="//stgapr.github.io/post/Anthemscore-linux/seitengu.png" alt=""></p>
+<p><img src="//stgapr.github.io/post/Anthemscore-linux/seitengu.png" alt></p>
 <p>注意，第一次运行的时候需要联网获取license。试用期三十天。激活的时候也需要联网。授权机制也是利用机器码的唯一性，稍微用硬件指纹信息修改的工具就能绕过。discord的相关爱好者频道也有流传crack了，但有能力和需求还是<a href="https://www.lunaverus.com/purchase" target="_blank" rel="noopener">支持正版</a>吧。</p>
 <p>其实还是用Windows版比较好，虽然把Qt一堆dll都放进目录里了，也就200MB多一点，你不需要装别的东西。Qt能跨平台这一点是挺好的。虽然运行库有点重。但现在的软件动辄大几十M，专业程序几百M也很正常。不是特殊的工业设备成本剪裁要求的话，那一点容量也给得起。</p>
 <p>Linux这种吃个蛋糕还要从给牛挤奶、养鸡生蛋开始的DIY哲学，麻烦不麻烦啊。</p>
@@ -220,7 +220,7 @@
 </blockquote>
 <p>但他同时也预言了机器学习技术的前景。时代变得太快，<a href="https://www.youtube.com/watch?v=Zp8Q3wJKKhA" target="_blank" rel="noopener">2018年10月的节目中他就介绍了机器学习去人声的类似软件RX7。</a></p>
 <p>只是这样的软件会让很多人失业吧，因为听说日本的卡拉OK的伴奏版大多居然不是找音乐厂商拿的无人声母带，而是雇佣听谱职人（耳コピー職人）把歌曲的每个轨道的每个音符听辨出来，从头还原歌曲工程的，一首歌要花费两天时间，太特么工匠精神了。</p>
-<p><img src="//stgapr.github.io/post/Anthemscore-linux/mimicopy.jpg" alt=""></p>
+<p><img src="//stgapr.github.io/post/Anthemscore-linux/mimicopy.jpg" alt></p>
 
     </main>
     <footer class="post-footer">
@@ -247,7 +247,7 @@
     </div>
     <div class="page-nav-prev page-nav-item">
       
-      <a href="/post/gal-on-settopbox-1/" rel="prev" title="在机顶盒上打黄油（上）"><span class="nav-title">在机顶盒上打黄油（上）</span><i class="fas fa-angle-right"></i></a>
+      <a href="/post/feng/" rel="prev" title="风"><span class="nav-title">风</span><i class="fas fa-angle-right"></i></a>
       
     </div>
   </nav>
@@ -297,15 +297,15 @@
   
 <div class="info sidebar-item" id="info">
   
-  <img class="author-avatar" src="/images/avatar.png" alt="桃ましまろ">
+  <img class="author-avatar" src="/images/avatar.png" alt="Prism(walnuss)">
   
-  <h1 class="author-name">桃ましまろ</h1>
+  <h1 class="author-name">Prism(walnuss)</h1>
   <h2 class="author-description"></h2>
   <div class="site-count">
     
     <div class="archives-count">
       <div class="site-count-title">Archives</div>
-      <div><a href="/archives/">105</a></div>
+      <div><a href="/archives/">106</a></div>
     </div>
     
     
@@ -314,7 +314,7 @@
     
     <div class="categories-count">
       <div class="site-count-title">Categories</div>
-      <div><a href="/categories/">5</a></div>
+      <div><a href="/categories/">6</a></div>
     </div>
     
     
@@ -323,7 +323,7 @@
     
     <div class="tags-count">
       <div class="site-count-title">Tags</div>
-      <div><a href="/tags/">112</a></div>
+      <div><a href="/tags/">116</a></div>
     </div>
     
   </div>
@@ -479,7 +479,7 @@
     <div class="footer-container">
       <div class="footer-left">
         <div class="copyright">
-          <span class="author">桃ましまろ</span><span class="year"><i class="far fa-copyright"></i>1993 - 2020</span>
+          <span class="author">Prism(walnuss)</span><span class="year"><i class="far fa-copyright"></i>1994 - 2021</span>
         </div>
         
         <div class="busuanzi">
@@ -490,7 +490,7 @@
       <div class="footer-right">
         <div class="custom-info">
           
-          底下啥都没有了~
+          您所关注的博主已经获得了心灵的宁静~
           
         </div>
         <div class="powered-by">

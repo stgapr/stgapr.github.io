@@ -6,15 +6,43 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2020-09-30T15:36:50.138Z</updated>
+  <updated>2021-01-06T13:50:07.858Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
-    <name>桃ましまろ</name>
+    <name>Prism(walnuss)</name>
     
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于“水与榕”</title>
+    <link href="https://stgapr.github.io/post/2021/"/>
+    <id>https://stgapr.github.io/post/2021/</id>
+    <published>2021-01-06T12:05:03.000Z</published>
+    <updated>2021-01-06T13:50:07.858Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="博客" scheme="https://stgapr.github.io/tags/%E5%8D%9A%E5%AE%A2/"/>
+    
+  </entry>
   
   <entry>
     <title>别了，网络</title>
@@ -61,29 +89,22 @@
   </entry>
   
   <entry>
-    <title>在机顶盒上打黄油（上）</title>
-    <link href="https://stgapr.github.io/post/gal-on-settopbox-1/"/>
-    <id>https://stgapr.github.io/post/gal-on-settopbox-1/</id>
-    <published>2020-08-15T03:15:04.000Z</published>
-    <updated>2020-08-19T13:55:22.642Z</updated>
+    <title>风</title>
+    <link href="https://stgapr.github.io/post/feng/"/>
+    <id>https://stgapr.github.io/post/feng/</id>
+    <published>2020-08-25T14:27:13.000Z</published>
+    <updated>2021-01-06T13:37:40.382Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;在这篇硬核文章中，我将介绍如何在ARM芯片的廉价机顶盒上运行X86平台的galgame。不是远程桌面，也不是kirikiroid，货真价实童叟无欺。但是有点hardcore。所以分成上下篇写。&lt;/p&gt;
-&lt;p&gt;首先感谢@虾包 的技术支持。&lt;/p&gt;
+      &lt;p&gt;昨天半夜，城市里开始刮风。不断改变的风向敲击着铝合金塑料窗框，把我弄醒了。起来喝了点水，看到漆黑的客厅里的路由器指示灯在一闪一闪，不知道在和上层网关说什么悄悄话。外面的江面在入晚时分倒映的景观霓虹灯基本都关灭了，显现出静默深幽的本质。&lt;/p&gt;
     
     </summary>
     
-      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
+      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
     
     
-      <category term="技术" scheme="https://stgapr.github.io/tags/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="X86" scheme="https://stgapr.github.io/tags/X86/"/>
-    
-      <category term="ARM" scheme="https://stgapr.github.io/tags/ARM/"/>
-    
-      <category term="程序仿真" scheme="https://stgapr.github.io/tags/%E7%A8%8B%E5%BA%8F%E4%BB%BF%E7%9C%9F/"/>
+      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
     
   </entry>
   
@@ -150,9 +171,9 @@
       <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
     
     
-      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
-    
       <category term="ACG" scheme="https://stgapr.github.io/tags/ACG/"/>
+    
+      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
     
       <category term="乐器" scheme="https://stgapr.github.io/tags/%E4%B9%90%E5%99%A8/"/>
     
@@ -294,9 +315,9 @@
       <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
-    
       <category term="ACG" scheme="https://stgapr.github.io/tags/ACG/"/>
+    
+      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
     
       <category term="乐器" scheme="https://stgapr.github.io/tags/%E4%B9%90%E5%99%A8/"/>
     
@@ -466,28 +487,6 @@
     
     
       <category term="阶层" scheme="https://stgapr.github.io/tags/%E9%98%B6%E5%B1%82/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2019年11月阅读书目</title>
-    <link href="https://stgapr.github.io/post/read-2019-11/"/>
-    <id>https://stgapr.github.io/post/read-2019-11/</id>
-    <published>2019-12-07T09:23:57.000Z</published>
-    <updated>2019-12-07T10:49:11.803Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这个月推荐的书目是《爱欲之死》。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-      <category term="阅读" scheme="https://stgapr.github.io/tags/%E9%98%85%E8%AF%BB/"/>
     
   </entry>
   
