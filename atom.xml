@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2020-09-30T15:36:50.138Z</updated>
+  <updated>2021-02-28T03:28:27.023Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -15,6 +15,52 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>发几个自己做的ACG吉他曲谱</title>
+    <link href="https://stgapr.github.io/post/guitar-sheet/"/>
+    <id>https://stgapr.github.io/post/guitar-sheet/</id>
+    <published>2021-02-28T03:28:13.000Z</published>
+    <updated>2021-02-28T03:28:27.023Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;发几个自己做的吉他谱，基本都是ACG歌曲（尤其是Galgame）。以后应该会陆陆续续更新。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="ACG" scheme="https://stgapr.github.io/tags/ACG/"/>
+    
+      <category term="吉他" scheme="https://stgapr.github.io/tags/%E5%90%89%E4%BB%96/"/>
+    
+      <category term="琴谱" scheme="https://stgapr.github.io/tags/%E7%90%B4%E8%B0%B1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>水与榕</title>
+    <link href="https://stgapr.github.io/post/shuiyurong/"/>
+    <id>https://stgapr.github.io/post/shuiyurong/</id>
+    <published>2021-01-06T12:05:03.000Z</published>
+    <updated>2021-02-28T01:25:00.195Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这个博客名字叫“水与榕”，我想说说起这个名字的原因。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="博客" scheme="https://stgapr.github.io/tags/%E5%8D%9A%E5%AE%A2/"/>
+    
+  </entry>
   
   <entry>
     <title>别了，网络</title>
@@ -143,13 +189,13 @@
       <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
     
     
-      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
-    
       <category term="ACG" scheme="https://stgapr.github.io/tags/ACG/"/>
     
-      <category term="乐器" scheme="https://stgapr.github.io/tags/%E4%B9%90%E5%99%A8/"/>
+      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
     
       <category term="吉他" scheme="https://stgapr.github.io/tags/%E5%90%89%E4%BB%96/"/>
+    
+      <category term="乐器" scheme="https://stgapr.github.io/tags/%E4%B9%90%E5%99%A8/"/>
     
   </entry>
   
@@ -158,7 +204,7 @@
     <link href="https://stgapr.github.io/post/read-2020-4to7/"/>
     <id>https://stgapr.github.io/post/read-2020-4to7/</id>
     <published>2020-07-31T11:35:42.000Z</published>
-    <updated>2020-08-09T11:47:46.833Z</updated>
+    <updated>2021-01-09T04:18:30.550Z</updated>
     
     <summary type="html">
     
@@ -220,9 +266,9 @@
     
       <category term="阅读" scheme="https://stgapr.github.io/tags/%E9%98%85%E8%AF%BB/"/>
     
-      <category term="科幻" scheme="https://stgapr.github.io/tags/%E7%A7%91%E5%B9%BB/"/>
-    
       <category term="恋爱" scheme="https://stgapr.github.io/tags/%E6%81%8B%E7%88%B1/"/>
+    
+      <category term="科幻" scheme="https://stgapr.github.io/tags/%E7%A7%91%E5%B9%BB/"/>
     
   </entry>
   
@@ -287,13 +333,13 @@
       <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
-    
       <category term="ACG" scheme="https://stgapr.github.io/tags/ACG/"/>
     
-      <category term="乐器" scheme="https://stgapr.github.io/tags/%E4%B9%90%E5%99%A8/"/>
+      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
     
       <category term="吉他" scheme="https://stgapr.github.io/tags/%E5%90%89%E4%BB%96/"/>
+    
+      <category term="乐器" scheme="https://stgapr.github.io/tags/%E4%B9%90%E5%99%A8/"/>
     
   </entry>
   
@@ -412,9 +458,9 @@
     
       <category term="游戏" scheme="https://stgapr.github.io/tags/%E6%B8%B8%E6%88%8F/"/>
     
-      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
-    
       <category term="编程" scheme="https://stgapr.github.io/tags/%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
     
   </entry>
   
@@ -439,48 +485,6 @@
       <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
     
       <category term="杂谈" scheme="https://stgapr.github.io/tags/%E6%9D%82%E8%B0%88/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>所谓“nobless oblige”</title>
-    <link href="https://stgapr.github.io/post/nobless-oblige/"/>
-    <id>https://stgapr.github.io/post/nobless-oblige/</id>
-    <published>2019-12-07T10:48:12.000Z</published>
-    <updated>2019-12-07T11:47:21.617Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;nobless oblige是个法语单词，直译过来就是“贵族恩典”，意思是身为高阶层的人，对低阶层的人理应的抚恤怜悯，或者意译作”位高则任重“，主张一种道德义务。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="阶层" scheme="https://stgapr.github.io/tags/%E9%98%B6%E5%B1%82/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2019年11月阅读书目</title>
-    <link href="https://stgapr.github.io/post/read-2019-11/"/>
-    <id>https://stgapr.github.io/post/read-2019-11/</id>
-    <published>2019-12-07T09:23:57.000Z</published>
-    <updated>2019-12-07T10:49:11.803Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这个月推荐的书目是《爱欲之死》。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-      <category term="阅读" scheme="https://stgapr.github.io/tags/%E9%98%85%E8%AF%BB/"/>
     
   </entry>
   
