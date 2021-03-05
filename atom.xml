@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2021-02-28T03:36:25.444Z</updated>
+  <updated>2021-03-05T09:03:48.880Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>相亲小感</title>
+    <link href="https://stgapr.github.io/post/bad-era/"/>
+    <id>https://stgapr.github.io/post/bad-era/</id>
+    <published>2021-03-05T08:51:13.000Z</published>
+    <updated>2021-03-05T09:03:48.880Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;没有具体过程，别nm好奇了。只有一些抽象的想法。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="情感" scheme="https://stgapr.github.io/tags/%E6%83%85%E6%84%9F/"/>
+    
+  </entry>
   
   <entry>
     <title>发几个自己做的ACG吉他曲谱</title>
@@ -461,30 +483,6 @@
       <category term="编程" scheme="https://stgapr.github.io/tags/%E7%BC%96%E7%A8%8B/"/>
     
       <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2019年12月生活报告</title>
-    <link href="https://stgapr.github.io/post/life-report/"/>
-    <id>https://stgapr.github.io/post/life-report/</id>
-    <published>2019-12-27T09:25:51.000Z</published>
-    <updated>2019-12-27T14:39:56.187Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;2020年快到了。最近的生活比较快节奏，这篇日志也写得比较乱。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
-    
-      <category term="杂谈" scheme="https://stgapr.github.io/tags/%E6%9D%82%E8%B0%88/"/>
     
   </entry>
   
