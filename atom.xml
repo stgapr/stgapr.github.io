@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2021-03-05T09:15:03.268Z</updated>
+  <updated>2021-03-11T12:40:33.132Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>あじさい　-　石原舞</title>
+    <link href="https://stgapr.github.io/post/ajisai/"/>
+    <id>https://stgapr.github.io/post/ajisai/</id>
+    <published>2021-03-11T12:07:01.000Z</published>
+    <updated>2021-03-11T12:40:33.132Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;http://gadgetlink.jp/talent/w_ishihara.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;石原舞&lt;/a&gt;在她的广播《Future☆Orbit出張版～略してちゃおび～》第87回里&lt;a href=&quot;https://www.youtube.com/watch?v=0GGsO_sPZbw&amp;amp;t=207s&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;唱过的一首歌&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;（voicy的播放器加载有点慢）&lt;/p&gt;
+&lt;iframe src=&quot;https://voicy.jp/embed/channel/1452/122410&quot; width=&quot;100%&quot; height=&quot;385&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot; style=&quot;overflow:hidden&quot;&gt;&lt;/iframe&gt;
+    
+    </summary>
+    
+      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
+    
+      <category term="歌词" scheme="https://stgapr.github.io/tags/%E6%AD%8C%E8%AF%8D/"/>
+    
+  </entry>
   
   <entry>
     <title>相亲小感</title>
@@ -456,33 +480,6 @@
       <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
     
       <category term="新年" scheme="https://stgapr.github.io/tags/%E6%96%B0%E5%B9%B4/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>OSU:Rhythm is just a click away!</title>
-    <link href="https://stgapr.github.io/post/osu/"/>
-    <id>https://stgapr.github.io/post/osu/</id>
-    <published>2019-12-28T12:51:01.000Z</published>
-    <updated>2019-12-28T12:37:25.345Z</updated>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;棒到不行的音乐游戏！节奏跃然纸上！立即下载。　——OSU! 官网&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;OSU!(&lt;del&gt;俄亥俄州立大学&lt;/del&gt;)，俗称粉饼、藕酥——是我很喜欢的音乐节奏游戏，大学时经常沉迷对着屏幕点圈圈，还买了块数位板当输入设备，算是我玩过的（一只手都数得过来的）联机游戏中的精品了。最近发现它的演进很快，不仅支持各种操作系统平台，还开源了。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="游戏" scheme="https://stgapr.github.io/tags/%E6%B8%B8%E6%88%8F/"/>
-    
-      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
-    
-      <category term="编程" scheme="https://stgapr.github.io/tags/%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
