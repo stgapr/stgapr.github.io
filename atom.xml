@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2021-03-11T12:40:33.132Z</updated>
+  <updated>2021-03-21T15:40:01.428Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -17,11 +17,31 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>永远的黄昏</title>
+    <link href="https://stgapr.github.io/post/eventide/"/>
+    <id>https://stgapr.github.io/post/eventide/</id>
+    <published>2021-03-21T13:54:03.734Z</published>
+    <updated>2021-03-21T15:40:01.428Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;今天下午时分一直淅淅沥沥下着小雨，因为是周末，我坐在阳台边凳子上，读一部关于通过能发送穿越时空的短信来弥补主角青春时代缺憾、并改变人生走向的的多线小说。看完后正是日暮时分，雨那时候已经停了。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
     <title>あじさい　-　石原舞</title>
     <link href="https://stgapr.github.io/post/ajisai/"/>
     <id>https://stgapr.github.io/post/ajisai/</id>
     <published>2021-03-11T12:07:01.000Z</published>
-    <updated>2021-03-11T12:40:33.132Z</updated>
+    <updated>2021-03-11T12:52:25.513Z</updated>
     
     <summary type="html">
     
@@ -45,7 +65,7 @@
     <link href="https://stgapr.github.io/post/bad-era/"/>
     <id>https://stgapr.github.io/post/bad-era/</id>
     <published>2021-03-05T08:51:13.000Z</published>
-    <updated>2021-03-05T09:15:03.268Z</updated>
+    <updated>2021-03-05T09:19:23.567Z</updated>
     
     <summary type="html">
     
@@ -177,7 +197,7 @@
     <link href="https://stgapr.github.io/post/Anthemscore-linux/"/>
     <id>https://stgapr.github.io/post/Anthemscore-linux/</id>
     <published>2020-08-13T04:51:39.000Z</published>
-    <updated>2020-08-16T07:50:28.453Z</updated>
+    <updated>2021-03-11T12:48:24.978Z</updated>
     
     <summary type="html">
     
@@ -458,28 +478,6 @@
       <category term="电子" scheme="https://stgapr.github.io/tags/%E7%94%B5%E5%AD%90/"/>
     
       <category term="下载" scheme="https://stgapr.github.io/tags/%E4%B8%8B%E8%BD%BD/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>核桃的2020新年贺词</title>
-    <link href="https://stgapr.github.io/post/greetings-of-2020-new-year/"/>
-    <id>https://stgapr.github.io/post/greetings-of-2020-new-year/</id>
-    <published>2019-12-31T15:59:59.000Z</published>
-    <updated>2019-12-29T09:37:07.427Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;此刻，地球的东八区~东十二区已经迈入2020年，这是二十一世纪的第三个十年的开始。中国传统农历新年还有大致一个月，虽然“年”只是人为划定的时间尺度，但借助着数字进位的仪式感，处于想象中的共同体的我们通过网络、天空和大地共享时光腾挪的喜悦。如同每个已经过去的新年一样。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
-    
-    
-      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-      <category term="新年" scheme="https://stgapr.github.io/tags/%E6%96%B0%E5%B9%B4/"/>
     
   </entry>
   
