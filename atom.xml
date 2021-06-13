@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2021-06-10T12:11:07.180Z</updated>
+  <updated>2021-06-13T00:15:08.944Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -17,11 +17,53 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>风雨来记3：在北方的大地上驰骋</title>
+    <link href="https://stgapr.github.io/post/fuuraiki3/"/>
+    <id>https://stgapr.github.io/post/fuuraiki3/</id>
+    <published>2021-06-13T00:05:26.000Z</published>
+    <updated>2021-06-13T00:15:08.944Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://fog.nippon1.jp/furaiki3/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;《风雨来记》&lt;/a&gt;这款游戏比较独特，和与别的腻腻歪歪满屏幕都是投怀送抱的妹子的学园恋爱Galgame不一样，主人公大部分都在孤独地骑着摩托旅行。所以应该叫做旅行アドベンチャー。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="电子小说" scheme="https://stgapr.github.io/tags/%E7%94%B5%E5%AD%90%E5%B0%8F%E8%AF%B4/"/>
+    
+      <category term="鉴赏" scheme="https://stgapr.github.io/tags/%E9%89%B4%E8%B5%8F/"/>
+    
+      <category term="FOG" scheme="https://stgapr.github.io/tags/FOG/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>解决UGEE CV720数位板在Windows下无笔压的问题</title>
+    <link href="https://stgapr.github.io/post/cv720/"/>
+    <id>https://stgapr.github.io/post/cv720/</id>
+    <published>2021-06-12T06:56:26.000Z</published>
+    <updated>2021-06-12T23:23:05.202Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;今天心血来潮，把大学时买的数位板（说是要课余时间陶冶美术情操，自学绘画，结果基本都是拿来打OSU）翻出来擦灰，发现这东西没压感了。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="CV720" scheme="https://stgapr.github.io/tags/CV720/"/>
+    
+      <category term="数位板" scheme="https://stgapr.github.io/tags/%E6%95%B0%E4%BD%8D%E6%9D%BF/"/>
+    
+  </entry>
+  
+  <entry>
     <title>海与雪的CYAN BLUE</title>
     <link href="https://stgapr.github.io/post/graduation-2/"/>
     <id>https://stgapr.github.io/post/graduation-2/</id>
     <published>2021-05-09T13:40:43.000Z</published>
-    <updated>2021-06-10T12:11:07.180Z</updated>
+    <updated>2021-06-10T13:23:43.895Z</updated>
     
     <summary type="html">
     
@@ -80,9 +122,9 @@
       <category term="专栏" scheme="https://stgapr.github.io/categories/%E4%B8%93%E6%A0%8F/"/>
     
     
-      <category term="访谈" scheme="https://stgapr.github.io/tags/%E8%AE%BF%E8%B0%88/"/>
-    
       <category term="经验" scheme="https://stgapr.github.io/tags/%E7%BB%8F%E9%AA%8C/"/>
+    
+      <category term="访谈" scheme="https://stgapr.github.io/tags/%E8%AE%BF%E8%B0%88/"/>
     
   </entry>
   
@@ -157,11 +199,11 @@
     <link href="https://stgapr.github.io/post/guitar-sheet/"/>
     <id>https://stgapr.github.io/post/guitar-sheet/</id>
     <published>2021-02-28T03:28:13.000Z</published>
-    <updated>2021-02-28T03:36:25.444Z</updated>
+    <updated>2021-06-12T06:07:25.621Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;发几个自己做的吉他谱，基本都是ACG歌曲（尤其是Galgame）。以后应该会陆陆续续更新。&lt;/p&gt;
+      &lt;p&gt;（最后更新：2021年6月12日）&lt;br&gt;发几个自己做的吉他谱，基本都是ACG歌曲（尤其是Galgame）。以后应该会陆陆续续更新。&lt;/p&gt;
     
     </summary>
     
@@ -402,9 +444,9 @@
     
       <category term="阅读" scheme="https://stgapr.github.io/tags/%E9%98%85%E8%AF%BB/"/>
     
-      <category term="恋爱" scheme="https://stgapr.github.io/tags/%E6%81%8B%E7%88%B1/"/>
-    
       <category term="科幻" scheme="https://stgapr.github.io/tags/%E7%A7%91%E5%B9%BB/"/>
+    
+      <category term="恋爱" scheme="https://stgapr.github.io/tags/%E6%81%8B%E7%88%B1/"/>
     
   </entry>
   
@@ -428,54 +470,6 @@
     
     
       <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2020年3月阅读书目</title>
-    <link href="https://stgapr.github.io/post/read-2020-3/"/>
-    <id>https://stgapr.github.io/post/read-2020-3/</id>
-    <published>2020-04-03T11:35:42.000Z</published>
-    <updated>2020-04-03T11:54:07.109Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这个月推荐的作品是《满愿》。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-      <category term="阅读" scheme="https://stgapr.github.io/tags/%E9%98%85%E8%AF%BB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>学吉他</title>
-    <link href="https://stgapr.github.io/post/guitar/"/>
-    <id>https://stgapr.github.io/post/guitar/</id>
-    <published>2020-03-22T00:03:58.000Z</published>
-    <updated>2020-08-08T06:37:22.720Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;今年过年前，我有了学吉他的想法。很快我就去付诸实践了。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="ACG" scheme="https://stgapr.github.io/tags/ACG/"/>
-    
-      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
-    
-      <category term="吉他" scheme="https://stgapr.github.io/tags/%E5%90%89%E4%BB%96/"/>
-    
-      <category term="乐器" scheme="https://stgapr.github.io/tags/%E4%B9%90%E5%99%A8/"/>
     
   </entry>
   
