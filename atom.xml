@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2021-06-13T00:29:11.981Z</updated>
+  <updated>2021-06-13T07:12:25.969Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一个梦</title>
+    <link href="https://stgapr.github.io/post/one-dream/"/>
+    <id>https://stgapr.github.io/post/one-dream/</id>
+    <published>2021-06-13T06:48:39.000Z</published>
+    <updated>2021-06-13T07:12:25.969Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记一个不可思议的但是真实的梦。事先声明，我无法控制自己的大脑在想什么。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="梦" scheme="https://stgapr.github.io/tags/%E6%A2%A6/"/>
+    
+  </entry>
   
   <entry>
     <title>风雨来记3：在北方的大地上驰骋</title>
@@ -447,29 +467,6 @@
       <category term="科幻" scheme="https://stgapr.github.io/tags/%E7%A7%91%E5%B9%BB/"/>
     
       <category term="恋爱" scheme="https://stgapr.github.io/tags/%E6%81%8B%E7%88%B1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>生活报告</title>
-    <link href="https://stgapr.github.io/post/recent-seikatsu/"/>
-    <id>https://stgapr.github.io/post/recent-seikatsu/</id>
-    <published>2020-05-09T13:09:03.000Z</published>
-    <updated>2020-08-08T06:38:48.673Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;很久没写日志，怕要被友链除名了。稍微记录一下生活状况。&lt;/p&gt;
-&lt;p&gt;可能是自我意识过剩，总是会思考在面对“网线另一端的不特定读者”时，要用什么口气写下文字。最近翻阅以前（高中时代）的日记时，也觉得很是幼稚，偶尔还有偏激的地方。但这毕竟是成长的一环节。&lt;/p&gt;
-&lt;p&gt;沿海小城此刻已经进入了台风季节，每天呼呼作响地刮风。榴莲上市了又下架了，菠萝也差不多下市了，但卖西瓜的敞篷小货车仍然能每天下工回来都能看到。因为疫情期还没过，街面广播天天在放国家安全法，还有举报偷渡回国人员什么的，耳朵都快起茧了。这种灰尘扑面又有点闷湿的天气，就有点九十年代的感觉。&lt;/p&gt;
-&lt;p&gt;最近家里装了纱窗，但一不小心没有在傍晚天暗前关窗的话，还是会被乘虚而入的蚊子叮个半死。还是得偶尔配合用电热蚊香液。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
     
   </entry>
   
