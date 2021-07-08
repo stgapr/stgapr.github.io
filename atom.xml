@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2021-07-08T01:26:40.083Z</updated>
+  <updated>2021-07-08T01:30:19.430Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://stgapr.github.io/post/sugery/"/>
     <id>https://stgapr.github.io/post/sugery/</id>
     <published>2021-07-07T04:51:39.000Z</published>
-    <updated>2021-07-08T01:26:40.083Z</updated>
+    <updated>2021-07-08T01:30:19.430Z</updated>
     
     <summary type="html">
     
@@ -33,6 +33,8 @@
     
     
       <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="生病" scheme="https://stgapr.github.io/tags/%E7%94%9F%E7%97%85/"/>
     
   </entry>
   
