@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2021-07-10T01:41:08.479Z</updated>
+  <updated>2021-07-14T11:11:45.055Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>春の午後 僕は長い旅をした 2011 - 多田葵</title>
+    <link href="https://stgapr.github.io/post/tabi-deta/"/>
+    <id>https://stgapr.github.io/post/tabi-deta/</id>
+    <published>2021-07-14T12:54:13.000Z</published>
+    <updated>2021-07-14T11:11:45.055Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这首歌原出自2001年的KSLA-001《Humanity… / WORK-S》。多田葵的版本收录在2011年的《Panorama VA Compilation CD Vol.3》。编曲比原来那一版轻快了点。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="音乐" scheme="https://stgapr.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
+    
+      <category term="歌词" scheme="https://stgapr.github.io/tags/%E6%AD%8C%E8%AF%8D/"/>
+    
+  </entry>
   
   <entry>
     <title>做手术</title>
@@ -440,30 +462,6 @@
       <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
     
       <category term="阅读" scheme="https://stgapr.github.io/tags/%E9%98%85%E8%AF%BB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>PDF重排工具k2pdfopt的参数技巧</title>
-    <link href="https://stgapr.github.io/post/k2pdfopt/"/>
-    <id>https://stgapr.github.io/post/k2pdfopt/</id>
-    <published>2020-07-12T14:55:17.000Z</published>
-    <updated>2020-08-08T06:30:39.829Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;有一个PDF重排的工具叫做k2pdfopt，这个可能经常自己处理PDF电子书的人有听说过。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="软件" scheme="https://stgapr.github.io/tags/%E8%BD%AF%E4%BB%B6/"/>
-    
-      <category term="PDF" scheme="https://stgapr.github.io/tags/PDF/"/>
-    
-      <category term="电子书" scheme="https://stgapr.github.io/tags/%E7%94%B5%E5%AD%90%E4%B9%A6/"/>
     
   </entry>
   
