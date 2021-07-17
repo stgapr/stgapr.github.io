@@ -195,7 +195,7 @@
 <p>应用程序所需的许多库都从ARM板重定向到了库，比如说Box86可以从ARM主机系统使用SDL2，而不是使用i386的SDL2。这也包括GPU驱动程序。如果应用程序需要运行OpenGL，它将不再要求i386 OpenGL驱动程序，而是ARM OpenGL驱动程序。还有许多其他库，例如SDL，OpenAL，X11等，也可以从本机ARM环境中使用，而不是使用i386中的所有库。这也意味着与需要完整i386环境的ExaGear相比，i386中需要的库要少得多。</p>
 </blockquote>
 <p>box86好像相当成熟，甚至已经基于该项目做了一个retro gaming向的<a href="https://twisteros.com/" target="_blank" rel="noopener">树莓派系统Twister OS（原名Raspbian X）</a>。</p>
-<p>那我就选择box86来折腾了。我和去年相比，手头多了台性能好得多的ARM笔记本，所以不用交叉编译了。但我还是保留这部分踩坑的内容，以加深理解。</p>
+<p>那我就选择box86来折腾了。我和去年相比，手头多了台性能好得多的ARM笔记本。</p>
 <h2 id="构建box86"><a href="#构建box86" class="headerlink" title="构建box86"></a>构建box86</h2><p>其实网络上也有人<a href="https://github.com/SpacingBat3/box86-releases" target="_blank" rel="noopener">发布了Appimage格式的打包好的box86</a>，退一步<a href="https://github.com/Itai-Nelken/box86-2deb-weekly-script" target="_blank" rel="noopener">还有weekly自动构建脚本</a>但你要最新的构建的话，还是建议从挤牛奶和养鸡开始做蛋糕。</p>
 <h3 id="关于ARM的架构"><a href="#关于ARM的架构" class="headerlink" title="关于ARM的架构"></a>关于ARM的架构</h3><blockquote>
 <p>You <em>NEED</em> a 32-bit subsystem to run and build box86. box86 is useless on 64-bit only systems. Also, you <em>NEED</em> a 32-bit toolchain to build box86. A toolchain that only support 64-bit will not compile box86, and you’ll get errors (typically on aarch64, you get “-marm” not recognized).</p>
@@ -250,11 +250,12 @@
 <figure class="hljs highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PATH=<span class="variable">$PATH</span><span class="symbol">:/usr/local/toolchain/gcc-linaro-</span><span class="number">7.5</span>.0<span class="number">-2019.12</span>-x86_64_armv8l-linux-gnueabihf/bin</span><br><span class="line">source ~<span class="regexp">/.bashrc</span></span><br></pre></td></tr></table></figure>
 <p>验证下是否能识别到编译器。</p>
 <figure class="hljs highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">armv8l-linux-gnueabihf-gcc -v</span><br></pre></td></tr></table></figure>
-<p>为什么我这么费劲要从镜像源手工装工具链，因为我发现这个傻屌银河麒麟的软件仓库里没有，</p>
- <figure class="hljs highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> </span><br></pre></td></tr></table></figure>
+<p>为什么我这么费劲要从镜像源手工装工具链，因为我发现这个傻屌银河麒麟10.1的默认的软件仓库里没有，</p>
+<p>/etc/apt/sources.list 里面就一行</p>
+ <figure class="hljs highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deb http:<span class="regexp">//</span>archive.kylinos.cn<span class="regexp">/kylin/</span>KYLIN-ALL <span class="number">10.1</span> main restricted universe multiverse</span><br></pre></td></tr></table></figure>
 <p>我们看一下银河麒麟到底是什么玩意儿。</p>
 <p><img src="//stgapr.github.io/post/galgame-on-ARM/kylin-is-debian.jpg" alt="麒麟就是补佳乐"></p>
-<p>所以就是Debian 9 （ARM）对不对。内核还是在X86架构的Ubuntu用Linaro工具链交叉编译出来的。我们完全可以用Armbian 的软件仓库替换。（见下文）</p>
+<p>所以就是Debian 9 （ARM）对不对。内核还是在X86架构的Ubuntu用Linaro工具链交叉编译出来的。我们完全可以用Armbian （debian based）的软件仓库替换。（见上文）</p>
 <h3 id="chroot和debootstrap"><a href="#chroot和debootstrap" class="headerlink" title="chroot和debootstrap"></a>chroot和debootstrap</h3><p>这种方法是通过切换rootfs来挂载一个32位环境。需要拉取一个32位的linux镜像，对于只是交叉编译而言，所以有点杀鸡用牛刀的感觉。本处参考了了网上的做法，不是特别理解所有步骤，请谨慎折腾。我不确定这种方法是不是要求处理器同架构。</p>
 <p>从清华源拉一个32位的ubuntu 16.04（xenial）的镜像下来</p>
  <figure class="hljs highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p <span class="string">/srv/chroot/i386</span></span><br><span class="line">sudo apt-get install debootstrap</span><br><span class="line">sudo apt install schroot</span><br><span class="line">$ sudo debootstrap <span class="params">--foreign</span> <span class="params">--arch=i386</span> xenial <span class="string">/srv/chroot/i386</span> http:<span class="string">//mirrors.tuna.tsinghua.edu.cn/ubuntu/</span></span><br></pre></td></tr></table></figure>
@@ -272,7 +273,7 @@
 <p>先把最新的box86代码拉下来。</p>
 <figure class="hljs highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">clone</span> <span class="title">https</span>://github.com/ptitSeb/box86.git</span><br></pre></td></tr></table></figure>
 <p>cmake。<br><figure class="hljs highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd box86; mkdir build; cd build; </span><br><span class="line">cmake <span class="built_in">..</span> <span class="attribute">-DARM_DYNAREC</span>=ON \</span><br><span class="line"><span class="attribute">-DCMAKE_BUILD_TYPE</span>=RelWithDebInfo \</span><br><span class="line"><span class="attribute">-DCMAKE_SYSTEM_PROCESSOR</span>=arm \</span><br><span class="line"><span class="attribute">-DCMAKE_C_COMPILER</span>=armv8l-linux-gnueabihf-gcc;</span><br></pre></td></tr></table></figure></p>
-<p>注意-DCMAKE_C_COMPILER以指定编译器，交叉编译的时候不指定的话会出现平台参数错误。但是native编译可以不指定。</p>
+<p>注意-DCMAKE_C_COMPILER以指定编译器，交叉编译的时候不指定的话会出现平台参数错误。但是native编译可以不指定（其实也是指定的，官方都写在CMakeLists.txt里面）。</p>
 <p>这里面有一个box86提供的选项叫做-DARM_DYNAREC。JIT / Dynarec / Hotspot之类的技术会把转换过的指令段缓存起来，有助于提高程序载入速度。这也是在CMakeLists.txt里面实现控制逻辑的。</p>
 <blockquote>
 <p>The Dynarec is only avaiable on ARM Cpu. Notes also that VFPv3 and NEON are required for the Dynarec. Activate it by using <code>-DARM_DYNAREC=1</code>. Also, be sure to use <code>-marm</code> in compilation flags (because many compileur use Thumb as default, and the dynarec will not work in this mode).</p>
@@ -294,7 +295,7 @@
 <p>我们前面已经编译完那一堆看似最复杂的东西了。我在想为什么box86不用Github CI做自动构建……</p>
 <p>现在该在ARM设备上通过box86和wine跑游戏了。这些部分也很刺激（但是要干的事情不少）。</p>
 <h2 id="安装wine-x86"><a href="#安装wine-x86" class="headerlink" title="安装wine x86"></a>安装wine x86</h2><p>我们现在已经有可以跑在ARM上的box86了，还缺一个能被box86解释执行的X86版的wine。假如你的x86软件不需要调用Windows API（像是dos下面直接跑的那种游戏，可以完全不装wine）（不对啊，dos程序好像是16位的）（此处存疑）。</p>
-<p>一般来说装wine是apt-get install一把梭，但这时候行不通。因为armbian是ARM架构的，直接安装只会安装到arm版的wine。而我们想要的是wine x86。 强行dpkg –add-architecture是无法在ARM机器上添加i386 arhitecture。</p>
+<p>一般来说装wine是apt-get install一把梭，但这时候行不通。因为armbian是ARM架构的，直接安装只会安装到arm版的wine。而我们想要的是wine x86。 强行dpkg –add-architecture无法在ARM机器上添加i386 arhitecture。</p>
 <p>ptitSeb/box86下面的issue也有很多人在问，官方<a href="https://github.com/ptitSeb/box86/blob/master/docs/X86WINE.md" target="_blank" rel="noopener">在README里给出了两个方法</a>，分别是</p>
 <ul>
 <li><p>从TwisterOS的仓库里拉取一份  （比较旧了）</p>
