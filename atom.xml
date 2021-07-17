@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2021-07-14T11:11:45.055Z</updated>
+  <updated>2021-07-17T01:03:55.349Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>在ARM设备上“原生”运行windows游戏</title>
+    <link href="https://stgapr.github.io/post/galgame-on-ARM/"/>
+    <id>https://stgapr.github.io/post/galgame-on-ARM/</id>
+    <published>2021-07-17T01:01:04.000Z</published>
+    <updated>2021-07-17T01:03:55.349Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;单位最近在换国产机，虽然之前也换过一批X86架构的兆芯台式机（还tm装了Ghost Win7），但这一批是飞腾（ARM架构）的。没法直接装Windows（Windows11 on ARM另说）。 本着Galgame everywhere的原则，我想让这批机器也能跑windows上的galgame，于是边学边摸索除了一条未曾设想的道路。不是用远程桌面、虚拟机，也不是kirikiroid。  &lt;/p&gt;
+&lt;p&gt;这篇文章还没大写完，后面会加一些实际运行的配图。总之感谢&lt;a href=&quot;https://noodlefighter.com&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;@虾包&lt;/a&gt; 的技术支持。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="技术" scheme="https://stgapr.github.io/tags/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="X86" scheme="https://stgapr.github.io/tags/X86/"/>
+    
+      <category term="ARM" scheme="https://stgapr.github.io/tags/ARM/"/>
+    
+      <category term="仿真" scheme="https://stgapr.github.io/tags/%E4%BB%BF%E7%9C%9F/"/>
+    
+      <category term="wine" scheme="https://stgapr.github.io/tags/wine/"/>
+    
+      <category term="box86" scheme="https://stgapr.github.io/tags/box86/"/>
+    
+  </entry>
   
   <entry>
     <title>春の午後 僕は長い旅をした 2011 - 多田葵</title>
@@ -440,28 +471,6 @@
       <category term="吉他" scheme="https://stgapr.github.io/tags/%E5%90%89%E4%BB%96/"/>
     
       <category term="乐器" scheme="https://stgapr.github.io/tags/%E4%B9%90%E5%99%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2020年4-7月阅读书目</title>
-    <link href="https://stgapr.github.io/post/read-2020-4to7/"/>
-    <id>https://stgapr.github.io/post/read-2020-4to7/</id>
-    <published>2020-07-31T11:35:42.000Z</published>
-    <updated>2021-01-09T04:18:30.550Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;前一阵子有点情绪焦虑，把博客关了，也就没有按月给简短书评。昨天把博客重新开起来，大概翻了一下阅读器看最近四个月读了什么东西。结论：都是些乱七八糟的，所以也不知道推荐什么——&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="生活" scheme="https://stgapr.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-      <category term="阅读" scheme="https://stgapr.github.io/tags/%E9%98%85%E8%AF%BB/"/>
     
   </entry>
   
