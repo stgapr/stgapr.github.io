@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://stgapr.github.io/"/>
-  <updated>2021-07-17T01:23:20.623Z</updated>
+  <updated>2021-07-22T06:27:28.314Z</updated>
   <id>https://stgapr.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>离去的人们</title>
+    <link href="https://stgapr.github.io/post/aeromechanics/"/>
+    <id>https://stgapr.github.io/post/aeromechanics/</id>
+    <published>2021-07-22T06:19:57.000Z</published>
+    <updated>2021-07-22T06:27:28.314Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;7月20日早上上班的时候，自己顺手滑了一会儿社交平台的资讯，发现Twitter关注的的一名好友疑似要自杀。那时候距离他的最后一条可见推文发布后（2021年7月20日 4：02）已经超过4个小时了。&lt;/p&gt;
+&lt;p&gt;大概半小时后，台湾地区、日本还有国内其他地方的网友也自发加入开始综合各种信息定位寻人。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随感" scheme="https://stgapr.github.io/categories/%E9%9A%8F%E6%84%9F/"/>
+    
+    
+      <category term="自杀" scheme="https://stgapr.github.io/tags/%E8%87%AA%E6%9D%80/"/>
+    
+  </entry>
   
   <entry>
     <title>在ARM设备上“原生”运行windows游戏</title>
@@ -449,28 +470,6 @@
       <category term="打谱" scheme="https://stgapr.github.io/tags/%E6%89%93%E8%B0%B1/"/>
     
       <category term="神经网络" scheme="https://stgapr.github.io/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Ubuntu 20.04：不折腾</title>
-    <link href="https://stgapr.github.io/post/ubuntu2004/"/>
-    <id>https://stgapr.github.io/post/ubuntu2004/</id>
-    <published>2020-08-02T00:09:11.000Z</published>
-    <updated>2020-08-08T06:25:57.159Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;我大概有三四年没用linux系的操作系统了。最近发现笔记本电脑硬盘剩余空间不少（也就是256GB 剩下了150GB 左右吧……），就装了一个Ubuntu 20.04试试看。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="笔记" scheme="https://stgapr.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="折腾" scheme="https://stgapr.github.io/tags/%E6%8A%98%E8%85%BE/"/>
-    
-      <category term="操作系统" scheme="https://stgapr.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
